@@ -1,7 +1,5 @@
-'use client';
+"use client";
 
-import { useEffect, useMemo, useState } from 'react';
-import { useTranslations } from 'next-intl';
 import {
   BrowserProvider,
   Contract,
@@ -9,22 +7,27 @@ import {
   isAddress,
   parseEther,
   parseUnits,
-} from 'ethers';
+} from "ethers";
+import { useTranslations } from "next-intl";
+import { useEffect, useMemo, useState } from "react";
 
-const SPRAY_ADDRESS = '0x9b091AC8f8Db060B134A2FCE33563b3eF4A74015';
+const SPRAY_ADDRESS = (
+  process.env.NEXT_PUBLIC_SPRAY_ADDRESS ??
+  "0x9b091AC8f8Db060B134A2FCE33563b3eF4A74015"
+).trim();
 const CELO_CHAIN_ID = 42220;
-const CELO_CHAIN_HEX = '0xa4ec';
+const CELO_CHAIN_HEX = "0xa4ec";
 
 const SPRAY_ABI = [
-  'function disperseNative(address[] _recipients, uint256[] _amounts) payable',
-  'function disperseToken(address tokenAddress, address[] _recipients, uint256[] _amounts)',
+  "function disperseNative(address[] _recipients, uint256[] _amounts) payable",
+  "function disperseToken(address tokenAddress, address[] _recipients, uint256[] _amounts)",
 ];
 
 const ERC20_ABI = [
-  'function approve(address spender, uint256 value) returns (bool)',
-  'function allowance(address owner, address spender) view returns (uint256)',
-  'function decimals() view returns (uint8)',
-  'function symbol() view returns (string)',
+  "function approve(address spender, uint256 value) returns (bool)",
+  "function allowance(address owner, address spender) view returns (uint256)",
+  "function decimals() view returns (uint8)",
+  "function symbol() view returns (string)",
 ];
 
 type RecipientRow = {
@@ -35,9 +38,9 @@ type RecipientRow = {
 
 type TransactionRecord = {
   id: string;
-  type: 'native' | 'token';
+  type: "native" | "token";
   hash: string;
-  status: 'pending' | 'success' | 'error';
+  status: "pending" | "success" | "error";
   timestamp: string;
   recipients: number;
   totalFormatted: string;
@@ -47,9 +50,15 @@ type TransactionRecord = {
 declare global {
   interface Window {
     ethereum?: {
-      request: (args: { method: string; params?: unknown[] }) => Promise<unknown>;
+      request: (args: {
+        method: string;
+        params?: unknown[];
+      }) => Promise<unknown>;
       on?: (event: string, listener: (...args: unknown[]) => void) => void;
-      removeListener?: (event: string, listener: (...args: unknown[]) => void) => void;
+      removeListener?: (
+        event: string,
+        listener: (...args: unknown[]) => void,
+      ) => void;
     };
   }
 }
@@ -57,8 +66,8 @@ declare global {
 function createRow(): RecipientRow {
   return {
     id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
-    address: '',
-    amount: '',
+    address: "",
+    amount: "",
   };
 }
 
@@ -67,57 +76,66 @@ function formatAddress(address: string) {
 }
 
 export default function SprayDisperser() {
-  const t = useTranslations('SprayDisperser');
+  const t = useTranslations("SprayDisperser");
   const [provider, setProvider] = useState<BrowserProvider | null>(null);
   const [signerAddress, setSignerAddress] = useState<string | null>(null);
   const [chainId, setChainId] = useState<number | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isApproving, setIsApproving] = useState(false);
-  const [mode, setMode] = useState<'native' | 'token'>('native');
-  const [tokenAddress, setTokenAddress] = useState('');
-  const [tokenInfo, setTokenInfo] = useState<{ symbol: string; decimals: number } | null>(null);
+  const [mode, setMode] = useState<"native" | "token">("native");
+  const [tokenAddress, setTokenAddress] = useState("");
+  const [tokenInfo, setTokenInfo] = useState<{
+    symbol: string;
+    decimals: number;
+  } | null>(null);
   const [isFetchingTokenInfo, setIsFetchingTokenInfo] = useState(false);
   const [rows, setRows] = useState<RecipientRow[]>([createRow()]);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [history, setHistory] = useState<TransactionRecord[]>([]);
-  const tips = t.raw('tips.items') as string[];
+  const tips = t.raw("tips.items") as string[];
 
   useEffect(() => {
-    if (typeof window === 'undefined' || !window.ethereum) {
+    if (typeof window === "undefined" || !window.ethereum) {
       return;
     }
 
-    const handleAccountsChanged = async (accounts: unknown[]) => {
-      if (!Array.isArray(accounts) || accounts.length === 0) {
+    const handleAccountsChanged: (...args: unknown[]) => void = (...args) => {
+      const [rawAccounts] = args;
+      if (!Array.isArray(rawAccounts) || rawAccounts.length === 0) {
         setSignerAddress(null);
         return;
       }
 
-      setSignerAddress(String(accounts[0]));
+      setSignerAddress(String(rawAccounts[0]));
     };
 
     const handleChainChanged = (newChainId: unknown) => {
-      if (typeof newChainId === 'string') {
+      if (typeof newChainId === "string") {
         setChainId(Number.parseInt(newChainId, 16));
       }
     };
 
-    window.ethereum.on?.('accountsChanged', handleAccountsChanged);
-    window.ethereum.on?.('chainChanged', handleChainChanged);
+    window.ethereum.on?.("accountsChanged", handleAccountsChanged);
+    window.ethereum.on?.("chainChanged", handleChainChanged);
 
     return () => {
-      window.ethereum?.removeListener?.('accountsChanged', handleAccountsChanged);
-      window.ethereum?.removeListener?.('chainChanged', handleChainChanged);
+      window.ethereum?.removeListener?.(
+        "accountsChanged",
+        handleAccountsChanged,
+      );
+      window.ethereum?.removeListener?.("chainChanged", handleChainChanged);
     };
   }, []);
 
   useEffect(() => {
-    if (!provider || mode !== 'token') {
+    if (!provider || mode !== "token") {
       setTokenInfo(null);
       return;
     }
+
+    const activeProvider = provider;
 
     const normalized = tokenAddress.trim();
     if (!isAddress(normalized)) {
@@ -127,20 +145,23 @@ export default function SprayDisperser() {
 
     let isCancelled = false;
 
-    async function fetchTokenDetails() {
+    async function fetchTokenDetails(targetProvider: BrowserProvider) {
       setIsFetchingTokenInfo(true);
       setError(null);
       try {
-        const signer = await provider.getSigner();
+        const signer = await targetProvider.getSigner();
         const erc20 = new Contract(normalized, ERC20_ABI, signer);
-        const [symbol, decimals] = await Promise.all([erc20.symbol(), erc20.decimals()]);
+        const [symbol, decimals] = await Promise.all([
+          erc20.symbol(),
+          erc20.decimals(),
+        ]);
         if (!isCancelled) {
           setTokenInfo({ symbol, decimals: Number(decimals) });
         }
-      } catch (fetchError) {
+      } catch (_fetchError) {
         if (!isCancelled) {
           setTokenInfo(null);
-          setError(t('errors.tokenLookupFailed'));
+          setError(t("errors.tokenLookupFailed"));
         }
       } finally {
         if (!isCancelled) {
@@ -149,7 +170,7 @@ export default function SprayDisperser() {
       }
     }
 
-    fetchTokenDetails();
+    fetchTokenDetails(activeProvider);
 
     return () => {
       isCancelled = true;
@@ -157,7 +178,10 @@ export default function SprayDisperser() {
   }, [provider, tokenAddress, mode, t]);
 
   const totalEntered = useMemo(() => {
-    const rawTotal = rows.reduce((acc, row) => acc + (Number.parseFloat(row.amount) || 0), 0);
+    const rawTotal = rows.reduce(
+      (acc, row) => acc + (Number.parseFloat(row.amount) || 0),
+      0,
+    );
     return Number.isFinite(rawTotal) ? rawTotal : 0;
   }, [rows]);
 
@@ -170,8 +194,8 @@ export default function SprayDisperser() {
       return;
     }
 
-    if (typeof window === 'undefined' || !window.ethereum) {
-      setError(t('errors.noWallet'));
+    if (typeof window === "undefined" || !window.ethereum) {
+      setError(t("errors.noWallet"));
       return;
     }
 
@@ -181,7 +205,7 @@ export default function SprayDisperser() {
 
     try {
       const nextProvider = new BrowserProvider(window.ethereum);
-      await nextProvider.send('eth_requestAccounts', []);
+      await nextProvider.send("eth_requestAccounts", []);
       const signer = await nextProvider.getSigner();
       const address = await signer.getAddress();
       const network = await nextProvider.getNetwork();
@@ -189,22 +213,22 @@ export default function SprayDisperser() {
       setProvider(nextProvider);
       setSignerAddress(address);
       setChainId(Number(network.chainId));
-    } catch (connectError) {
-      setError(t('errors.connectFailed'));
+    } catch (_connectError) {
+      setError(t("errors.connectFailed"));
     } finally {
       setIsConnecting(false);
     }
   }
 
   async function ensureCeloNetwork() {
-    if (typeof window === 'undefined' || !window.ethereum) {
-      setError(t('errors.noWallet'));
+    if (typeof window === "undefined" || !window.ethereum) {
+      setError(t("errors.noWallet"));
       return false;
     }
 
     try {
       await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
+        method: "wallet_switchEthereumChain",
         params: [{ chainId: CELO_CHAIN_HEX }],
       });
       setChainId(CELO_CHAIN_ID);
@@ -214,35 +238,35 @@ export default function SprayDisperser() {
       if (errorWithCode.code === 4902) {
         try {
           await window.ethereum.request({
-            method: 'wallet_addEthereumChain',
+            method: "wallet_addEthereumChain",
             params: [
               {
                 chainId: CELO_CHAIN_HEX,
-                chainName: 'Celo Mainnet',
+                chainName: "Celo Mainnet",
                 nativeCurrency: {
-                  name: 'Celo',
-                  symbol: 'CELO',
+                  name: "Celo",
+                  symbol: "CELO",
                   decimals: 18,
                 },
-                rpcUrls: ['https://forno.celo.org'],
-                blockExplorerUrls: ['https://celoscan.io'],
+                rpcUrls: ["https://forno.celo.org"],
+                blockExplorerUrls: ["https://celoscan.io"],
               },
             ],
           });
           setChainId(CELO_CHAIN_ID);
           return true;
-        } catch (addError) {
-          setError(t('errors.switchFailed'));
+        } catch (_addError) {
+          setError(t("errors.switchFailed"));
           return false;
         }
       }
 
-      setError(t('errors.switchFailed'));
+      setError(t("errors.switchFailed"));
       return false;
     }
   }
 
-  function updateRow(id: string, key: 'address' | 'amount', value: string) {
+  function updateRow(id: string, key: "address" | "amount", value: string) {
     setRows((prev) =>
       prev.map((row) => (row.id === id ? { ...row, [key]: value } : row)),
     );
@@ -265,8 +289,10 @@ export default function SprayDisperser() {
 
   function buildTokenAmounts(decimals: number) {
     try {
-      const amounts = rows.map((row) => parseUnits(row.amount.trim(), decimals));
-      const total = amounts.reduce((acc, value) => acc + value, 0n);
+      const amounts = rows.map((row) =>
+        parseUnits(row.amount.trim(), decimals),
+      );
+      const total = amounts.reduce((acc, value) => acc + value, BigInt(0));
       return { amounts, total };
     } catch {
       return null;
@@ -275,26 +301,31 @@ export default function SprayDisperser() {
 
   async function handleApprove() {
     if (!provider || !signerPromise || !tokenInfo) {
-      setError(t('errors.noWallet'));
+      setError(t("errors.noWallet"));
       return;
     }
 
     const normalized = tokenAddress.trim();
     if (!isAddress(normalized)) {
-      setError(t('errors.invalidToken'));
+      setError(t("errors.invalidToken"));
       return;
     }
 
     if (
-      rows.some((row) => row.address.trim() === '' || row.amount.trim() === '' || Number(row.amount) <= 0)
+      rows.some(
+        (row) =>
+          row.address.trim() === "" ||
+          row.amount.trim() === "" ||
+          Number(row.amount) <= 0,
+      )
     ) {
-      setError(t('errors.invalidAmount'));
+      setError(t("errors.invalidAmount"));
       return;
     }
 
     const parsed = buildTokenAmounts(tokenInfo.decimals);
     if (!parsed) {
-      setError(t('errors.invalidAmount'));
+      setError(t("errors.invalidAmount"));
       return;
     }
 
@@ -309,10 +340,13 @@ export default function SprayDisperser() {
     try {
       const signer = await signerPromise;
       const erc20 = new Contract(normalized, ERC20_ABI, signer);
-      const allowance: bigint = await erc20.allowance(await signer.getAddress(), SPRAY_ADDRESS);
+      const allowance: bigint = await erc20.allowance(
+        await signer.getAddress(),
+        SPRAY_ADDRESS,
+      );
 
       if (allowance >= totalValue) {
-        setFeedback(t('messages.alreadyApproved'));
+        setFeedback(t("messages.alreadyApproved"));
         return;
       }
 
@@ -320,28 +354,33 @@ export default function SprayDisperser() {
       approvalHash = tx.hash;
       addHistoryRecord({
         id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
-        type: 'token',
+        type: "token",
         hash: tx.hash,
-        status: 'pending',
+        status: "pending",
         timestamp: new Date().toISOString(),
         recipients: rows.length,
-        totalFormatted: `${totalEntered.toFixed(4)} ${tokenInfo?.symbol ?? ''}`.trim(),
+        totalFormatted:
+          `${totalEntered.toFixed(4)} ${tokenInfo?.symbol ?? ""}`.trim(),
       });
-      setFeedback(t('messages.approvalSent'));
+      setFeedback(t("messages.approvalSent"));
       await tx.wait();
-      setFeedback(t('messages.approvalComplete'));
+      setFeedback(t("messages.approvalComplete"));
       setHistory((prev) =>
         prev.map((entry) =>
-          entry.hash === tx.hash ? { ...entry, status: 'success' } : entry,
+          entry.hash === tx.hash ? { ...entry, status: "success" } : entry,
         ),
       );
-    } catch (approveError) {
-      setError(t('errors.approvalFailed'));
+    } catch (_approveError) {
+      setError(t("errors.approvalFailed"));
       if (approvalHash) {
         setHistory((prev) =>
           prev.map((entry) =>
             entry.hash === approvalHash
-              ? { ...entry, status: 'error', errorMessage: t('errors.approvalFailed') }
+              ? {
+                  ...entry,
+                  status: "error",
+                  errorMessage: t("errors.approvalFailed"),
+                }
               : entry,
           ),
         );
@@ -353,7 +392,7 @@ export default function SprayDisperser() {
 
   async function handleSubmit() {
     if (!provider || !signerPromise) {
-      setError(t('errors.noWallet'));
+      setError(t("errors.noWallet"));
       return;
     }
 
@@ -368,12 +407,12 @@ export default function SprayDisperser() {
     const amountsInput = rows.map((row) => row.amount.trim());
 
     if (recipients.some((address) => !isAddress(address))) {
-      setError(t('errors.invalidRecipient'));
+      setError(t("errors.invalidRecipient"));
       return;
     }
 
-    if (amountsInput.some((amount) => amount === '' || Number(amount) <= 0)) {
-      setError(t('errors.invalidAmount'));
+    if (amountsInput.some((amount) => amount === "" || Number(amount) <= 0)) {
+      setError(t("errors.invalidAmount"));
       return;
     }
 
@@ -385,37 +424,46 @@ export default function SprayDisperser() {
       const signer = await signerPromise;
       const contract = new Contract(SPRAY_ADDRESS, SPRAY_ABI, signer);
 
-      if (mode === 'native') {
+      if (mode === "native") {
         const amounts = amountsInput.map((amount) => parseEther(amount));
-        const totalValue = amounts.reduce((acc, value) => acc + value, 0n);
+        const totalValue = amounts.reduce(
+          (acc, value) => acc + value,
+          BigInt(0),
+        );
 
-        const tx = await contract.disperseNative(recipients, amounts, { value: totalValue });
+        const tx = await contract.disperseNative(recipients, amounts, {
+          value: totalValue,
+        });
         const recordId = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
         addHistoryRecord({
           id: recordId,
-          type: 'native',
+          type: "native",
           hash: tx.hash,
-          status: 'pending',
+          status: "pending",
           timestamp: new Date().toISOString(),
           recipients: recipients.length,
           totalFormatted: `${formatEther(totalValue)} CELO`,
         });
-        setFeedback(t('messages.transactionSent'));
+        setFeedback(t("messages.transactionSent"));
         const receipt = await tx.wait();
 
-        if (receipt.status === 1n) {
-          setFeedback(t('messages.transactionConfirmed'));
+        if (receipt.status === BigInt(1)) {
+          setFeedback(t("messages.transactionConfirmed"));
           setHistory((prev) =>
             prev.map((entry) =>
-              entry.id === recordId ? { ...entry, status: 'success' } : entry,
+              entry.id === recordId ? { ...entry, status: "success" } : entry,
             ),
           );
         } else {
-          setError(t('errors.transactionFailed'));
+          setError(t("errors.transactionFailed"));
           setHistory((prev) =>
             prev.map((entry) =>
               entry.id === recordId
-                ? { ...entry, status: 'error', errorMessage: t('errors.transactionFailed') }
+                ? {
+                    ...entry,
+                    status: "error",
+                    errorMessage: t("errors.transactionFailed"),
+                  }
                 : entry,
             ),
           );
@@ -423,62 +471,73 @@ export default function SprayDisperser() {
       } else {
         const normalized = tokenAddress.trim();
         if (!isAddress(normalized) || !tokenInfo) {
-          setError(t('errors.invalidToken'));
+          setError(t("errors.invalidToken"));
           return;
         }
 
         const decimals = tokenInfo.decimals;
         const parsed = buildTokenAmounts(decimals);
         if (!parsed) {
-          setError(t('errors.invalidAmount'));
+          setError(t("errors.invalidAmount"));
           return;
         }
 
         const { amounts, total: totalValue } = parsed;
 
         const erc20 = new Contract(normalized, ERC20_ABI, signer);
-        const allowance: bigint = await erc20.allowance(await signer.getAddress(), SPRAY_ADDRESS);
+        const allowance: bigint = await erc20.allowance(
+          await signer.getAddress(),
+          SPRAY_ADDRESS,
+        );
 
         if (allowance < totalValue) {
-          setError(t('errors.needsApproval'));
+          setError(t("errors.needsApproval"));
           await handleApprove();
           return;
         }
 
-        const tx = await contract.disperseToken(normalized, recipients, amounts);
+        const tx = await contract.disperseToken(
+          normalized,
+          recipients,
+          amounts,
+        );
         const recordId = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
         addHistoryRecord({
           id: recordId,
-          type: 'token',
+          type: "token",
           hash: tx.hash,
-          status: 'pending',
+          status: "pending",
           timestamp: new Date().toISOString(),
           recipients: recipients.length,
           totalFormatted: `${totalEntered.toFixed(4)} ${tokenInfo.symbol}`,
         });
-        setFeedback(t('messages.transactionSent'));
+        setFeedback(t("messages.transactionSent"));
         const receipt = await tx.wait();
 
-        if (receipt.status === 1n) {
-          setFeedback(t('messages.transactionConfirmed'));
+        if (receipt.status === BigInt(1)) {
+          setFeedback(t("messages.transactionConfirmed"));
           setHistory((prev) =>
             prev.map((entry) =>
-              entry.id === recordId ? { ...entry, status: 'success' } : entry,
+              entry.id === recordId ? { ...entry, status: "success" } : entry,
             ),
           );
         } else {
-          setError(t('errors.transactionFailed'));
+          setError(t("errors.transactionFailed"));
           setHistory((prev) =>
             prev.map((entry) =>
               entry.id === recordId
-                ? { ...entry, status: 'error', errorMessage: t('errors.transactionFailed') }
+                ? {
+                    ...entry,
+                    status: "error",
+                    errorMessage: t("errors.transactionFailed"),
+                  }
                 : entry,
             ),
           );
         }
       }
-    } catch (submitError) {
-      setError(t('errors.transactionFailed'));
+    } catch (_submitError) {
+      setError(t("errors.transactionFailed"));
     } finally {
       setIsSubmitting(false);
     }
@@ -486,8 +545,8 @@ export default function SprayDisperser() {
 
   const ctaDisabled =
     isSubmitting ||
-    rows.some((row) => row.address.trim() === '' || row.amount.trim() === '') ||
-    (mode === 'token' && (!isAddress(tokenAddress.trim()) || !tokenInfo));
+    rows.some((row) => row.address.trim() === "" || row.amount.trim() === "") ||
+    (mode === "token" && (!isAddress(tokenAddress.trim()) || !tokenInfo));
 
   return (
     <div className="space-y-8 text-wolf-foreground">
@@ -495,12 +554,14 @@ export default function SprayDisperser() {
         <header className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <p className="wolf-pill bg-wolf-emerald-mid text-xs uppercase tracking-[0.3em] text-wolf-emerald">
-              {t('badge')}
+              {t("badge")}
             </p>
             <h2 className="mt-4 text-3xl font-semibold uppercase text-white">
-              {t('heading')}
+              {t("heading")}
             </h2>
-            <p className="mt-2 max-w-[60ch] text-sm text-white/70">{t('description')}</p>
+            <p className="mt-2 max-w-[60ch] text-sm text-white/70">
+              {t("description")}
+            </p>
           </div>
           <div className="flex flex-col items-start gap-3 text-sm text-white/80">
             <button
@@ -509,15 +570,21 @@ export default function SprayDisperser() {
               disabled={isConnecting}
               className="inline-flex items-center justify-center rounded-full bg-[linear-gradient(120deg,#a5cd60,#7ba142)] px-5 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#08120b] transition hover:brightness-110 disabled:opacity-60"
             >
-              {signerAddress ? t('actions.connected', { address: formatAddress(signerAddress) }) : t('actions.connect')}
+              {signerAddress
+                ? t("actions.connected", {
+                    address: formatAddress(signerAddress),
+                  })
+                : t("actions.connect")}
             </button>
             {signerAddress ? (
               <div className="rounded-full border border-wolf-border-soft px-4 py-2 text-xs uppercase tracking-[0.32em] text-wolf-text-subtle">
-                {chainId === CELO_CHAIN_ID ? t('network.ready') : t('network.switch')}
+                {chainId === CELO_CHAIN_ID
+                  ? t("network.ready")
+                  : t("network.switch")}
               </div>
             ) : (
               <p className="max-w-[24ch] text-xs uppercase tracking-[0.3em] text-wolf-text-subtle">
-                {t('network.prompt')}
+                {t("network.prompt")}
               </p>
             )}
           </div>
@@ -528,55 +595,67 @@ export default function SprayDisperser() {
             <div className="flex flex-wrap items-center gap-4">
               <button
                 type="button"
-                onClick={() => setMode('native')}
+                onClick={() => setMode("native")}
                 className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] transition ${
-                  mode === 'native'
-                    ? 'bg-wolf-emerald-soft text-wolf-emerald'
-                    : 'border border-wolf-border text-white/70'
+                  mode === "native"
+                    ? "bg-wolf-emerald-soft text-wolf-emerald"
+                    : "border border-wolf-border text-white/70"
                 }`}
               >
-                {t('modes.native')}
+                {t("modes.native")}
               </button>
               <button
                 type="button"
-                onClick={() => setMode('token')}
+                onClick={() => setMode("token")}
                 className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] transition ${
-                  mode === 'token'
-                    ? 'bg-wolf-emerald-soft text-wolf-emerald'
-                    : 'border border-wolf-border text-white/70'
+                  mode === "token"
+                    ? "bg-wolf-emerald-soft text-wolf-emerald"
+                    : "border border-wolf-border text-white/70"
                 }`}
               >
-                {t('modes.token')}
+                {t("modes.token")}
               </button>
               <span className="text-xs uppercase tracking-[0.28em] text-wolf-text-subtle">
-                {t('summary.recipients', { count: rows.length })}
+                {t("summary.recipients", { count: rows.length })}
               </span>
               <span className="text-xs uppercase tracking-[0.28em] text-wolf-text-subtle">
-                {mode === 'native'
-                  ? t('summary.totalNative', { amount: totalEntered.toFixed(4) })
-                  : t('summary.totalToken', {
+                {mode === "native"
+                  ? t("summary.totalNative", {
                       amount: totalEntered.toFixed(4),
-                      symbol: tokenInfo?.symbol ?? t('summary.tokenPlaceholder'),
+                    })
+                  : t("summary.totalToken", {
+                      amount: totalEntered.toFixed(4),
+                      symbol:
+                        tokenInfo?.symbol ?? t("summary.tokenPlaceholder"),
                     })}
               </span>
             </div>
 
-            {mode === 'token' ? (
+            {mode === "token" ? (
               <div className="mt-6 space-y-2">
-                <label className="text-xs uppercase tracking-[0.32em] text-wolf-text-subtle">
-                  {t('form.tokenLabel')}
+                <label
+                  htmlFor="token-address-input"
+                  className="text-xs uppercase tracking-[0.32em] text-wolf-text-subtle"
+                >
+                  {t("form.tokenLabel")}
                 </label>
                 <input
+                  id="token-address-input"
                   value={tokenAddress}
                   onChange={(event) => setTokenAddress(event.target.value)}
-                  placeholder={t('form.tokenPlaceholder')}
+                  placeholder={t("form.tokenPlaceholder")}
                   className="w-full rounded-xl border border-wolf-border bg-wolf-charcoal-85 px-4 py-3 text-sm text-white/80 placeholder:text-white/30 focus:border-wolf-emerald focus:outline-none"
                 />
                 {isFetchingTokenInfo ? (
-                  <p className="text-xs text-wolf-text-subtle">{t('form.tokenLoading')}</p>
+                  <p className="text-xs text-wolf-text-subtle">
+                    {t("form.tokenLoading")}
+                  </p>
                 ) : tokenInfo ? (
                   <p className="text-xs text-wolf-text-subtle">
-                    {t('form.tokenResolved', { symbol: tokenInfo.symbol, decimals: tokenInfo.decimals })}
+                    {t("form.tokenResolved", {
+                      symbol: tokenInfo.symbol,
+                      decimals: tokenInfo.decimals,
+                    })}
                   </p>
                 ) : null}
               </div>
@@ -590,7 +669,7 @@ export default function SprayDisperser() {
                 >
                   <div className="flex items-center justify-between">
                     <p className="text-xs uppercase tracking-[0.28em] text-wolf-text-subtle">
-                      {t('form.recipientLabel', { index: index + 1 })}
+                      {t("form.recipientLabel", { index: index + 1 })}
                     </p>
                     <button
                       type="button"
@@ -598,21 +677,25 @@ export default function SprayDisperser() {
                       disabled={rows.length === 1}
                       className="text-xs uppercase tracking-[0.28em] text-wolf-emerald transition hover:text-white disabled:cursor-not-allowed disabled:text-white/20"
                     >
-                      {t('actions.remove')}
+                      {t("actions.remove")}
                     </button>
                   </div>
 
                   <div className="mt-3 flex flex-col gap-3 md:flex-row">
                     <input
                       value={row.address}
-                      onChange={(event) => updateRow(row.id, 'address', event.target.value)}
-                      placeholder={t('form.addressPlaceholder')}
+                      onChange={(event) =>
+                        updateRow(row.id, "address", event.target.value)
+                      }
+                      placeholder={t("form.addressPlaceholder")}
                       className="flex-1 rounded-xl border border-wolf-border bg-wolf-charcoal-70 px-4 py-3 text-sm text-white/80 placeholder:text-white/30 focus:border-wolf-emerald focus:outline-none"
                     />
                     <input
                       value={row.amount}
-                      onChange={(event) => updateRow(row.id, 'amount', event.target.value)}
-                      placeholder={t('form.amountPlaceholder')}
+                      onChange={(event) =>
+                        updateRow(row.id, "amount", event.target.value)
+                      }
+                      placeholder={t("form.amountPlaceholder")}
                       className="w-full rounded-xl border border-wolf-border bg-wolf-charcoal-70 px-4 py-3 text-sm text-white/80 placeholder:text-white/30 focus:border-wolf-emerald focus:outline-none md:w-40"
                     />
                   </div>
@@ -626,16 +709,16 @@ export default function SprayDisperser() {
                 onClick={addRow}
                 className="rounded-full border border-wolf-border px-5 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-white/80 transition hover:border-wolf-border-strong hover:text-white"
               >
-                {t('actions.addRecipient')}
+                {t("actions.addRecipient")}
               </button>
-              {mode === 'token' && tokenInfo ? (
+              {mode === "token" && tokenInfo ? (
                 <button
                   type="button"
                   onClick={handleApprove}
                   disabled={ctaDisabled || isApproving}
                   className="rounded-full border border-wolf-border-soft px-5 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-wolf-emerald transition hover:border-wolf-border-strong hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  {isApproving ? t('actions.approving') : t('actions.approve')}
+                  {isApproving ? t("actions.approving") : t("actions.approve")}
                 </button>
               ) : null}
               <button
@@ -644,7 +727,7 @@ export default function SprayDisperser() {
                 disabled={ctaDisabled}
                 className="ml-auto inline-flex items-center justify-center rounded-full bg-[linear-gradient(120deg,#a5cd60,#7ba142)] px-6 py-3 text-xs font-semibold uppercase tracking-[0.28em] text-[#08120b] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {isSubmitting ? t('actions.submitting') : t('actions.send')}
+                {isSubmitting ? t("actions.submitting") : t("actions.send")}
               </button>
             </div>
 
@@ -663,7 +746,7 @@ export default function SprayDisperser() {
           <aside className="space-y-4">
             <div className="wolf-card--muted border border-wolf-border px-5 py-5">
               <p className="text-xs uppercase tracking-[0.32em] text-wolf-text-subtle">
-                {t('tips.title')}
+                {t("tips.title")}
               </p>
               <ul className="mt-3 space-y-2 text-sm text-white/70">
                 {tips.map((tip) => (
@@ -674,10 +757,12 @@ export default function SprayDisperser() {
 
             <div className="wolf-card--muted border border-wolf-border px-5 py-5">
               <p className="text-xs uppercase tracking-[0.32em] text-wolf-text-subtle">
-                {t('history.title')}
+                {t("history.title")}
               </p>
               {history.length === 0 ? (
-                <p className="mt-3 text-sm text-white/60">{t('history.empty')}</p>
+                <p className="mt-3 text-sm text-white/60">
+                  {t("history.empty")}
+                </p>
               ) : (
                 <ul className="mt-4 space-y-3 text-xs text-white/70">
                   {history.map((entry) => (
@@ -687,15 +772,17 @@ export default function SprayDisperser() {
                     >
                       <div className="flex items-center justify-between">
                         <span className="uppercase tracking-[0.3em] text-wolf-text-subtle">
-                          {entry.type === 'native' ? t('history.native') : t('history.token')}
+                          {entry.type === "native"
+                            ? t("history.native")
+                            : t("history.token")}
                         </span>
                         <span
                           className={`uppercase tracking-[0.3em] ${
-                            entry.status === 'success'
-                              ? 'text-wolf-emerald'
-                              : entry.status === 'pending'
-                                ? 'text-wolf-amber'
-                                : 'text-rose-300'
+                            entry.status === "success"
+                              ? "text-wolf-emerald"
+                              : entry.status === "pending"
+                                ? "text-wolf-amber"
+                                : "text-rose-300"
                           }`}
                         >
                           {t(`history.status.${entry.status}`)}
@@ -705,7 +792,7 @@ export default function SprayDisperser() {
                         {entry.hash}
                       </p>
                       <p className="mt-2 text-[11px] uppercase tracking-[0.28em] text-white/60">
-                        {t('history.summary', {
+                        {t("history.summary", {
                           recipients: entry.recipients,
                           total: entry.totalFormatted,
                         })}

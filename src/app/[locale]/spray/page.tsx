@@ -1,4 +1,4 @@
-import SprayDisperser from '@/components/modules/SprayDisperser';
+import SprayDisperser from "@/components/modules/SprayDisperser";
 
 export default function SprayPage() {
   return (
@@ -9,4 +9,3 @@ export default function SprayPage() {
     </div>
   );
 }
-

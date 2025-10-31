@@ -11,6 +11,7 @@ import {
   Settings2,
   ShieldCheck,
   Sparkles,
+  SprayCan,
   SquareStack,
   UsersRound,
 } from "lucide-react";
@@ -38,8 +39,9 @@ const navSections = [
       { key: "mindGames", href: "/mind-games", icon: Gamepad2 },
       { key: "quests", href: "/quests", icon: MapPinned },
       { key: "showcase", href: "/showcase", icon: SquareStack },
+      { key: "spray", href: "/spray", icon: SprayCan },
     ] satisfies Array<{
-      key: "mindGames" | "quests" | "showcase";
+      key: "mindGames" | "quests" | "showcase" | "spray";
       href: string;
       icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
     }>,
