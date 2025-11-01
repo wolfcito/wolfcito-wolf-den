@@ -566,7 +566,7 @@ export default function SprayDisperser() {
 
   return (
     <div className="space-y-8 text-wolf-foreground">
-      <div className="wolf-card border border-wolf-border-strong p-8 shadow-[0_45px_120px_-70px_rgba(165,205,96,0.35)]">
+      <div className="wolf-card border border-wolf-border-strong p-8 shadow-[0_45px_120px_-70px_rgba(160,83,255,0.35)]">
         <header className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <p className="wolf-pill bg-wolf-emerald-mid text-xs uppercase tracking-[0.3em] text-wolf-emerald">
@@ -584,7 +584,7 @@ export default function SprayDisperser() {
               type="button"
               onClick={connectWallet}
               disabled={isConnecting}
-              className="inline-flex items-center justify-center rounded-full bg-[linear-gradient(120deg,#a5cd60,#7ba142)] px-5 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#08120b] transition hover:brightness-110 disabled:opacity-60"
+              className="inline-flex items-center justify-center rounded-full bg-[linear-gradient(180deg,#c8ff64_0%,#8bea4e_55%,#3b572a_100%)] px-5 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#0b1407] shadow-[0_0_24px_rgba(186,255,92,0.45)] transition hover:shadow-[0_0_30px_rgba(186,255,92,0.55)] disabled:opacity-60"
             >
               {signerAddress
                 ? t("actions.connected", {
@@ -681,7 +681,7 @@ export default function SprayDisperser() {
               {rows.map((row, index) => (
                 <div
                   key={row.id}
-                  className="rounded-2xl border border-wolf-border bg-wolf-charcoal-85/90 p-4 shadow-[0_20px_60px_-50px_rgba(165,205,96,0.4)]"
+                  className="rounded-2xl border border-wolf-border bg-wolf-charcoal-85/90 p-4 shadow-[0_20px_60px_-50px_rgba(160,83,255,0.4)]"
                 >
                   <div className="flex items-center justify-between">
                     <p className="text-xs uppercase tracking-[0.28em] text-wolf-text-subtle">
@@ -741,7 +741,7 @@ export default function SprayDisperser() {
                 type="button"
                 onClick={handleSubmit}
                 disabled={ctaDisabled}
-                className="ml-auto inline-flex items-center justify-center rounded-full bg-[linear-gradient(120deg,#a5cd60,#7ba142)] px-6 py-3 text-xs font-semibold uppercase tracking-[0.28em] text-[#08120b] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+                className="ml-auto inline-flex items-center justify-center rounded-full bg-[linear-gradient(180deg,#c8ff64_0%,#8bea4e_55%,#3b572a_100%)] px-6 py-3 text-xs font-semibold uppercase tracking-[0.28em] text-[#0b1407] shadow-[0_0_28px_rgba(186,255,92,0.45)] transition hover:shadow-[0_0_36px_rgba(186,255,92,0.55)] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {isSubmitting ? t("actions.submitting") : t("actions.send")}
               </button>

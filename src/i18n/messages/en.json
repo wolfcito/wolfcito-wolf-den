@@ -50,12 +50,19 @@
   "SidebarNav": {
     "branding": {
       "badgeAlt": "Wolf Den emblem",
-      "title": "Wolf Den Labs",
-      "subtitle": "Event Lab Command"
+      "title": "Den Labs",
+      "subtitle": ""
+    },
+    "aria": {
+      "navigation": "Wolf Den navigation"
+    },
+    "statusBar": {
+      "helper": ""
     },
     "sections": {
       "essentials": {
         "title": "Pilot Essentials",
+        "description": "Everything you need to verify teams and kickoff events",
         "items": {
           "auth": "Self.xyz Auth",
           "taberna": "Taberna Mentorship",
@@ -64,6 +71,7 @@
       },
       "lab": {
         "title": "Lab Playground",
+        "description": "Experiment, reward, and showcase the builds in flight",
         "items": {
           "mindGames": "Mini-Games Lab",
           "quests": "Builder Extensions",
@@ -73,6 +81,7 @@
       },
       "insights": {
         "title": "Analytics & Admin",
+        "description": "Track performance and keep operations running smoothly",
         "items": {
           "stats": "Insights",
           "leaderboard": "Leaderboard",

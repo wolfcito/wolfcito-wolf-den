@@ -356,7 +356,7 @@ export default function SelfAuth({ onSuccess, onError }: SelfAuthProps) {
                 type="button"
                 onClick={handleOpenSelfApp}
                 disabled={!universalLink}
-                className="inline-flex w-full items-center justify-center rounded-full bg-[linear-gradient(120deg,#a5cd60,#7ba142)] px-6 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-[#08120b] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:brightness-100"
+                className="den-button-primary w-full text-sm tracking-[0.22em] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
               >
                 {t("intro.mobileCta")}
               </button>
@@ -377,7 +377,7 @@ export default function SelfAuth({ onSuccess, onError }: SelfAuthProps) {
                       value="hide"
                       checked={!showQr}
                       onChange={() => handleQrToggle("hide")}
-                      className="h-4 w-4 accent-[#a5cd60]"
+                      className="h-4 w-4 accent-[#baff5c]"
                     />
                     <span>{t("intro.mobileQrHide")}</span>
                   </label>
@@ -388,7 +388,7 @@ export default function SelfAuth({ onSuccess, onError }: SelfAuthProps) {
                       value="show"
                       checked={showQr}
                       onChange={() => handleQrToggle("show")}
-                      className="h-4 w-4 accent-[#a5cd60]"
+                      className="h-4 w-4 accent-[#baff5c]"
                     />
                     <span>{t("intro.mobileQrShow")}</span>
                   </label>

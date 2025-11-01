@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Geist, Geist_Mono } from "next/font/google";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+import { DM_Sans, Geist_Mono } from "next/font/google";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const dmSans = DM_Sans({
+  variable: "--font-den-sans",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const themeInitializer = `(() => {
@@ -25,7 +26,7 @@ const themeInitializer = `(() => {
     console.warn("Theme storage unavailable", error);
   }
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  root.dataset.theme = prefersDark ? "dark" : "light";
+  root.dataset.theme = prefersDark ? "dark" : "dark";
 })();`;
 
 export const metadata: Metadata = {
@@ -39,22 +40,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="light" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Bitcount+Single+Ink:wght@100..900&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="en" data-theme="dark" suppressHydrationWarning>
+      <body className={`${dmSans.variable} ${geistMono.variable} antialiased`}>
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: theme bootstrap */}
         <script dangerouslySetInnerHTML={{ __html: themeInitializer }} />
         {children}

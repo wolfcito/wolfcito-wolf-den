@@ -2,14 +2,7 @@
 
 import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
-import { HowlBadge } from "@/components/ui/HowlBadge";
-import { SelfBadge } from "@/components/ui/SelfBadge";
 import { Link, usePathname } from "@/i18n/routing";
-import {
-  getSelfVerification,
-  subscribeToSelfVerification,
-} from "@/lib/selfVerification";
 
 type ModuleKey =
   | "quests"
@@ -39,7 +32,6 @@ const moduleKeys: Record<string, ModuleKey> = {
 export function TopBar() {
   const t = useTranslations("TopBar");
   const pathname = usePathname();
-  const [isSelfVerified, setIsSelfVerified] = useState(false);
   const activeKey = Object.keys(moduleKeys).find(
     (path) => pathname === path || pathname?.startsWith(`${path}/`),
   );
@@ -53,16 +45,8 @@ export function TopBar() {
         description: t("fallback.description"),
       };
 
-  useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-    setIsSelfVerified(getSelfVerification());
-    return subscribeToSelfVerification(setIsSelfVerified);
-  }, []);
-
   return (
-    <header className="flex flex-col justify-between gap-4 text-wolf-foreground">
+    <header className="flex flex-col gap-4 text-wolf-foreground">
       <div className="flex items-center gap-4">
         <Link
           href="/"
@@ -70,19 +54,12 @@ export function TopBar() {
         >
           <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
         </Link>
-        <div className="flex items-center gap-3">
-          <div>
-            <div className="flex items-center gap-3">
-              <h1 className="text-xl font-semibold text-white">{meta.title}</h1>
-            </div>
-            <p className="text-sm text-wolf-text-subtle">{meta.description}</p>
+        <div>
+          <div className="flex items-center gap-3">
+            <h1 className="text-xl font-semibold text-white">{meta.title}</h1>
           </div>
+          <p className="text-sm text-wolf-text-subtle">{meta.description}</p>
         </div>
-      </div>
-
-      <div className="flex items-center gap-3 text-wolf-foreground">
-        <HowlBadge level="Lobo" />
-        <SelfBadge status={isSelfVerified ? "verified" : "pending"} />
       </div>
     </header>
   );
