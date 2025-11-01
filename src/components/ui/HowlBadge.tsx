@@ -8,11 +8,14 @@ interface HowlBadgeProps {
   className?: string;
 }
 
+const baseClasses =
+  "inline-flex min-h-[44px] items-center gap-3 rounded-[10px] border px-3 py-2 text-[0.75rem] font-semibold uppercase tracking-[0.18em] transition";
+
 const levelTone: Record<Required<HowlBadgeProps>["level"], string> = {
   Cachorro:
-    "text-wolf-text-subtle border border-wolf-border bg-transparent backdrop-blur-none",
-  Lobo: "text-wolf-emerald border border-wolf-emerald-border-strong bg-wolf-emerald-soft/40 shadow-[0_0_18px_rgba(160,83,255,0.25)]",
-  Alfa: "text-white border border-transparent bg-[linear-gradient(135deg,rgba(160,83,255,0.85),rgba(91,45,255,0.7))] shadow-[0_0_28px_rgba(160,83,255,0.45)]",
+    "border-[#2a2f36] bg-transparent text-wolf-text-subtle [&>svg]:text-[#8a94a1]",
+  Lobo: "border-[#4ca22a] bg-[#1a1f24] text-[#baff5c] shadow-[0_0_18px_rgba(186,255,92,0.18)] [&>svg]:text-[#89e24a]",
+  Alfa: "border-[#ffd66b] bg-[#1f2210] text-[#ffd66b] shadow-[0_0_18px_rgba(255,200,77,0.25)] [&>svg]:text-[#ffc84d]",
 };
 
 export function HowlBadge({
@@ -22,11 +25,9 @@ export function HowlBadge({
   const t = useTranslations("HowlBadge");
 
   return (
-    <span
-      className={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.2em] transition ${levelTone[level]} ${className}`.trim()}
-    >
+    <span className={`${baseClasses} ${levelTone[level]} ${className}`.trim()}>
       <MoonStar className="h-4 w-4" aria-hidden />
-      {t(`levels.${level}`)}
+      <span className="truncate">{t(`levels.${level}`)}</span>
     </span>
   );
 }

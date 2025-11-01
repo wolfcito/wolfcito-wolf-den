@@ -200,7 +200,7 @@ export function SidebarNav({ variant = "desktop" }: SidebarNavProps) {
               />
             </summary>
             <div className="space-y-2 px-4 pb-4 pt-3">
-              <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#7d8794]">
+              <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#6f7783]">
                 {t(`sections.${group.key}.description`)}
               </p>
               {group.items.map((item) => {
@@ -246,7 +246,7 @@ export function SidebarNav({ variant = "desktop" }: SidebarNavProps) {
         ref={containerRef}
         className="relative z-50 flex w-full flex-col gap-5 rounded-[20px] border border-[#2a2f36] bg-[linear-gradient(135deg,rgba(18,20,30,0.96),rgba(11,12,18,0.9))] px-6 py-4 backdrop-blur-[18px] text-white shadow-[0_40px_120px_-80px_rgba(0,0,0,0.55)] lg:gap-4"
       >
-        <div className="flex flex-col gap-4 lg:grid lg:min-h-[72px] lg:grid-cols-[minmax(0,1fr)_max-content_minmax(220px,0.9fr)] lg:items-center">
+        <div className="flex flex-col gap-4 lg:grid lg:min-h-[52px] lg:grid-cols-[minmax(0,1fr)_max-content_minmax(220px,0.9fr)] lg:items-center">
           <div className="flex items-center gap-4">
             <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-[10px] border border-[#2f3440] bg-[#161821]">
               <Image
@@ -336,7 +336,7 @@ export function SidebarNav({ variant = "desktop" }: SidebarNavProps) {
                         : "pointer-events-none opacity-0 -translate-y-3"
                     }`}
                   >
-                    <p className="pb-3 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#7d8794]">
+                    <p className="pb-3 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#6f7783]">
                       {sectionDescription}
                     </p>
                     <div className="space-y-2">
@@ -412,9 +412,6 @@ export function SidebarNav({ variant = "desktop" }: SidebarNavProps) {
               );
             })}
           </nav>
-        </div>
-        <div className="flex justify-end">
-          <SelfBadge status="pending" />
         </div>
       </div>
       {showOverlay ? (

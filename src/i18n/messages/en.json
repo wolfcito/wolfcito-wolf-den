@@ -50,20 +50,14 @@
   "SidebarNav": {
     "branding": {
       "badgeAlt": "Wolf Den emblem",
-      "title": "Wolf Den Labs",
-      "subtitle": "Event Lab Command"
+      "title": "Den Labs",
+      "subtitle": ""
     },
     "aria": {
       "navigation": "Wolf Den navigation"
     },
-    "meta": {
-      "cta": {
-        "label": "Launch Demo",
-        "href": "/auth"
-      }
-    },
     "statusBar": {
-      "helper": "Self verification pending via Self.xyz"
+      "helper": ""
     },
     "sections": {
       "essentials": {

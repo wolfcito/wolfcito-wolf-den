@@ -50,20 +50,14 @@
   "SidebarNav": {
     "branding": {
       "badgeAlt": "Emblema de Wolf Den",
-      "title": "Wolf Den Labs",
-      "subtitle": "Comando del laboratorio"
+      "title": "Den Labs",
+      "subtitle": ""
     },
     "aria": {
       "navigation": "Navegación de Wolf Den"
     },
-    "meta": {
-      "cta": {
-        "label": "Lanzar demo",
-        "href": "/auth"
-      }
-    },
     "statusBar": {
-      "helper": "Verificación Self.xyz pendiente"
+      "helper": ""
     },
     "sections": {
       "essentials": {
