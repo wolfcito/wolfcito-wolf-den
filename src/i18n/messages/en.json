@@ -718,6 +718,9 @@
     }
   },
   "SprayDisperser": {
+    "wallet": {
+      "helper": "Use the top bar to connect your wallet and load Spray rewards."
+    },
     "badge": "Spray Console",
     "heading": "Disperse Tokens Across the Pack",
     "description": "Connect a wallet on Celo to spray CELO or ERC20 rewards across your roster.",

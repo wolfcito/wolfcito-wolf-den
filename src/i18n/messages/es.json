@@ -718,6 +718,9 @@
     }
   },
   "SprayDisperser": {
+    "wallet": {
+      "helper": "Usa la barra superior para conectar tu wallet y cargar recompensas Spray."
+    },
     "badge": "Consola Spray",
     "heading": "Dispersa tokens a toda la manada",
     "description": "Conecta una wallet en Celo para rociar recompensas en CELO o ERC20 a múltiples destinatarios.",

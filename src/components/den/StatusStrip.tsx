@@ -4,7 +4,6 @@ import { useTranslations } from "next-intl";
 import { type ComponentProps, useEffect, useState } from "react";
 import HowlBadge from "@/components/ui/HowlBadge";
 import SelfBadge from "@/components/ui/SelfBadge";
-import { usePathname } from "@/i18n/routing";
 import {
   getSelfVerification,
   subscribeToSelfVerification,
@@ -22,7 +21,6 @@ export function StatusStrip({
   className = "",
 }: StatusStripProps) {
   const tSpray = useTranslations("SprayDisperser");
-  const pathname = usePathname();
   const [isSelfVerified, setIsSelfVerified] = useState(false);
   const [walletState, setWalletState] = useState<{
     address: string | null;
@@ -116,7 +114,6 @@ export function StatusStrip({
     window.dispatchEvent(new CustomEvent("wolf-wallet-connect-request"));
   };
 
-  const isSprayRoute = Boolean(pathname?.includes("/spray"));
   const isCeloReady = walletState.chainId === CELO_CHAIN_ID;
   const translateSpray = (
     key: string,
@@ -146,31 +143,29 @@ export function StatusStrip({
         <HowlBadge level={level} />
         <SelfBadge status={isSelfVerified ? "verified" : "pending"} />
       </div>
-      {isSprayRoute ? (
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={handleWalletConnect}
-            disabled={walletState.isConnecting}
-            className="inline-flex items-center justify-center rounded-full border border-wolf-border px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-wolf-foreground transition hover:border-wolf-border-xstrong hover:text-wolf-emerald disabled:cursor-not-allowed disabled:opacity-60"
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          onClick={handleWalletConnect}
+          disabled={walletState.isConnecting}
+          className="inline-flex items-center justify-center rounded-full border border-wolf-border px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-wolf-foreground transition hover:border-wolf-border-xstrong hover:text-wolf-emerald disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {walletButtonLabel}
+        </button>
+        {walletState.address ? (
+          <span
+            className={`wolf-pill text-xs uppercase tracking-[0.26em] ${
+              isCeloReady
+                ? "bg-wolf-emerald-soft text-wolf-emerald"
+                : "bg-wolf-charcoal-70 text-wolf-text-subtle"
+            }`}
           >
-            {walletButtonLabel}
-          </button>
-          {walletState.address ? (
-            <span
-              className={`wolf-pill text-xs uppercase tracking-[0.26em] ${
-                isCeloReady
-                  ? "bg-wolf-emerald-soft text-wolf-emerald"
-                  : "bg-wolf-charcoal-70 text-wolf-text-subtle"
-              }`}
-            >
-              {isCeloReady
-                ? translateSpray("network.ready", "Celo mainnet detected")
-                : translateSpray("network.switch", "Switch to Celo mainnet")}
-            </span>
-          ) : null}
-        </div>
-      ) : null}
+            {isCeloReady
+              ? translateSpray("network.ready", "Celo mainnet detected")
+              : translateSpray("network.switch", "Switch to Celo mainnet")}
+          </span>
+        ) : null}
+      </div>
       <div className="flex items-center gap-2">
         {socialLinks.map((link) => (
           <a
