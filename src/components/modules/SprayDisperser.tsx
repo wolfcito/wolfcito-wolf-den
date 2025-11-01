@@ -1,7 +1,7 @@
 "use client";
 
+import type { BrowserProvider } from "ethers";
 import {
-  BrowserProvider,
   Contract,
   formatEther,
   isAddress,
@@ -93,10 +93,20 @@ function isSuccessfulReceiptStatus(status: unknown) {
 
 export default function SprayDisperser() {
   const t = useTranslations("SprayDisperser");
+  const translate = (
+    key: string,
+    fallback: string,
+    values?: Record<string, string | number>,
+  ) => {
+    try {
+      return values ? t(key, values) : t(key);
+    } catch {
+      return fallback;
+    }
+  };
   const [provider, setProvider] = useState<BrowserProvider | null>(null);
   const [signerAddress, setSignerAddress] = useState<string | null>(null);
   const [chainId, setChainId] = useState<number | null>(null);
-  const [isConnecting, setIsConnecting] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isApproving, setIsApproving] = useState(false);
   const [mode, setMode] = useState<"native" | "token">("native");
@@ -205,36 +215,35 @@ export default function SprayDisperser() {
 
   const signerPromise = provider?.getSigner();
 
-  async function connectWallet() {
-    if (isConnecting) {
+  useEffect(() => {
+    if (typeof window === "undefined") {
       return;
     }
-
-    if (typeof window === "undefined" || !window.ethereum) {
-      setError(t("errors.noWallet"));
-      return;
-    }
-
-    setIsConnecting(true);
-    setError(null);
-    setFeedback(null);
-
-    try {
-      const nextProvider = new BrowserProvider(window.ethereum);
-      await nextProvider.send("eth_requestAccounts", []);
-      const signer = await nextProvider.getSigner();
-      const address = await signer.getAddress();
-      const network = await nextProvider.getNetwork();
-
-      setProvider(nextProvider);
-      setSignerAddress(address);
-      setChainId(Number(network.chainId));
-    } catch (_connectError) {
-      setError(t("errors.connectFailed"));
-    } finally {
-      setIsConnecting(false);
-    }
-  }
+    const handleWalletState = (event: Event) => {
+      const customEvent = event as CustomEvent<{
+        address: string | null;
+        isConnecting: boolean;
+        chainId: number | null;
+        provider: BrowserProvider | null;
+      }>;
+      if (!customEvent.detail) {
+        return;
+      }
+      setSignerAddress(customEvent.detail.address);
+      setChainId(customEvent.detail.chainId ?? null);
+      setProvider(customEvent.detail.provider ?? null);
+    };
+    window.addEventListener(
+      "wolf-wallet-state",
+      handleWalletState as EventListener,
+    );
+    return () => {
+      window.removeEventListener(
+        "wolf-wallet-state",
+        handleWalletState as EventListener,
+      );
+    };
+  }, []);
 
   async function ensureCeloNetwork() {
     if (typeof window === "undefined" || !window.ethereum) {
@@ -393,10 +402,10 @@ export default function SprayDisperser() {
           prev.map((entry) =>
             entry.hash === approvalHash
               ? {
-                  ...entry,
-                  status: "error",
-                  errorMessage: t("errors.approvalFailed"),
-                }
+                ...entry,
+                status: "error",
+                errorMessage: t("errors.approvalFailed"),
+              }
               : entry,
           ),
         );
@@ -476,10 +485,10 @@ export default function SprayDisperser() {
             prev.map((entry) =>
               entry.id === recordId
                 ? {
-                    ...entry,
-                    status: "error",
-                    errorMessage: t("errors.transactionFailed"),
-                  }
+                  ...entry,
+                  status: "error",
+                  errorMessage: t("errors.transactionFailed"),
+                }
                 : entry,
             ),
           );
@@ -543,10 +552,10 @@ export default function SprayDisperser() {
             prev.map((entry) =>
               entry.id === recordId
                 ? {
-                    ...entry,
-                    status: "error",
-                    errorMessage: t("errors.transactionFailed"),
-                  }
+                  ...entry,
+                  status: "error",
+                  errorMessage: t("errors.transactionFailed"),
+                }
                 : entry,
             ),
           );
@@ -579,28 +588,36 @@ export default function SprayDisperser() {
               {t("description")}
             </p>
           </div>
-          <div className="flex flex-col items-start gap-3 text-sm text-white/80">
-            <button
-              type="button"
-              onClick={connectWallet}
-              disabled={isConnecting}
-              className="inline-flex items-center justify-center rounded-full bg-[linear-gradient(180deg,#c8ff64_0%,#8bea4e_55%,#3b572a_100%)] px-5 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#0b1407] shadow-[0_0_24px_rgba(186,255,92,0.45)] transition hover:shadow-[0_0_30px_rgba(186,255,92,0.55)] disabled:opacity-60"
-            >
+          <div className="flex flex-col items-start gap-2 text-sm text-white/80">
+            <span className="text-xs uppercase tracking-[0.3em] text-wolf-text-subtle">
               {signerAddress
-                ? t("actions.connected", {
-                    address: formatAddress(signerAddress),
-                  })
-                : t("actions.connect")}
-            </button>
+                ? translate(
+                  "actions.connected",
+                  `Connected: ${formatAddress(signerAddress)}`,
+                  { address: formatAddress(signerAddress) },
+                )
+                : translate(
+                  "network.prompt",
+                  "Connect a wallet to load Spray.",
+                )}
+            </span>
             {signerAddress ? (
-              <div className="rounded-full border border-wolf-border-soft px-4 py-2 text-xs uppercase tracking-[0.32em] text-wolf-text-subtle">
-                {chainId === CELO_CHAIN_ID
-                  ? t("network.ready")
-                  : t("network.switch")}
-              </div>
+              <span
+                className={`wolf-pill text-xs uppercase tracking-[0.26em] ${celoNetworkReady
+                    ? "bg-wolf-emerald-soft text-wolf-emerald"
+                    : "bg-wolf-charcoal-70 text-wolf-text-subtle"
+                  }`}
+              >
+                {celoNetworkReady
+                  ? translate("network.ready", "Celo mainnet detected")
+                  : translate("network.switch", "Switch to Celo mainnet")}
+              </span>
             ) : (
-              <p className="max-w-[24ch] text-xs uppercase tracking-[0.3em] text-wolf-text-subtle">
-                {t("network.prompt")}
+              <p className="max-w-[32ch] text-xs text-white/60">
+                {translate(
+                  "wallet.helper",
+                  "Use the top bar to connect your wallet and load Spray rewards.",
+                )}
               </p>
             )}
           </div>
@@ -612,22 +629,20 @@ export default function SprayDisperser() {
               <button
                 type="button"
                 onClick={() => setMode("native")}
-                className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] transition ${
-                  mode === "native"
+                className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] transition ${mode === "native"
                     ? "bg-wolf-emerald-soft text-wolf-emerald"
                     : "border border-wolf-border text-white/70"
-                }`}
+                  }`}
               >
                 {t("modes.native")}
               </button>
               <button
                 type="button"
                 onClick={() => setMode("token")}
-                className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] transition ${
-                  mode === "token"
+                className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] transition ${mode === "token"
                     ? "bg-wolf-emerald-soft text-wolf-emerald"
                     : "border border-wolf-border text-white/70"
-                }`}
+                  }`}
               >
                 {t("modes.token")}
               </button>
@@ -637,13 +652,13 @@ export default function SprayDisperser() {
               <span className="text-xs uppercase tracking-[0.28em] text-wolf-text-subtle">
                 {mode === "native"
                   ? t("summary.totalNative", {
-                      amount: totalEntered.toFixed(4),
-                    })
+                    amount: totalEntered.toFixed(4),
+                  })
                   : t("summary.totalToken", {
-                      amount: totalEntered.toFixed(4),
-                      symbol:
-                        tokenInfo?.symbol ?? t("summary.tokenPlaceholder"),
-                    })}
+                    amount: totalEntered.toFixed(4),
+                    symbol:
+                      tokenInfo?.symbol ?? t("summary.tokenPlaceholder"),
+                  })}
               </span>
             </div>
 
@@ -793,13 +808,12 @@ export default function SprayDisperser() {
                             : t("history.token")}
                         </span>
                         <span
-                          className={`uppercase tracking-[0.3em] ${
-                            entry.status === "success"
+                          className={`uppercase tracking-[0.3em] ${entry.status === "success"
                               ? "text-wolf-emerald"
                               : entry.status === "pending"
                                 ? "text-wolf-amber"
                                 : "text-rose-300"
-                          }`}
+                            }`}
                         >
                           {t(`history.status.${entry.status}`)}
                         </span>
