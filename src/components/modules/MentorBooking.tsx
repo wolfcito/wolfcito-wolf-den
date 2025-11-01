@@ -29,7 +29,7 @@ export function MentorBooking() {
               key={slot.id}
               className={`wolf-card--muted flex flex-col gap-1 rounded-[1.5rem] border border-wolf-border-soft px-4 py-4 text-sm transition ${
                 slot.available
-                  ? "hover:border-wolf-border-xstrong hover:shadow-[0_15px_45px_-35px_rgba(165,205,96,0.4)]"
+                  ? "hover:border-wolf-border-xstrong hover:shadow-[0_15px_45px_-35px_rgba(160,83,255,0.4)]"
                   : "opacity-60"
               }`}
             >
@@ -66,7 +66,7 @@ export function MentorBooking() {
         </div>
         <button
           type="button"
-          className="mt-6 inline-flex items-center justify-center rounded-full bg-[linear-gradient(120deg,#a5cd60,#7ba142)] px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#08120b] transition hover:brightness-110"
+          className="den-button-primary mt-6 px-6 py-3 text-sm tracking-[0.2em]"
         >
           {t("preparation.cta")}
         </button>

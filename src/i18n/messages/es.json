@@ -53,6 +53,9 @@
       "title": "Wolf Den Labs",
       "subtitle": "Comando del laboratorio"
     },
+    "aria": {
+      "navigation": "Navegación de Wolf Den"
+    },
     "sections": {
       "essentials": {
         "title": "Esenciales del piloto",

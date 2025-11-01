@@ -53,6 +53,9 @@
       "title": "Wolf Den Labs",
       "subtitle": "Event Lab Command"
     },
+    "aria": {
+      "navigation": "Wolf Den navigation"
+    },
     "sections": {
       "essentials": {
         "title": "Pilot Essentials",

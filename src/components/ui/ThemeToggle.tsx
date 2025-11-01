@@ -7,16 +7,16 @@ const STORAGE_KEY = "wolf-den-theme";
 type ThemeMode = "light" | "dark";
 
 function resolveInitialTheme(): ThemeMode {
-  if (typeof window === "undefined") return "light";
+  if (typeof window === "undefined") return "dark";
   const stored = window.localStorage.getItem(STORAGE_KEY);
   if (stored === "light" || stored === "dark") return stored;
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  return prefersDark ? "dark" : "light";
+  return prefersDark ? "dark" : "dark";
 }
 
 export function ThemeToggle() {
   const t = useTranslations("ThemeToggle");
-  const [mode, setMode] = useState<ThemeMode>("light");
+  const [mode, setMode] = useState<ThemeMode>("dark");
 
   useEffect(() => {
     const initial = resolveInitialTheme();
@@ -41,18 +41,25 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      className="flex h-12 items-center rounded-full border border-[#d1d7eb] bg-white px-2 transition hover:border-[#447bff]"
+      className="relative flex items-center gap-1 rounded-full border border-wolf-border-soft/80 bg-wolf-panel/80 px-1.5 py-1 text-xs font-semibold uppercase tracking-[0.26em] text-wolf-text-subtle shadow-[0_0_20px_rgba(160,83,255,0.12)] backdrop-blur-md transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent focus-visible:ring-[rgba(160,83,255,0.6)]"
       aria-pressed={mode === "dark"}
+      aria-label="Toggle theme"
     >
       <span
-        className={`flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] transition-all
-          ${mode === "light" ? "bg-[#447bff] text-white shadow-[0_12px_30px_-18px_rgba(68,123,255,0.8)]" : "text-[#0f1621]"}`}
+        className={`flex items-center gap-1 rounded-full px-3 py-1 transition ${
+          mode === "light"
+            ? "bg-wolf-neutral-soft text-white shadow-[0_0_16px_rgba(255,255,255,0.08)]"
+            : "text-wolf-text-subtle"
+        }`}
       >
         {t("light")}
       </span>
       <span
-        className={`flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] transition-all
-          ${mode === "dark" ? "bg-[#0b1320] text-white shadow-[0_12px_30px_-18px_rgba(11,19,32,0.9)]" : "text-[#0f1621]"}`}
+        className={`flex items-center gap-1 rounded-full px-3 py-1 transition ${
+          mode === "dark"
+            ? "bg-[linear-gradient(135deg,rgba(160,83,255,0.85),rgba(91,45,255,0.65))] text-white shadow-[0_0_24px_rgba(160,83,255,0.45)]"
+            : "text-wolf-text-subtle"
+        }`}
       >
         {t("dark")}
       </span>

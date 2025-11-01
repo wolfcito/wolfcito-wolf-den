@@ -9,19 +9,19 @@ export function BlogHighlights() {
   }>;
 
   return (
-    <section className="wolf-card rounded-[2.5rem] border border-wolf-border-strong p-10">
+    <section className="wolf-card den-noise-surface rounded-[2.5rem] border border-wolf-border-strong/60 p-10">
       <div className="flex flex-wrap items-center justify-between gap-6">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-wolf-text-subtle">
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-wolf-text-subtle">
             {t("label")}
           </p>
-          <h2 className="mt-2 text-3xl font-semibold uppercase text-white">
+          <h2 className="mt-2 text-3xl font-semibold text-white">
             {t("title")}
           </h2>
         </div>
         <Link
           href={t("cta.href")}
-          className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.22em] text-wolf-emerald transition hover:text-white"
+          className="inline-flex items-center gap-2 rounded-full border border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-[0.22em] text-wolf-emerald transition hover:border-wolf-border-xstrong hover:text-white"
         >
           {t("cta.label")}
         </Link>
@@ -30,7 +30,7 @@ export function BlogHighlights() {
         {items.map((item) => (
           <article
             key={item.title}
-            className="wolf-card--muted rounded-[1.9rem] border border-wolf-border-mid p-6 shadow-[0_30px_85px_-65px_rgba(0,0,0,0.6)]"
+            className="wolf-card--muted den-glass rounded-[1.9rem] border border-wolf-border-mid/70 p-6"
           >
             <h3 className="text-xl font-semibold text-white">{item.title}</h3>
             <p className="mt-3 text-sm text-white/75">{item.description}</p>

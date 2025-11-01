@@ -12,7 +12,7 @@ interface Quest {
 
 function questTone(status: QuestStatus) {
   if (status === "submitted") {
-    return "wolf-card bg-[radial-gradient(circle_at_top_left,rgba(116,255,120,0.12),rgba(17,22,31,0.88))] border border-wolf-border-xstrong text-white/90";
+    return "wolf-card bg-[radial-gradient(circle_at_top_left,rgba(160,83,255,0.22),rgba(17,22,31,0.9))] border border-wolf-border-xstrong text-white/90";
   }
   if (status === "locked") {
     return "wolf-card--muted border border-wolf-border-faint text-wolf-text-subtle";
@@ -29,7 +29,7 @@ export function QuestsGrid() {
       {quests.map((quest) => (
         <div
           key={quest.id}
-          className={`flex h-full flex-col justify-between rounded-[1.8rem] p-5 transition hover:-translate-y-1 hover:shadow-[0_25px_80px_-55px_rgba(165,205,96,0.35)] ${questTone(
+          className={`flex h-full flex-col justify-between rounded-[1.8rem] p-5 transition hover:-translate-y-1 hover:shadow-[0_25px_80px_-55px_rgba(160,83,255,0.35)] ${questTone(
             quest.status,
           )}`}
         >
@@ -57,7 +57,7 @@ export function QuestsGrid() {
                   ? "cursor-not-allowed bg-wolf-emerald-faint text-wolf-text-subtle"
                   : quest.status === "submitted"
                     ? "bg-wolf-emerald-tint text-wolf-emerald"
-                    : "bg-[linear-gradient(120deg,#a5cd60,#7ba142)] text-[#08120b] hover:brightness-110"
+                    : "bg-[linear-gradient(135deg,#a053ff,#5b2dff)] text-white shadow-[0_0_24px_rgba(160,83,255,0.45)] hover:shadow-[0_0_32px_rgba(160,83,255,0.55)]"
               }`}
               disabled={quest.status !== "available"}
             >
