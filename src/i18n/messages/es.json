@@ -56,9 +56,22 @@
     "aria": {
       "navigation": "Navegación de Wolf Den"
     },
+    "meta": {
+      "cta": {
+        "label": "Lanzar demo",
+        "href": "/auth"
+      }
+    },
+    "statusBar": {
+      "questLabel": "Misión activa",
+      "questValue": "Sprint de onboarding de builders",
+      "verificationLabel": "Verificación",
+      "helper": "Solo humanos — Self.xyz pendiente"
+    },
     "sections": {
       "essentials": {
         "title": "Esenciales del piloto",
+        "description": "Todo lo necesario para verificar equipos y lanzar eventos",
         "items": {
           "auth": "Autorización Self.xyz",
           "taberna": "Mentoría Taberna",
@@ -67,6 +80,7 @@
       },
       "lab": {
         "title": "Playground del laboratorio",
+        "description": "Experimenta, recompensa y destaca los builds en progreso",
         "items": {
           "mindGames": "Laboratorio de minijuegos",
           "quests": "Extensiones builder",
@@ -76,6 +90,7 @@
       },
       "insights": {
         "title": "Analítica y administración",
+        "description": "Monitorea resultados y mantiene la operación afinada",
         "items": {
           "stats": "Insights",
           "leaderboard": "Leaderboard",
