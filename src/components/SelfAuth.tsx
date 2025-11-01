@@ -28,6 +28,37 @@ type QrWrapperProps = {
 
 type QrWrapperComponent = (props: QrWrapperProps) => ReactElement | null;
 
+const SELF_VERIFICATION_STORAGE_KEY = "wolf-den:self-verified";
+
+function persistVerificationStatus(value: boolean) {
+  if (typeof window === "undefined") {
+    return;
+  }
+  try {
+    if (value) {
+      window.sessionStorage.setItem(SELF_VERIFICATION_STORAGE_KEY, "true");
+    } else {
+      window.sessionStorage.removeItem(SELF_VERIFICATION_STORAGE_KEY);
+    }
+  } catch (error) {
+    console.warn("Unable to persist Self verification status.", error);
+  }
+}
+
+function readVerificationStatus() {
+  if (typeof window === "undefined") {
+    return false;
+  }
+  try {
+    return (
+      window.sessionStorage.getItem(SELF_VERIFICATION_STORAGE_KEY) === "true"
+    );
+  } catch (error) {
+    console.warn("Unable to read Self verification status.", error);
+    return false;
+  }
+}
+
 export default function SelfAuth({ onSuccess, onError }: SelfAuthProps) {
   const t = useTranslations("SelfAuth");
   const [selfApp, setSelfApp] = useState<SelfApp | null>(null);
@@ -45,6 +76,19 @@ export default function SelfAuth({ onSuccess, onError }: SelfAuthProps) {
   const userIdRef = useRef<string | null>(null);
   const sessionIdRef = useRef<string | null>(null);
   const Wrapper = qrWrapper;
+
+  const markVerified = useCallback(() => {
+    persistVerificationStatus(true);
+    if (!isVerified) {
+      onSuccess?.(undefined);
+    }
+    setIsVerified(true);
+  }, [isVerified, onSuccess]);
+
+  const clearVerified = useCallback(() => {
+    persistVerificationStatus(false);
+    setIsVerified(false);
+  }, []);
 
   useEffect(() => {
     const detectMobile = () => {
@@ -84,6 +128,15 @@ export default function SelfAuth({ onSuccess, onError }: SelfAuthProps) {
       window.removeEventListener("resize", updateMobileState);
     };
   }, []);
+
+  useEffect(() => {
+    if (isVerified) {
+      return;
+    }
+    if (readVerificationStatus()) {
+      markVerified();
+    }
+  }, [isVerified, markVerified]);
 
   useEffect(() => {
     const endpoint = normalizeSelfEndpoint(
@@ -242,28 +295,28 @@ export default function SelfAuth({ onSuccess, onError }: SelfAuthProps) {
     nextUrl.searchParams.delete("selfStatus");
 
     if (status === "verified" && !isVerified) {
-      setIsVerified(true);
-      onSuccess?.(undefined);
+      markVerified();
       console.log("Self verification successful via deeplink!");
     } else if (status === "error") {
       const error = new Error("Verification failed");
       onError?.(error);
+      clearVerified();
       console.error("Self verification error via deeplink.");
     }
 
     void router.replace(`${nextUrl.pathname}${nextUrl.search}${nextUrl.hash}`, {
       scroll: false,
     });
-  }, [isVerified, onError, onSuccess, router, searchParams]);
+  }, [clearVerified, isVerified, markVerified, onError, router, searchParams]);
 
   const handleSuccess = () => {
-    setIsVerified(true);
-    onSuccess?.(undefined);
+    markVerified();
     console.log("Self verification successful!");
   };
 
   const handleError = (data: { error_code?: string; reason?: string }) => {
     const error = new Error(data.reason || "Verification failed");
+    clearVerified();
     if (onError) {
       onError(error);
     }
