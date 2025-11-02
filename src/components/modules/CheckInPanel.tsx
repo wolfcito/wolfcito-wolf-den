@@ -2,7 +2,6 @@
 import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useState } from "react";
 import SelfAuth from "@/components/SelfAuth";
-import StatusPill from "@/components/ui/StatusPill";
 import {
   getSelfVerification,
   subscribeToSelfVerification,
@@ -17,15 +16,6 @@ type CheckInEvent = {
   location: string;
   status: EventStatus;
 };
-
-const MOCK_WALLET_ADDRESS = "0xa1ce5f4b28f2d9aa3cc71883d5e99a9a9b123456";
-
-function formatAddress(address: string) {
-  if (address.length <= 10) {
-    return address;
-  }
-  return `${address.slice(0, 6)}...${address.slice(-4)}`;
-}
 
 function eventTone(status: EventStatus) {
   if (status === "live") {
@@ -90,7 +80,7 @@ export function CheckInPanel() {
       return [];
     }
   }, [t]);
-  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [walletAddress, _setWalletAddress] = useState<string | null>(null);
   const [isSelfVerified, setIsSelfVerified] = useState(false);
   const [registrations, setRegistrations] = useState<Record<string, boolean>>(
     {},
@@ -103,16 +93,6 @@ export function CheckInPanel() {
   }, []);
 
   const hasIdentity = isSelfVerified || Boolean(walletAddress);
-
-  const handleConnectWallet = () => {
-    if (!walletAddress) {
-      setWalletAddress(MOCK_WALLET_ADDRESS);
-    }
-  };
-
-  const handleDisconnectWallet = () => {
-    setWalletAddress(null);
-  };
 
   const handleRegister = (eventId: string) => {
     if (!hasIdentity) {
@@ -134,15 +114,12 @@ export function CheckInPanel() {
     }));
   };
 
-  const checkInStatus = isSelfVerified ? "verified" : "pending";
-
   return (
     <div className="grid gap-6 text-wolf-foreground lg:grid-cols-[360px_1fr]">
       <div className="relative overflow-hidden p-6">
         <div className="pointer-events-none absolute inset-x-6 top-4 h-28 rounded-lg" />
         <div className="relative z-10 flex flex-col">
           <div className="flex items-center justify-between">
-
             <span className="text-xs uppercase tracking-[0.3em] text-wolf-emerald">
               HOWL Sync
             </span>

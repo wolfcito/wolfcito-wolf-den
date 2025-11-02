@@ -575,19 +575,8 @@ export default function SprayDisperser() {
 
   return (
     <div className="space-y-8 text-wolf-foreground">
-      <div className="wolf-card border border-wolf-border-strong p-8 shadow-[0_45px_120px_-70px_rgba(160,83,255,0.35)]">
+      <div className="shadow-[0_45px_120px_-70px_rgba(160,83,255,0.35)]">
         <header className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <p className="wolf-pill bg-wolf-emerald-mid text-xs uppercase tracking-[0.3em] text-wolf-emerald">
-              {t("badge")}
-            </p>
-            <h2 className="mt-4 text-3xl font-semibold uppercase text-white">
-              {t("heading")}
-            </h2>
-            <p className="mt-2 max-w-[60ch] text-sm text-white/70">
-              {t("description")}
-            </p>
-          </div>
           <div className="flex flex-col items-start gap-2 text-sm text-white/80">
             <span className="text-xs uppercase tracking-[0.3em] text-wolf-text-subtle">
               {signerAddress
@@ -697,10 +686,7 @@ export default function SprayDisperser() {
 
             <div className="mt-6 space-y-4">
               {rows.map((row, index) => (
-                <div
-                  key={row.id}
-                  className="rounded-2xl border border-wolf-border bg-wolf-charcoal-85/90 p-4 shadow-[0_20px_60px_-50px_rgba(160,83,255,0.4)]"
-                >
+                <div key={row.id}>
                   <div className="flex items-center justify-between">
                     <p className="text-xs uppercase tracking-[0.28em] text-wolf-text-subtle">
                       {t("form.recipientLabel", { index: index + 1 })}
@@ -741,7 +727,7 @@ export default function SprayDisperser() {
               <button
                 type="button"
                 onClick={addRow}
-                className="rounded-lg border border-wolf-border px-5 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-white/80 transition hover:border-wolf-border-strong hover:text-white"
+                className="rounded-md border border-wolf-border px-5 py-2 text-xs font-semibold tracking-[0.28em] text-white/80 transition hover:border-wolf-border-strong hover:text-white"
               >
                 {t("actions.addRecipient")}
               </button>
@@ -750,7 +736,7 @@ export default function SprayDisperser() {
                   type="button"
                   onClick={handleApprove}
                   disabled={ctaDisabled || isApproving}
-                  className="rounded-lg border border-wolf-border-soft px-5 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-wolf-emerald transition hover:border-wolf-border-strong hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
+                  className="rounded-md border border-wolf-border-soft px-5 py-2 text-xs font-semibold tracking-[0.28em] text-wolf-emerald transition hover:border-wolf-border-strong hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {isApproving ? t("actions.approving") : t("actions.approve")}
                 </button>
@@ -759,7 +745,7 @@ export default function SprayDisperser() {
                 type="button"
                 onClick={handleSubmit}
                 disabled={ctaDisabled}
-                className="ml-auto inline-flex items-center justify-center rounded-lg bg-[linear-gradient(180deg,#c8ff64_0%,#8bea4e_55%,#3b572a_100%)] px-6 py-3 text-xs font-semibold uppercase tracking-[0.28em] text-[#0b1407] shadow-[0_0_28px_rgba(186,255,92,0.45)] transition hover:shadow-[0_0_36px_rgba(186,255,92,0.55)] disabled:cursor-not-allowed disabled:opacity-60"
+                className="ml-auto items-center justify-center rounded-md den-button-primary px-6 py-3 text-xs font-semibold text-[#0b1407] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {isSubmitting ? t("actions.submitting") : t("actions.send")}
               </button>
