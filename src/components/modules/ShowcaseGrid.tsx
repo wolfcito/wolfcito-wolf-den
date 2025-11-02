@@ -16,7 +16,7 @@ export function ShowcaseGrid() {
       {projects.map((project) => (
         <article
           key={project.id}
-          className="wolf-card rounded-[1.9rem] border border-wolf-border-strong p-6 transition hover:-translate-y-1 hover:shadow-[0_32px_90px_-60px_rgba(160,83,255,0.35)]"
+          className="wolf-card rounded-lg border border-wolf-border-strong p-6 transition hover:-translate-y-1 hover:shadow-[0_32px_90px_-60px_rgba(160,83,255,0.35)]"
         >
           <h3 className="text-lg font-semibold text-white/90">
             {project.name}

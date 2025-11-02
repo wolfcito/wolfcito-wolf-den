@@ -162,8 +162,8 @@ export function SidebarNav({ variant = "desktop" }: SidebarNavProps) {
   if (variant === "mobile") {
     return (
       <nav className="space-y-5 text-white" aria-label={t("aria.navigation")}>
-        <div className="flex items-center gap-3 rounded-[14px] border border-[#2a2f36] bg-[#11131a] px-4 py-3">
-          <div className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-[10px] border border-[#2f3440] bg-[#14171c]">
+        <div className="flex items-center gap-3 border border-[#2a2f36] bg-[#11131a] px-4 py-3">
+          <div className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-lg border border-[#2f3440] bg-[#14171c]">
             <Image
               src="/denlabs.png"
               alt={t("branding.badgeAlt")}
@@ -184,14 +184,14 @@ export function SidebarNav({ variant = "desktop" }: SidebarNavProps) {
           <details
             key={group.key}
             open={openGroup === group.key}
-            className="group rounded-[10px] border border-[#22282e] bg-[rgba(17,19,24,0.58)] backdrop-blur-[12px] transition-shadow duration-150"
+            className="group rounded-lg border border-[#22282e] bg-[rgba(17,19,24,0.58)] backdrop-blur-[12px] transition-shadow duration-150"
             onToggle={(event) => {
               const target = event.currentTarget;
               setOpenGroup(target.open ? group.key : null);
             }}
           >
             <summary
-              className={`flex cursor-pointer items-center justify-between gap-3 rounded-[10px] bg-[rgba(20,24,29,0.8)] px-4 py-3 text-[0.78rem] font-semibold uppercase tracking-[0.18em] text-[#e9eef2] outline-none transition-all duration-150 [&::-webkit-details-marker]:hidden ${focusRing}`}
+              className={`flex cursor-pointer items-center justify-between gap-3 rounded-lg bg-[rgba(20,24,29,0.8)] px-4 py-3 text-[0.78rem] font-semibold uppercase tracking-[0.18em] text-[#e9eef2] outline-none transition-all duration-150 [&::-webkit-details-marker]:hidden ${focusRing}`}
             >
               <span>{t(`sections.${group.key}.title`)}</span>
               <ChevronDown
@@ -208,17 +208,18 @@ export function SidebarNav({ variant = "desktop" }: SidebarNavProps) {
                   item.href === "/auth"
                     ? pathname?.startsWith(item.href)
                     : pathname === item.href ||
-                    pathname?.startsWith(`${item.href}/`);
+                      pathname?.startsWith(`${item.href}/`);
                 const ItemIcon = navItemIcons[item.key];
                 return (
                   <Link
                     key={`${group.key}-${item.key}`}
                     href={item.href}
                     aria-current={isActive ? "page" : undefined}
-                    className={`grid grid-cols-[16px_1fr] items-center gap-3 rounded-[10px] border border-[#2a2f36] px-3 py-3 text-[0.78rem] font-semibold uppercase tracking-[0.18em] transition ${focusRing} ${isActive
+                    className={`grid grid-cols-[16px_1fr] items-center gap-3 rounded-lg border border-[#2a2f36] px-3 py-3 text-[0.78rem] font-semibold uppercase tracking-[0.18em] transition ${focusRing} ${
+                      isActive
                         ? "border-[#4ca22a] bg-[#89e24a] text-[#09140a] shadow-[0_0_20px_rgba(186,255,92,0.35)]"
                         : "bg-[rgba(20,24,29,0.6)] text-[#c2c7d2] hover:border-[rgba(186,255,92,0.35)] hover:bg-[rgba(20,24,29,0.85)] hover:text-white"
-                      }`}
+                    }`}
                   >
                     <ItemIcon
                       className="h-3 w-3 text-[rgba(186,255,92,0.8)]"
@@ -243,11 +244,11 @@ export function SidebarNav({ variant = "desktop" }: SidebarNavProps) {
     <>
       <div
         ref={containerRef}
-        className="relative z-50 flex w-full flex-col gap-5 rounded-[20px] border border-[#2a2f36] bg-[linear-gradient(135deg,rgba(18,20,30,0.96),rgba(11,12,18,0.9))] px-5 py-4 backdrop-blur-[18px] text-white shadow-[0_40px_120px_-80px_rgba(0,0,0,0.55)] md:px-6 lg:gap-4"
+        className="relative z-50 flex w-full flex-col gap-5 rounded-lg border border-[#2a2f36] bg-[linear-gradient(135deg,rgba(18,20,30,0.96),rgba(11,12,18,0.9))] px-5 py-4 backdrop-blur-[18px] text-white shadow-[0_40px_120px_-80px_rgba(0,0,0,0.55)] md:px-6 lg:gap-4"
       >
         <div className="flex flex-col gap-4 md:grid md:min-h-[52px] md:grid-cols-[auto_minmax(0,1fr)] md:items-center">
           <div className="flex items-center gap-4">
-            <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-[10px] border border-[#2f3440] bg-[#161821]">
+            <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border border-[#2f3440] bg-[#161821]">
               <Image
                 src="/denlabs.png"
                 alt={t("branding.badgeAlt")}
@@ -287,10 +288,11 @@ export function SidebarNav({ variant = "desktop" }: SidebarNavProps) {
                 >
                   <button
                     type="button"
-                    className={`group relative inline-flex h-[48px] w-full items-center justify-center gap-2 rounded-[10px] border border-[#2a2f36] bg-[rgba(20,24,29,0.7)] px-4 text-[0.78rem] font-semibold uppercase tracking-[0.18em] text-[#e9eef2] shadow-none transition-all duration-150 ease-out hover:-translate-y-[1px] hover:border-[rgba(137,226,74,0.4)] hover:bg-[rgba(20,24,29,0.82)] active:translate-y-0 active:border-[rgba(76,162,42,0.55)] md:w-auto ${focusRing} ${isOpen
+                    className={`group relative inline-flex h-[48px] w-full items-center justify-center gap-2 rounded-lg border border-[#2a2f36] bg-[rgba(20,24,29,0.7)] px-4 text-[0.78rem] font-semibold uppercase tracking-[0.18em] text-[#e9eef2] shadow-none transition-all duration-150 ease-out hover:-translate-y-[1px] hover:border-[rgba(137,226,74,0.4)] hover:bg-[rgba(20,24,29,0.82)] active:translate-y-0 active:border-[rgba(76,162,42,0.55)] md:w-auto ${focusRing} ${
+                      isOpen
                         ? "border-[rgba(137,226,74,0.55)] bg-[rgba(20,24,29,0.88)]"
                         : ""
-                      }`}
+                    }`}
                     aria-expanded={isOpen}
                     aria-haspopup="menu"
                     aria-controls={menuId}
@@ -318,8 +320,9 @@ export function SidebarNav({ variant = "desktop" }: SidebarNavProps) {
                       {t(`sections.${group.key}.title`)}
                     </span>
                     <ChevronDown
-                      className={`h-4 w-4 text-[rgba(186,255,92,0.8)] transition-transform duration-200 ease-out ${isOpen ? "rotate-180" : ""
-                        }`}
+                      className={`h-4 w-4 text-[rgba(186,255,92,0.8)] transition-transform duration-200 ease-out ${
+                        isOpen ? "rotate-180" : ""
+                      }`}
                       aria-hidden
                     />
                   </button>
@@ -327,10 +330,11 @@ export function SidebarNav({ variant = "desktop" }: SidebarNavProps) {
                     id={menuId}
                     role="menu"
                     style={{ minWidth: "min(max(320px, 100%), 360px)" }}
-                    className={`absolute left-1/2 top-[calc(100%+12px)] z-40 w-full -translate-x-1/2 rounded-[16px] border border-[#22282e] bg-[rgba(16,19,22,0.9)] px-4 py-4 backdrop-blur-[18px] shadow-[0_30px_90px_-60px_rgba(0,0,0,0.65)] transition-all duration-200 ease-out ${isOpen
+                    className={`absolute left-1/2 top-[calc(100%+12px)] z-40 w-full -translate-x-1/2 rounded-lg border border-[#22282e] bg-[rgba(16,19,22,0.9)] px-4 py-4 backdrop-blur-[18px] shadow-[0_30px_90px_-60px_rgba(0,0,0,0.65)] transition-all duration-200 ease-out ${
+                      isOpen
                         ? "pointer-events-auto opacity-100 translate-y-0"
                         : "pointer-events-none opacity-0 -translate-y-3"
-                      }`}
+                    }`}
                   >
                     <p className="pb-3 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#7d8794b3]">
                       {sectionDescription}
@@ -341,7 +345,7 @@ export function SidebarNav({ variant = "desktop" }: SidebarNavProps) {
                           item.href === "/auth"
                             ? pathname?.startsWith(item.href)
                             : pathname === item.href ||
-                            pathname?.startsWith(`${item.href}/`);
+                              pathname?.startsWith(`${item.href}/`);
                         const ItemIcon = navItemIcons[item.key];
                         return (
                           <div key={`${group.key}-${item.key}`} role="none">
@@ -385,10 +389,11 @@ export function SidebarNav({ variant = "desktop" }: SidebarNavProps) {
                                   items[items.length - 1]?.focus();
                                 }
                               }}
-                              className={`grid grid-cols-[16px_1fr] items-center gap-3 rounded-[10px] border border-[#2a2f36] px-3 py-3 text-[0.78rem] font-semibold uppercase tracking-[0.18em] transition ${focusRing} ${isActive
+                              className={`grid grid-cols-[16px_1fr] items-center gap-3 rounded-lg border border-[#2a2f36] px-3 py-3 text-[0.78rem] font-semibold uppercase tracking-[0.18em] transition ${focusRing} ${
+                                isActive
                                   ? "border-[#4ca22a] bg-[#89e24a] text-[#09140a] shadow-[0_0_20px_rgba(186,255,92,0.35)]"
                                   : "bg-[rgba(20,24,29,0.7)] text-[#c2c7d2] hover:border-[rgba(137,226,74,0.35)] hover:bg-[rgba(20,24,29,0.88)] hover:text-white"
-                                }`}
+                              }`}
                             >
                               <ItemIcon
                                 className="h-3 w-3 text-[rgba(186,255,92,0.8)]"

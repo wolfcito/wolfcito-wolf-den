@@ -298,7 +298,9 @@ export function StatusStrip({
       : translateSpray("actions.connect", "Connect Wallet");
 
   return (
-    <div className={`flex items-center gap-4 ${className}`}>
+    <div
+      className={`flex items-center gap-4 bg-[linear-gradient(135deg,rgba(18,20,30,0.96),rgba(11,12,18,0.9))] rounded-lg p-2 ${className}`}
+    >
       <div className="flex items-center gap-3">
         <HowlBadge level={level} />
         <SelfBadge status={isSelfVerified ? "verified" : "pending"} />
@@ -308,15 +310,15 @@ export function StatusStrip({
           type="button"
           onClick={handleWalletConnect}
           disabled={walletState.isConnecting}
-          className="inline-flex items-center justify-center rounded-full border border-wolf-border px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-wolf-foreground transition hover:border-wolf-border-xstrong hover:text-wolf-emerald disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex items-center justify-center rounded-lg border border-wolf-border px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-wolf-foreground transition hover:border-wolf-border-xstrong hover:text-wolf-emerald disabled:cursor-not-allowed disabled:opacity-60"
         >
           {walletButtonLabel}
         </button>
         {walletState.address ? (
           <span
             className={`wolf-pill text-xs uppercase tracking-[0.26em] ${isCeloReady
-                ? "bg-wolf-emerald-soft text-wolf-emerald"
-                : "bg-wolf-charcoal-70 text-wolf-text-subtle"
+              ? "bg-wolf-emerald-soft text-wolf-emerald"
+              : "bg-wolf-charcoal-70 text-wolf-text-subtle"
               }`}
           >
             {isCeloReady

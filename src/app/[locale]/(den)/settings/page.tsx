@@ -20,7 +20,7 @@ export default function SettingsPage() {
 
   return (
     <div className="space-y-6 text-wolf-foreground">
-      <section className="wolf-card--muted rounded-[1.9rem] border border-wolf-border p-6">
+      <section className="wolf-card--muted rounded-lg border border-wolf-border p-6">
         <h3 className="text-lg font-semibold text-white">
           {t("appearance.title")}
         </h3>
@@ -31,7 +31,7 @@ export default function SettingsPage() {
           <ThemeToggle />
         </div>
       </section>
-      <section className="wolf-card--muted rounded-[1.9rem] border border-wolf-border p-6">
+      <section className="wolf-card--muted rounded-lg border border-wolf-border p-6">
         <h3 className="text-lg font-semibold text-white">
           {t("language.title")}
         </h3>
@@ -40,7 +40,7 @@ export default function SettingsPage() {
         </p>
         <LanguageSwitcher className="mt-3" />
       </section>
-      <section className="wolf-card--muted rounded-[1.9rem] border border-wolf-border p-6">
+      <section className="wolf-card--muted rounded-lg border border-wolf-border p-6">
         <h3 className="text-lg font-semibold text-white">
           {t("privacy.title")}
         </h3>

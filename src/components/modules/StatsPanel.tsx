@@ -10,7 +10,7 @@ export function StatsPanel() {
 
   return (
     <div className="space-y-5 text-wolf-foreground">
-      <div className="wolf-card rounded-[1.9rem] border border-wolf-border-strong p-6">
+      <div className="wolf-card rounded-lg border border-wolf-border-strong p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h3 className="text-lg font-semibold uppercase tracking-[0.2em] text-white/90">
             {t("metrics.title")}
@@ -26,7 +26,7 @@ export function StatsPanel() {
           {stats.map((item) => (
             <div
               key={item.label}
-              className="wolf-card--muted rounded-[1.6rem] border border-wolf-border p-4 text-center shadow-[0_25px_70px_-60px_rgba(0,0,0,0.55)]"
+              className="wolf-card--muted rounded-lg border border-wolf-border p-4 text-center shadow-[0_25px_70px_-60px_rgba(0,0,0,0.55)]"
             >
               <p className="text-xs uppercase tracking-[0.3em] text-wolf-text-subtle">
                 {item.label}

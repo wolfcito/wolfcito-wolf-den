@@ -49,8 +49,8 @@ export default function MindGamesPage() {
   return (
     <div className="space-y-8 text-wolf-foreground">
       <div className="flex flex-col gap-6 lg:flex-row">
-        <section className="wolf-card flex-1 space-y-6 rounded-[2rem] border border-wolf-border-strong p-6 shadow-[0_45px_120px_-80px_rgba(0,0,0,0.75)]">
-          <div className="flex items-center justify-between rounded-[1.5rem] border border-wolf-border-strong bg-wolf-charcoal-60 px-4 py-4">
+        <section className="wolf-card flex-1 space-y-6 rounded-lg border border-wolf-border-strong p-6 shadow-[0_45px_120px_-80px_rgba(0,0,0,0.75)]">
+          <div className="flex items-center justify-between rounded-lg border border-wolf-border-strong bg-wolf-charcoal-60 px-4 py-4">
             <div>
               <p className="text-xs uppercase tracking-[0.3em] text-wolf-text-subtle">
                 {t("summary.balance")}
@@ -101,7 +101,7 @@ export default function MindGamesPage() {
           </div>
         </section>
 
-        <aside className="wolf-card w-full max-w-sm space-y-4 rounded-[2rem] border border-wolf-border-strong p-6 shadow-[0_40px_110px_-80px_rgba(160,83,255,0.35)]">
+        <aside className="wolf-card w-full max-w-sm space-y-4 rounded-lg border border-wolf-border-strong p-6 shadow-[0_40px_110px_-80px_rgba(160,83,255,0.35)]">
           <div className="space-y-2">
             <label
               htmlFor={mineSelectId}

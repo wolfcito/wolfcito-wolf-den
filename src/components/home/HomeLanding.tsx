@@ -89,7 +89,7 @@ export default function HomeLanding() {
           </div>
         </section>
 
-        <section className="wolf-card den-noise-surface rounded-[2.5rem] border border-wolf-border-strong/60 p-10">
+        <section className="wolf-card den-noise-surface rounded-lg border border-wolf-border-strong/60 p-10">
           <header className="flex flex-col gap-3">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-wolf-text-subtle">
               {t("highlights.label")}
@@ -105,7 +105,7 @@ export default function HomeLanding() {
             {highlights.map((highlight) => (
               <article
                 key={highlight.title}
-                className="wolf-card--muted den-glass rounded-[1.9rem] border border-wolf-border-mid/70 p-6"
+                className="wolf-card--muted den-glass rounded-lg border border-wolf-border-mid/70 p-6"
               >
                 <h3 className="text-lg font-semibold text-white">
                   {highlight.title}
@@ -118,7 +118,7 @@ export default function HomeLanding() {
           </div>
         </section>
 
-        <section className="wolf-card den-noise-surface rounded-[2.5rem] border border-wolf-border-strong/60 p-10">
+        <section className="wolf-card den-noise-surface rounded-lg border border-wolf-border-strong/60 p-10">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div className="max-w-[36ch]">
               <p className="text-xs font-semibold uppercase tracking-[0.32em] text-wolf-text-subtle">
@@ -135,7 +135,7 @@ export default function HomeLanding() {
               {metrics.map((metric) => (
                 <div
                   key={metric.label}
-                  className="wolf-card--muted den-glass rounded-[1.6rem] border border-wolf-border-mid/70 px-4 py-4"
+                  className="wolf-card--muted den-glass rounded-lg border border-wolf-border-mid/70 px-4 py-4"
                 >
                   <p className="text-2xl font-semibold text-white">
                     {metric.value}
@@ -167,7 +167,7 @@ export default function HomeLanding() {
             {strategicPillars.map((pillar) => (
               <article
                 key={pillar.title}
-                className="wolf-card--muted den-glass rounded-[1.9rem] border border-wolf-border-soft p-6"
+                className="wolf-card--muted den-glass rounded-lg border border-wolf-border-soft p-6"
               >
                 <h3 className="text-xl font-semibold text-white">
                   {pillar.title}
@@ -180,7 +180,7 @@ export default function HomeLanding() {
           </div>
         </section>
 
-        <section className="wolf-card den-noise-surface rounded-[2.5rem] border border-wolf-border-strong/60 p-10">
+        <section className="wolf-card den-noise-surface rounded-lg border border-wolf-border-strong/60 p-10">
           <header className="flex flex-wrap items-center justify-between gap-6">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-wolf-text-subtle">
@@ -198,7 +198,7 @@ export default function HomeLanding() {
             {modules.map((module) => (
               <article
                 key={module.id}
-                className="wolf-card--muted den-glass flex h-full flex-col justify-between rounded-[1.9rem] border border-wolf-border p-6 transition hover:-translate-y-1 hover:border-wolf-border-xstrong hover:shadow-[0_0_28px_rgba(160,83,255,0.35)]"
+                className="wolf-card--muted den-glass flex h-full flex-col justify-between rounded-lg border border-wolf-border p-6 transition hover:-translate-y-1 hover:border-wolf-border-xstrong hover:shadow-[0_0_28px_rgba(160,83,255,0.35)]"
               >
                 <div>
                   <h3 className="text-lg font-semibold text-white">
@@ -235,7 +235,7 @@ export default function HomeLanding() {
             {flows.map((flow) => (
               <article
                 key={flow.title}
-                className="wolf-card--muted den-glass rounded-[1.9rem] border border-wolf-border-mid/70 p-6"
+                className="wolf-card--muted den-glass rounded-lg border border-wolf-border-mid/70 p-6"
               >
                 <h3 className="text-xl font-semibold text-white">
                   {flow.title}

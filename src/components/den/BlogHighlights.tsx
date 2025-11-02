@@ -9,7 +9,7 @@ export function BlogHighlights() {
   }>;
 
   return (
-    <section className="wolf-card den-noise-surface rounded-[2.5rem] border border-wolf-border-strong/60 p-10">
+    <section className="wolf-card den-noise-surface rounded-lg border border-wolf-border-strong/60 p-10">
       <div className="flex flex-wrap items-center justify-between gap-6">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-wolf-text-subtle">
@@ -30,7 +30,7 @@ export function BlogHighlights() {
         {items.map((item) => (
           <article
             key={item.title}
-            className="wolf-card--muted den-glass rounded-[1.9rem] border border-wolf-border-mid/70 p-6"
+            className="wolf-card--muted den-glass rounded-lg border border-wolf-border-mid/70 p-6"
           >
             <h3 className="text-xl font-semibold text-white">{item.title}</h3>
             <p className="mt-3 text-sm text-white/75">{item.description}</p>

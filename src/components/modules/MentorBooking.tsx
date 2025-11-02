@@ -27,7 +27,7 @@ export function MentorBooking() {
           {slots.map((slot) => (
             <li
               key={slot.id}
-              className={`wolf-card--muted flex flex-col gap-1 rounded-[1.5rem] border border-wolf-border-soft px-4 py-4 text-sm transition ${
+              className={`wolf-card--muted flex flex-col gap-1 rounded-lg border border-wolf-border-soft px-4 py-4 text-sm transition ${
                 slot.available
                   ? "hover:border-wolf-border-xstrong hover:shadow-[0_15px_45px_-35px_rgba(160,83,255,0.4)]"
                   : "opacity-60"

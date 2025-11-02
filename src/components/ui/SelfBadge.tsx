@@ -14,7 +14,7 @@ interface SelfBadgeProps {
 }
 
 const baseClasses =
-  "inline-flex min-h-[44px] items-center gap-3 rounded-[10px] border px-3 py-2 text-[0.75rem] font-semibold uppercase tracking-[0.18em] transition";
+  "inline-flex min-h-[44px] items-center gap-3 rounded-lg border px-3 py-2 text-[0.75rem] font-semibold uppercase tracking-[0.18em] transition";
 
 const statusTone: Record<Required<SelfBadgeProps>["status"], string> = {
   unverified:

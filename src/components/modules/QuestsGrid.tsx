@@ -29,7 +29,7 @@ export function QuestsGrid() {
       {quests.map((quest) => (
         <div
           key={quest.id}
-          className={`flex h-full flex-col justify-between rounded-[1.5rem] p-5 transition hover:-translate-y-1 hover:shadow-[0_25px_80px_-55px_rgba(34,40,46,0.45)] ${questTone(
+          className={`flex h-full flex-col justify-between rounded-lg p-5 transition hover:-translate-y-1 hover:shadow-[0_25px_80px_-55px_rgba(34,40,46,0.45)] ${questTone(
             quest.status,
           )}`}
         >
@@ -52,7 +52,7 @@ export function QuestsGrid() {
             </span>
             <button
               type="button"
-              className={`rounded-[0.625rem] px-4 py-2 text-sm font-medium uppercase tracking-[0.2em] transition ${
+              className={`rounded-lg px-4 py-2 text-sm font-medium uppercase tracking-[0.2em] transition ${
                 quest.status === "locked"
                   ? "cursor-not-allowed bg-wolf-emerald-faint text-wolf-text-subtle"
                   : quest.status === "submitted"

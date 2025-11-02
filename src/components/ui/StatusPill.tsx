@@ -36,7 +36,7 @@ export function StatusPill({ status }: StatusPillProps) {
 
   return (
     <span
-      className={`inline-flex items-center gap-2 rounded-[10px] px-3.5 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.2em] transition ${statusTone[status]}`}
+      className={`inline-flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.2em] transition ${statusTone[status]}`}
     >
       <Icon
         className={`h-4 w-4 ${

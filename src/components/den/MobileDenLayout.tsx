@@ -55,7 +55,7 @@ export function MobileDenLayout({
   return (
     <>
       <div className="flex min-h-screen flex-col gap-5 pb-[calc(env(safe-area-inset-bottom,0px)+6.5rem)]">
-        <div className="wolf-card rounded-[2.2rem] border border-wolf-border-strong p-4 shadow-[0_40px_110px_-80px_rgba(0,0,0,0.75)] backdrop-blur">
+        <div className="wolf-card rounded-lg border border-wolf-border-strong p-4 shadow-[0_40px_110px_-80px_rgba(0,0,0,0.75)] backdrop-blur">
           {renderPanel}
         </div>
       </div>

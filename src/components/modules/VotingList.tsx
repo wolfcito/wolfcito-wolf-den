@@ -28,7 +28,7 @@ export function VotingList() {
           return (
             <div
               key={demo.id}
-              className="wolf-card flex flex-wrap items-center justify-between gap-4 rounded-[1.9rem] border border-wolf-border-strong px-5 py-4"
+              className="wolf-card flex flex-wrap items-center justify-between gap-4 rounded-lg border border-wolf-border-strong px-5 py-4"
             >
               <div>
                 <p className="flex items-center gap-2 text-sm uppercase tracking-[0.3em] text-wolf-text-subtle">

@@ -14,7 +14,7 @@ export function LeaderboardList() {
         {leaderboard.map((entry) => (
           <div
             key={entry.team}
-            className="wolf-card--muted flex items-center justify-between rounded-[1.75rem] border border-wolf-border-mid px-5 py-4"
+            className="wolf-card--muted flex items-center justify-between rounded-lg border border-wolf-border-mid px-5 py-4"
           >
             <div className="flex items-center gap-3 text-sm">
               <span className="flex h-9 w-9 items-center justify-center rounded-2xl bg-wolf-emerald-tint text-wolf-emerald">

@@ -402,10 +402,10 @@ export default function SprayDisperser() {
           prev.map((entry) =>
             entry.hash === approvalHash
               ? {
-                ...entry,
-                status: "error",
-                errorMessage: t("errors.approvalFailed"),
-              }
+                  ...entry,
+                  status: "error",
+                  errorMessage: t("errors.approvalFailed"),
+                }
               : entry,
           ),
         );
@@ -485,10 +485,10 @@ export default function SprayDisperser() {
             prev.map((entry) =>
               entry.id === recordId
                 ? {
-                  ...entry,
-                  status: "error",
-                  errorMessage: t("errors.transactionFailed"),
-                }
+                    ...entry,
+                    status: "error",
+                    errorMessage: t("errors.transactionFailed"),
+                  }
                 : entry,
             ),
           );
@@ -552,10 +552,10 @@ export default function SprayDisperser() {
             prev.map((entry) =>
               entry.id === recordId
                 ? {
-                  ...entry,
-                  status: "error",
-                  errorMessage: t("errors.transactionFailed"),
-                }
+                    ...entry,
+                    status: "error",
+                    errorMessage: t("errors.transactionFailed"),
+                  }
                 : entry,
             ),
           );
@@ -592,21 +592,22 @@ export default function SprayDisperser() {
             <span className="text-xs uppercase tracking-[0.3em] text-wolf-text-subtle">
               {signerAddress
                 ? translate(
-                  "actions.connected",
-                  `Connected: ${formatAddress(signerAddress)}`,
-                  { address: formatAddress(signerAddress) },
-                )
+                    "actions.connected",
+                    `Connected: ${formatAddress(signerAddress)}`,
+                    { address: formatAddress(signerAddress) },
+                  )
                 : translate(
-                  "network.prompt",
-                  "Connect a wallet to load Spray.",
-                )}
+                    "network.prompt",
+                    "Connect a wallet to load Spray.",
+                  )}
             </span>
             {signerAddress ? (
               <span
-                className={`wolf-pill text-xs uppercase tracking-[0.26em] ${celoNetworkReady
+                className={`wolf-pill text-xs uppercase tracking-[0.26em] ${
+                  celoNetworkReady
                     ? "bg-wolf-emerald-soft text-wolf-emerald"
                     : "bg-wolf-charcoal-70 text-wolf-text-subtle"
-                  }`}
+                }`}
               >
                 {celoNetworkReady
                   ? translate("network.ready", "Celo mainnet detected")
@@ -629,20 +630,22 @@ export default function SprayDisperser() {
               <button
                 type="button"
                 onClick={() => setMode("native")}
-                className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] transition ${mode === "native"
+                className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] transition ${
+                  mode === "native"
                     ? "bg-wolf-emerald-soft text-wolf-emerald"
                     : "border border-wolf-border text-white/70"
-                  }`}
+                }`}
               >
                 {t("modes.native")}
               </button>
               <button
                 type="button"
                 onClick={() => setMode("token")}
-                className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] transition ${mode === "token"
+                className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] transition ${
+                  mode === "token"
                     ? "bg-wolf-emerald-soft text-wolf-emerald"
                     : "border border-wolf-border text-white/70"
-                  }`}
+                }`}
               >
                 {t("modes.token")}
               </button>
@@ -652,13 +655,13 @@ export default function SprayDisperser() {
               <span className="text-xs uppercase tracking-[0.28em] text-wolf-text-subtle">
                 {mode === "native"
                   ? t("summary.totalNative", {
-                    amount: totalEntered.toFixed(4),
-                  })
+                      amount: totalEntered.toFixed(4),
+                    })
                   : t("summary.totalToken", {
-                    amount: totalEntered.toFixed(4),
-                    symbol:
-                      tokenInfo?.symbol ?? t("summary.tokenPlaceholder"),
-                  })}
+                      amount: totalEntered.toFixed(4),
+                      symbol:
+                        tokenInfo?.symbol ?? t("summary.tokenPlaceholder"),
+                    })}
               </span>
             </div>
 
@@ -808,12 +811,13 @@ export default function SprayDisperser() {
                             : t("history.token")}
                         </span>
                         <span
-                          className={`uppercase tracking-[0.3em] ${entry.status === "success"
+                          className={`uppercase tracking-[0.3em] ${
+                            entry.status === "success"
                               ? "text-wolf-emerald"
                               : entry.status === "pending"
                                 ? "text-wolf-amber"
                                 : "text-rose-300"
-                            }`}
+                          }`}
                         >
                           {t(`history.status.${entry.status}`)}
                         </span>

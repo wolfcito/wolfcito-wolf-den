@@ -139,7 +139,7 @@ export function CheckInPanel() {
   return (
     <div className="grid gap-6 text-wolf-foreground lg:grid-cols-[360px_1fr]">
       <div className="wolf-card relative overflow-hidden p-6">
-        <div className="pointer-events-none absolute inset-x-6 top-4 h-28 rounded-[1.75rem] bg-[radial-gradient(circle_at_top,#baff5c_0%,rgba(12,16,24,0)_70%)] opacity-80" />
+        <div className="pointer-events-none absolute inset-x-6 top-4 h-28 rounded-lg bg-[radial-gradient(circle_at_top,#baff5c_0%,rgba(12,16,24,0)_70%)] opacity-80" />
         <div className="relative z-10 flex flex-col">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold tracking-[0.08em] uppercase text-white/90">
@@ -170,7 +170,7 @@ export function CheckInPanel() {
         </div>
       </div>
       <div className="flex flex-col gap-6">
-        <div className="wolf-card--muted rounded-[1.9rem] border border-wolf-border px-7 py-6 text-white/80">
+        <div className="wolf-card--muted rounded-lg border border-wolf-border px-7 py-6 text-white/80">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-xs uppercase tracking-[0.32em] text-wolf-text-subtle">
@@ -225,7 +225,7 @@ export function CheckInPanel() {
             )}
           </p>
         </div>
-        <div className="wolf-card rounded-[1.9rem] border border-wolf-border-strong px-7 py-6">
+        <div className="wolf-card rounded-lg border border-wolf-border-strong px-7 py-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <h3 className="text-lg font-semibold uppercase tracking-[0.2em] text-white/90">
@@ -245,7 +245,7 @@ export function CheckInPanel() {
             </span>
           </div>
           {!hasIdentity ? (
-            <div className="mt-5 rounded-[1.2rem] border border-dashed border-wolf-border-mid bg-wolf-charcoal-70/40 px-4 py-3 text-xs text-white/65">
+            <div className="mt-5 rounded-lg border border-dashed border-wolf-border-mid bg-wolf-charcoal-70/40 px-4 py-3 text-xs text-white/65">
               {translate(
                 "events.identityHint",
                 "Connect a wallet or finish Self verification to reserve your spot.",
@@ -274,7 +274,7 @@ export function CheckInPanel() {
                 return (
                   <div
                     key={event.id}
-                    className={`rounded-[1.7rem] p-5 transition ${eventTone(event.status)}`}
+                    className={`rounded-lg p-5 transition ${eventTone(event.status)}`}
                   >
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <div>
