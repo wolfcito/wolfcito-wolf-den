@@ -304,7 +304,7 @@ export function CheckInPanel() {
                     <div className="mt-5 flex flex-wrap items-center gap-3">
                       <button
                         type="button"
-                        className={`rounded-full px-5 py-2 text-xs font-semibold uppercase tracking-[0.22em] transition ${registerClass}`}
+                        className={`rounded-lg px-5 py-2 text-xs font-semibold uppercase tracking-[0.22em] transition ${registerClass}`}
                         onClick={() => handleRegister(event.id)}
                         disabled={!hasIdentity || isRegistered || isClosed}
                       >
@@ -314,7 +314,7 @@ export function CheckInPanel() {
                       </button>
                       <button
                         type="button"
-                        className={`rounded-full px-5 py-2 text-xs font-semibold uppercase tracking-[0.22em] transition ${checkInClass}`}
+                        className={`rounded-lg px-5 py-2 text-xs font-semibold uppercase tracking-[0.22em] transition ${checkInClass}`}
                         onClick={() => handleCheckIn(event.id)}
                         disabled={!hasIdentity || !isRegistered || !isLive}
                       >

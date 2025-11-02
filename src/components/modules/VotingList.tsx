@@ -32,7 +32,7 @@ export function VotingList() {
             >
               <div>
                 <p className="flex items-center gap-2 text-sm uppercase tracking-[0.3em] text-wolf-text-subtle">
-                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-wolf-emerald-tint text-wolf-emerald">
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-wolf-emerald-tint text-wolf-emerald">
                     <Icon className="h-4 w-4" aria-hidden />
                   </span>
                   {demo.team}
@@ -43,11 +43,11 @@ export function VotingList() {
               </div>
               <button
                 type="button"
-                className={`rounded-xl px-4 py-2 text-sm font-medium transition
+                className={`rounded-lg px-4 py-2 text-sm font-medium transition
                   ${
                     demo.status === "open"
-                      ? "rounded-full bg-[linear-gradient(180deg,#c8ff64_0%,#8bea4e_55%,#3b572a_100%)] text-[#0b1407] shadow-[0_0_24px_rgba(186,255,92,0.45)] hover:shadow-[0_0_30px_rgba(186,255,92,0.55)]"
-                      : "rounded-full bg-wolf-emerald-soft text-wolf-text-subtle"
+                      ? "rounded-lg bg-[linear-gradient(180deg,#c8ff64_0%,#8bea4e_55%,#3b572a_100%)] text-[#0b1407] shadow-[0_0_24px_rgba(186,255,92,0.45)] hover:shadow-[0_0_30px_rgba(186,255,92,0.55)]"
+                      : "rounded-lg bg-wolf-emerald-soft text-wolf-text-subtle"
                   }
                 `}
                 disabled={demo.status !== "open"}

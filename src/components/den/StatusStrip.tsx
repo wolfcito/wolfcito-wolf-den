@@ -291,10 +291,10 @@ export function StatusStrip({
     ? "Connecting..."
     : walletState.address
       ? translateSpray(
-        "actions.connected",
-        `Connected: ${formatAddress(walletState.address)}`,
-        { address: formatAddress(walletState.address) },
-      )
+          "actions.connected",
+          `Connected: ${formatAddress(walletState.address)}`,
+          { address: formatAddress(walletState.address) },
+        )
       : translateSpray("actions.connect", "Connect Wallet");
 
   return (
@@ -310,16 +310,17 @@ export function StatusStrip({
           type="button"
           onClick={handleWalletConnect}
           disabled={walletState.isConnecting}
-          className="inline-flex items-center justify-center rounded-lg border border-wolf-border px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-wolf-foreground transition hover:border-wolf-border-xstrong hover:text-wolf-emerald disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex items-center gap-3 rounded-md border px-3 py-1 text-[0.75rem] font-semibold uppercase tracking-[0.18em] transition cursor-pointer"
         >
           {walletButtonLabel}
         </button>
         {walletState.address ? (
           <span
-            className={`wolf-pill text-xs uppercase tracking-[0.26em] ${isCeloReady
-              ? "bg-wolf-emerald-soft text-wolf-emerald"
-              : "bg-wolf-charcoal-70 text-wolf-text-subtle"
-              }`}
+            className={`wolf-pill text-xs uppercase tracking-[0.26em] ${
+              isCeloReady
+                ? "bg-wolf-emerald-soft text-wolf-emerald"
+                : "bg-wolf-charcoal-70 text-wolf-text-subtle"
+            }`}
           >
             {isCeloReady
               ? translateSpray("network.ready", "Celo mainnet detected")
@@ -334,7 +335,7 @@ export function StatusStrip({
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-wolf-border bg-wolf-charcoal-70 text-wolf-foreground transition hover:border-wolf-border-xstrong hover:text-wolf-emerald"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-wolf-border bg-wolf-charcoal-70 text-wolf-foreground transition hover:border-wolf-border-xstrong hover:text-wolf-emerald"
             aria-label={link.label}
             title={link.label}
           >

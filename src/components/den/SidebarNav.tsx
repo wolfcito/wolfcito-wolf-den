@@ -288,7 +288,7 @@ export function SidebarNav({ variant = "desktop" }: SidebarNavProps) {
                 >
                   <button
                     type="button"
-                    className={`group relative inline-flex h-[48px] w-full items-center justify-center gap-2 rounded-lg border border-[#2a2f36] bg-[rgba(20,24,29,0.7)] px-4 text-[0.78rem] font-semibold uppercase tracking-[0.18em] text-[#e9eef2] shadow-none transition-all duration-150 ease-out hover:-translate-y-[1px] hover:border-[rgba(137,226,74,0.4)] hover:bg-[rgba(20,24,29,0.82)] active:translate-y-0 active:border-[rgba(76,162,42,0.55)] md:w-auto ${focusRing} ${
+                    className={`group relative inline-flex h-[48px] w-full items-center justify-center gap-2 rounded-md border border-[#2a2f36] bg-[rgba(20,24,29,0.7)] px-4 text-[0.78rem] font-semibold uppercase tracking-[0.18em] text-[#e9eef2] shadow-none transition-all duration-150 ease-out hover:-translate-y-[1px] hover:border-[rgba(137,226,74,0.4)] hover:bg-[rgba(20,24,29,0.82)] active:translate-y-0 active:border-[rgba(76,162,42,0.55)] md:w-auto ${focusRing} ${
                       isOpen
                         ? "border-[rgba(137,226,74,0.55)] bg-[rgba(20,24,29,0.88)]"
                         : ""
@@ -330,7 +330,7 @@ export function SidebarNav({ variant = "desktop" }: SidebarNavProps) {
                     id={menuId}
                     role="menu"
                     style={{ minWidth: "min(max(320px, 100%), 360px)" }}
-                    className={`absolute left-1/2 top-[calc(100%+12px)] z-40 w-full -translate-x-1/2 rounded-lg border border-[#22282e] bg-[rgba(16,19,22,0.9)] px-4 py-4 backdrop-blur-[18px] shadow-[0_30px_90px_-60px_rgba(0,0,0,0.65)] transition-all duration-200 ease-out ${
+                    className={`absolute left-1/2 top-[calc(100%+12px)] z-40 w-full -translate-x-1/2 rounded-md border border-[#22282e] bg-[rgba(16,19,22,0.9)] px-4 py-4 backdrop-blur-[18px] shadow-[0_30px_90px_-60px_rgba(0,0,0,0.65)] transition-all duration-200 ease-out ${
                       isOpen
                         ? "pointer-events-auto opacity-100 translate-y-0"
                         : "pointer-events-none opacity-0 -translate-y-3"
@@ -389,7 +389,7 @@ export function SidebarNav({ variant = "desktop" }: SidebarNavProps) {
                                   items[items.length - 1]?.focus();
                                 }
                               }}
-                              className={`grid grid-cols-[16px_1fr] items-center gap-3 rounded-lg border border-[#2a2f36] px-3 py-3 text-[0.78rem] font-semibold uppercase tracking-[0.18em] transition ${focusRing} ${
+                              className={`grid grid-cols-[16px_1fr] items-center gap-3 rounded-md border border-[#2a2f36] px-3 py-3 text-[0.78rem] font-semibold uppercase tracking-[0.18em] transition ${focusRing} ${
                                 isActive
                                   ? "border-[#4ca22a] bg-[#89e24a] text-[#09140a] shadow-[0_0_20px_rgba(186,255,92,0.35)]"
                                   : "bg-[rgba(20,24,29,0.7)] text-[#c2c7d2] hover:border-[rgba(137,226,74,0.35)] hover:bg-[rgba(20,24,29,0.88)] hover:text-white"

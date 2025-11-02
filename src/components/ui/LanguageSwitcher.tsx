@@ -33,7 +33,7 @@ export function LanguageSwitcher({ className = "" }: LanguageSwitcherProps) {
             type="button"
             onClick={() => handleSelect(option)}
             disabled={isPending || isActive}
-            className={`rounded-xl px-4 py-2 text-sm transition ${
+            className={`rounded-lg px-4 py-2 text-sm transition ${
               isActive
                 ? "bg-wolf-cyan/20 text-wolf-cyan"
                 : "bg-white/5 text-wolf-bone/70 hover:bg-white/10 disabled:opacity-60"

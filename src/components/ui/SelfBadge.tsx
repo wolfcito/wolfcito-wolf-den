@@ -14,7 +14,7 @@ interface SelfBadgeProps {
 }
 
 const baseClasses =
-  "inline-flex min-h-[44px] items-center gap-3 rounded-lg border px-3 py-2 text-[0.75rem] font-semibold uppercase tracking-[0.18em] transition";
+  "inline-flex items-center gap-3 rounded-lg border px-3 py-1 text-[0.75rem] font-semibold uppercase tracking-[0.18em] transition";
 
 const statusTone: Record<Required<SelfBadgeProps>["status"], string> = {
   unverified:
@@ -22,9 +22,9 @@ const statusTone: Record<Required<SelfBadgeProps>["status"], string> = {
   pending:
     "border-[#2a2f36] bg-[rgba(20,24,29,0.72)] text-[#c2c7d2] [&>svg]:text-[#89e24a]",
   verified:
-    "border-[#4ca22a] bg-[#89e24a] text-[#09140a] shadow-[0_0_20px_rgba(186,255,92,0.35)] [&>svg]:text-[#04140c]",
+    "border-[#4ca22a] bg-[#89e24a] text-[#09140a] [&>svg]:text-[#04140c]",
   error:
-    "border-wolf-error-border bg-wolf-error-soft text-[#ffb1b1] shadow-[0_0_20px_rgba(255,122,122,0.32)] backdrop-blur-sm [&>svg]:text-[#ff7a7a]",
+    "border-wolf-error-border bg-wolf-error-soft text-[#ffb1b1] backdrop-blur-sm [&>svg]:text-[#ff7a7a]",
 };
 
 const statusIcon: Record<

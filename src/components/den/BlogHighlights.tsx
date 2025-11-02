@@ -21,7 +21,7 @@ export function BlogHighlights() {
         </div>
         <Link
           href={t("cta.href")}
-          className="inline-flex items-center gap-2 rounded-full border border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-[0.22em] text-wolf-emerald transition hover:border-wolf-border-xstrong hover:text-white"
+          className="inline-flex items-center gap-2 rounded-lg border border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-[0.22em] text-wolf-emerald transition hover:border-wolf-border-xstrong hover:text-white"
         >
           {t("cta.label")}
         </Link>

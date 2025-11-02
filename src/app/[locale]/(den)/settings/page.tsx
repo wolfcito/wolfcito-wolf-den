@@ -30,8 +30,7 @@ export default function SettingsPage() {
         <div className="mt-4">
           <ThemeToggle />
         </div>
-      </section>
-      <section className="wolf-card--muted rounded-lg border border-wolf-border p-6">
+        <br />
         <h3 className="text-lg font-semibold text-white">
           {t("language.title")}
         </h3>
@@ -39,8 +38,7 @@ export default function SettingsPage() {
           {t("language.description")}
         </p>
         <LanguageSwitcher className="mt-3" />
-      </section>
-      <section className="wolf-card--muted rounded-lg border border-wolf-border p-6">
+        <br />
         <h3 className="text-lg font-semibold text-white">
           {t("privacy.title")}
         </h3>
@@ -48,11 +46,11 @@ export default function SettingsPage() {
           {privacyItems.map((item) => (
             <li
               key={item.label}
-              className="flex items-center justify-between rounded-xl border border-wolf-border-soft bg-wolf-charcoal-60 px-4 py-3"
+              className="flex items-center justify-between rounded-lg bg-wolf-charcoal-60 px-4 py-3"
             >
               <span>{item.label}</span>
               <span
-                className={`rounded-full px-3 py-1 text-xs ${toneClass[item.tone]}`}
+                className={`rounded-lg px-3 py-1 text-xs ${toneClass[item.tone]}`}
               >
                 {item.status}
               </span>

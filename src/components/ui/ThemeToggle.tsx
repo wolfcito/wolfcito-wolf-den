@@ -41,12 +41,12 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      className="relative flex items-center gap-1 rounded-full border border-wolf-border-soft/80 bg-wolf-panel/80 px-1.5 py-1 text-xs font-semibold uppercase tracking-[0.26em] text-wolf-text-subtle shadow-[0_0_20px_rgba(160,83,255,0.12)] backdrop-blur-md transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent focus-visible:ring-[rgba(160,83,255,0.6)]"
+      className="relative flex items-center gap-1 rounded-lg border border-wolf-border-soft/80 bg-wolf-panel/80 px-1.5 py-1 text-xs font-semibold uppercase tracking-[0.26em] text-wolf-text-subtle shadow-[0_0_20px_rgba(160,83,255,0.12)] backdrop-blur-md transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent focus-visible:ring-[rgba(160,83,255,0.6)]"
       aria-pressed={mode === "dark"}
       aria-label="Toggle theme"
     >
       <span
-        className={`flex items-center gap-1 rounded-full px-3 py-1 transition ${
+        className={`flex items-center gap-1 rounded-lg px-3 py-1 transition ${
           mode === "light"
             ? "bg-wolf-neutral-soft text-white shadow-[0_0_16px_rgba(255,255,255,0.08)]"
             : "text-wolf-text-subtle"
@@ -55,7 +55,7 @@ export function ThemeToggle() {
         {t("light")}
       </span>
       <span
-        className={`flex items-center gap-1 rounded-full px-3 py-1 transition ${
+        className={`flex items-center gap-1 rounded-lg px-3 py-1 transition ${
           mode === "dark"
             ? "bg-[linear-gradient(135deg,rgba(160,83,255,0.85),rgba(91,45,255,0.65))] text-white shadow-[0_0_24px_rgba(160,83,255,0.45)]"
             : "text-wolf-text-subtle"

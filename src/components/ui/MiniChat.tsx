@@ -29,7 +29,7 @@ export function MiniChat() {
           onChange={(event) => setMessage(event.target.value)}
           rows={2}
           placeholder={t("placeholder")}
-          className="w-full rounded-xl border border-wolf-border bg-wolf-charcoal-60 px-3 py-2 text-sm text-wolf-foreground placeholder:text-wolf-text-subtle focus:border-wolf-border-xstrong focus:outline-none"
+          className="w-full rounded-lg border border-wolf-border bg-wolf-charcoal-60 px-3 py-2 text-sm text-wolf-foreground placeholder:text-wolf-text-subtle focus:border-wolf-border-xstrong focus:outline-none"
         />
         <button
           type="submit"

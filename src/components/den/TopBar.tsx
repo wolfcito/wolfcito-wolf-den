@@ -52,7 +52,7 @@ export function TopBar() {
       <div className="flex items-center gap-4">
         <Link
           href="/"
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-wolf-border bg-wolf-charcoal-60 text-xs text-wolf-foreground transition hover:border-wolf-border-xstrong"
+          className="flex h-10 w-10 items-center justify-center rounded-lg border border-wolf-border bg-wolf-charcoal-60 text-xs text-wolf-foreground transition hover:border-wolf-border-xstrong"
         >
           <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
         </Link>

@@ -64,7 +64,7 @@ export function MobileDenLayout({
         className="pointer-events-none fixed inset-x-0 bottom-4 z-40 flex justify-center px-4"
       >
         <div className="pointer-events-auto w-full max-w-md">
-          <div className="wolf-card flex items-center justify-around gap-1 rounded-full border border-wolf-border-soft bg-wolf-charcoal-80/90 px-3 py-2 shadow-[0_25px_65px_-35px_rgba(0,0,0,0.55)] backdrop-blur">
+          <div className="wolf-card flex items-center justify-around gap-1 rounded-lg border border-wolf-border-soft bg-wolf-charcoal-80/90 px-3 py-2 shadow-[0_25px_65px_-35px_rgba(0,0,0,0.55)] backdrop-blur">
             {navigationItems.map(({ key, icon: Icon }) => {
               const isActive = key === activePanel;
 
@@ -73,14 +73,14 @@ export function MobileDenLayout({
                   key={key}
                   type="button"
                   onClick={() => setActivePanel(key)}
-                  className={`flex flex-1 flex-col items-center gap-1 rounded-full px-3 py-2 text-xs uppercase tracking-[0.18em] transition ${
+                  className={`flex flex-1 flex-col items-center gap-1 rounded-lg px-3 py-2 text-xs uppercase tracking-[0.18em] transition ${
                     isActive
                       ? "text-white"
                       : "text-wolf-text-subtle hover:text-white"
                   }`}
                 >
                   <span
-                    className={`flex h-11 w-11 items-center justify-center rounded-full border transition ${
+                    className={`flex h-11 w-11 items-center justify-center rounded-lg border transition ${
                       isActive
                         ? "border-wolf-border-xstrong bg-[linear-gradient(180deg,#c8ff64_0%,#8bea4e_55%,#3b572a_100%)] text-[#0b1407] shadow-[0_0_28px_rgba(186,255,92,0.45)]"
                         : "border-transparent bg-wolf-charcoal-60 text-wolf-emerald"

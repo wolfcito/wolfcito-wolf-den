@@ -34,7 +34,7 @@ export function QuestsGrid() {
           )}`}
         >
           <div className="flex items-start gap-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-wolf-emerald-mid text-wolf-emerald">
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-wolf-emerald-mid text-wolf-emerald">
               <Target className="h-4 w-4" aria-hidden />
             </span>
             <div>

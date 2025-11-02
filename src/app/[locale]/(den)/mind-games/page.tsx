@@ -79,7 +79,7 @@ export default function MindGamesPage() {
                   key={id}
                   type="button"
                   onClick={() => handleCellClick(index)}
-                  className={`flex aspect-square items-center justify-center rounded-xl border-2 text-2xl transition-all duration-200
+                  className={`flex aspect-square items-center justify-center rounded-lg border-2 text-2xl transition-all duration-200
                     ${
                       isSelected
                         ? isBomb
@@ -113,7 +113,7 @@ export default function MindGamesPage() {
               id={mineSelectId}
               value={mineCount}
               onChange={(event) => setMineCount(Number(event.target.value))}
-              className="w-full rounded-xl border border-wolf-border bg-wolf-charcoal-65 px-3 py-2 text-white/85 focus:border-wolf-border-xstrong focus:outline-none"
+              className="w-full rounded-lg border border-wolf-border bg-wolf-charcoal-65 px-3 py-2 text-white/85 focus:border-wolf-border-xstrong focus:outline-none"
             >
               {[1, 2, 3, 24].map((option) => (
                 <option key={option} value={option}>
@@ -135,7 +135,7 @@ export default function MindGamesPage() {
               type="number"
               value={betAmount}
               onChange={(event) => setBetAmount(Number(event.target.value))}
-              className="w-full rounded-xl border border-wolf-border bg-wolf-charcoal-65 px-3 py-2 text-white/85 focus:border-wolf-border-xstrong focus:outline-none"
+              className="w-full rounded-lg border border-wolf-border bg-wolf-charcoal-65 px-3 py-2 text-white/85 focus:border-wolf-border-xstrong focus:outline-none"
             />
           </div>
 
@@ -143,7 +143,7 @@ export default function MindGamesPage() {
             <button
               type="button"
               onClick={startGame}
-              className="flex-1 rounded-full bg-[linear-gradient(180deg,#c8ff64_0%,#8bea4e_55%,#3b572a_100%)] px-4 py-2 font-semibold uppercase tracking-[0.2em] text-[#0b1407] shadow-[0_0_24px_rgba(186,255,92,0.45)] transition hover:shadow-[0_0_30px_rgba(186,255,92,0.55)]"
+              className="flex-1 rounded-lg bg-[linear-gradient(180deg,#c8ff64_0%,#8bea4e_55%,#3b572a_100%)] px-4 py-2 font-semibold uppercase tracking-[0.2em] text-[#0b1407] shadow-[0_0_24px_rgba(186,255,92,0.45)] transition hover:shadow-[0_0_30px_rgba(186,255,92,0.55)]"
             >
               {t("controls.start")}
             </button>
@@ -151,7 +151,7 @@ export default function MindGamesPage() {
               type="button"
               onClick={cashout}
               disabled={!isGameActive}
-              className={`flex-1 rounded-full px-4 py-2 font-semibold uppercase tracking-[0.2em] transition ${
+              className={`flex-1 rounded-lg px-4 py-2 font-semibold uppercase tracking-[0.2em] transition ${
                 isGameActive
                   ? "bg-wolf-emerald-tint text-wolf-emerald hover:bg-wolf-emerald-strong"
                   : "cursor-not-allowed bg-wolf-neutral-haze text-wolf-text-subtle"

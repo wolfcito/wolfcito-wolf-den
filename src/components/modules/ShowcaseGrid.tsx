@@ -29,7 +29,7 @@ export function ShowcaseGrid() {
               href={`https://${project.repo}`}
               className="flex items-center gap-2 text-wolf-foreground/85 transition hover:text-wolf-emerald"
             >
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-wolf-emerald-soft text-wolf-emerald">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-wolf-emerald-soft text-wolf-emerald">
                 <Github className="h-4 w-4" aria-hidden />
               </span>
               {project.repo}
@@ -38,7 +38,7 @@ export function ShowcaseGrid() {
               href={`https://${project.demo}`}
               className="flex items-center gap-2 text-wolf-emerald transition hover:text-wolf-foreground"
             >
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-wolf-emerald-tint text-wolf-emerald">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-wolf-emerald-tint text-wolf-emerald">
                 <Play className="h-4 w-4" aria-hidden />
               </span>
               {project.demo}

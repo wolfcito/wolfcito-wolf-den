@@ -15,7 +15,7 @@ export function MentorBooking() {
     <div className="grid gap-6 text-wolf-foreground lg:grid-cols-[360px_1fr]">
       <div className="wolf-card p-6">
         <div className="flex items-center gap-2">
-          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-wolf-emerald-mid text-wolf-emerald">
+          <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-wolf-emerald-mid text-wolf-emerald">
             <CalendarClock className="h-5 w-5" aria-hidden />
           </span>
           <h3 className="text-lg font-semibold uppercase tracking-[0.18em] text-white/90">
@@ -52,7 +52,7 @@ export function MentorBooking() {
       </div>
       <div className="wolf-card p-6">
         <div className="flex items-center gap-2">
-          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-wolf-emerald-mid text-wolf-emerald">
+          <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-wolf-emerald-mid text-wolf-emerald">
             <NotebookPen className="h-5 w-5" aria-hidden />
           </span>
           <h4 className="text-base font-semibold uppercase tracking-[0.2em] text-white/90">

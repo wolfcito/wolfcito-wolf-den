@@ -46,7 +46,7 @@ export function ActivityRail() {
           {recentItems.map((item) => (
             <li
               key={item.title}
-              className="flex items-center justify-between rounded-xl border border-wolf-border-faint bg-wolf-charcoal-60 px-4 py-3"
+              className="flex items-center justify-between rounded-lg border border-wolf-border-faint bg-wolf-charcoal-60 px-4 py-3"
             >
               <span>{item.title}</span>
               <span className="text-xs text-wolf-text-subtle">

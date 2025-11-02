@@ -604,7 +604,7 @@ body::after {
   color: var(--den-muted);
 }
 
-button.rounded-full,
-a.rounded-full {
+button.rounded-lg,
+a.rounded-lg {
   border-radius: var(--den-radius-xl);
 }
