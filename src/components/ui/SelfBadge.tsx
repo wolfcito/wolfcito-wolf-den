@@ -22,7 +22,7 @@ const statusTone: Record<Required<SelfBadgeProps>["status"], string> = {
   pending:
     "border-[#2a2f36] bg-[rgba(20,24,29,0.72)] text-[#c2c7d2] [&>svg]:text-[#89e24a]",
   verified:
-    "border-[#4ca22a] bg-[#89e24a] text-[#09140a] [&>svg]:text-[#04140c]",
+    "border-[#4ca22a] bg-[#1a1f24] text-[#baff5c] [&>svg]:text-[#89e24a]",
   error:
     "border-wolf-error-border bg-wolf-error-soft text-[#ffb1b1] backdrop-blur-sm [&>svg]:text-[#ff7a7a]",
 };

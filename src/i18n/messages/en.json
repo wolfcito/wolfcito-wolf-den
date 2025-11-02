@@ -726,7 +726,8 @@
     "description": "Connect a wallet on Celo to spray CELO or ERC20 rewards across your roster.",
     "actions": {
       "connect": "Connect Wallet",
-      "connected": "Connected: {address}",
+      "connected": "Celo: {address}",
+      "logout": "Logout",
       "remove": "Remove",
       "addRecipient": "Add Recipient",
       "approve": "Approve Spend",

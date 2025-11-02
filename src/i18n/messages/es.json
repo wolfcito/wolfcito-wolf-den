@@ -726,7 +726,8 @@
     "description": "Conecta una wallet en Celo para rociar recompensas en CELO o ERC20 a múltiples destinatarios.",
     "actions": {
       "connect": "Conectar wallet",
-      "connected": "Conectado: {address}",
+      "connected": "Celo: {address}",
+      "logout": "Cerrar sesión",
       "remove": "Eliminar",
       "addRecipient": "Agregar destinatario",
       "approve": "Aprobar gasto",

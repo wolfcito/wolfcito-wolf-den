@@ -38,8 +38,6 @@ type WalletBroadcastDetail = {
   provider: BrowserProvider | null;
 };
 
-const CELO_CHAIN_ID = 42220;
-
 const broadcastWalletState = (detail: WalletBroadcastDetail) => {
   if (typeof window === "undefined") {
     return;
@@ -172,6 +170,21 @@ export function StatusStrip({
     }
   };
 
+  const handleWalletDisconnect = () => {
+    setProvider(null);
+    setWalletState({
+      address: null,
+      isConnecting: false,
+      chainId: null,
+    });
+    broadcastWalletState({
+      address: null,
+      isConnecting: false,
+      chainId: null,
+      provider: null,
+    });
+  };
+
   useEffect(() => {
     if (typeof window === "undefined" || !window.ethereum) {
       return;
@@ -285,17 +298,20 @@ export function StatusStrip({
     };
   }, []);
 
-  const isCeloReady = walletState.chainId === CELO_CHAIN_ID;
-
   const walletButtonLabel = walletState.isConnecting
     ? "Connecting..."
-    : walletState.address
+    : translateSpray("actions.connect", "Connect Wallet");
+
+  const walletInfoLabel =
+    walletState.address != null
       ? translateSpray(
-        "actions.connected",
-        `Connected: ${formatAddress(walletState.address)}`,
-        { address: formatAddress(walletState.address) },
-      )
-      : translateSpray("actions.connect", "Connect Wallet");
+          "actions.connected",
+          `Celo: ${formatAddress(walletState.address)}`,
+          { address: formatAddress(walletState.address) },
+        )
+      : "";
+
+  const logoutLabel = translateSpray("actions.logout", "Logout");
 
   return (
     <div
@@ -306,26 +322,29 @@ export function StatusStrip({
         <SelfBadge status={isSelfVerified ? "verified" : "pending"} />
       </div>
       <div className="flex items-center gap-2">
-        <button
-          type="button"
-          onClick={handleWalletConnect}
-          disabled={walletState.isConnecting}
-          className="inline-flex items-center gap-3 rounded-md border px-3 py-1 text-[0.75rem] font-semibold uppercase tracking-[0.18em] transition cursor-pointer"
-        >
-          {walletButtonLabel}
-        </button>
         {walletState.address ? (
-          <span
-            className={`wolf-pill text-xs uppercase tracking-[0.26em] ${isCeloReady
-              ? "bg-wolf-emerald-soft text-wolf-emerald"
-              : "bg-wolf-charcoal-70 text-wolf-text-subtle"
-              }`}
+          <>
+            <span className="inline-flex items-center gap-3 rounded-md border border-[#2a2f36] bg-[#14181f] px-3 py-1 text-[0.75rem] font-semibold uppercase tracking-[0.18em] text-[#c2c7d2]">
+              {walletInfoLabel}
+            </span>
+            <button
+              type="button"
+              onClick={handleWalletDisconnect}
+              className="inline-flex items-center gap-3 rounded-md border border-[#2a2f36] bg-transparent px-3 py-1 text-[0.75rem] font-semibold uppercase tracking-[0.18em] text-[#ffb1b1] transition hover:border-wolf-error-border hover:text-[#ff7a7a]"
+            >
+              {logoutLabel}
+            </button>
+          </>
+        ) : (
+          <button
+            type="button"
+            onClick={handleWalletConnect}
+            disabled={walletState.isConnecting}
+            className="inline-flex items-center gap-3 rounded-md border px-3 py-1 text-[0.75rem] font-semibold uppercase tracking-[0.18em] transition cursor-pointer disabled:cursor-not-allowed disabled:opacity-70"
           >
-            {isCeloReady
-              ? translateSpray("network.ready", "Celo mainnet detected")
-              : translateSpray("network.switch", "Switch to Celo mainnet")}
-          </span>
-        ) : null}
+            {walletButtonLabel}
+          </button>
+        )}
       </div>
       <div className="flex items-center gap-2">
         {socialLinks.map((link) => (
