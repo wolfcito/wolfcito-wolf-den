@@ -1,6 +1,14 @@
 "use client";
 
-import { BrowserProvider } from "ethers";
+import {
+  useAppKit,
+  useAppKitAccount,
+  useAppKitNetwork,
+  useAppKitProvider,
+  useAppKitState,
+  useDisconnect,
+} from "@reown/appkit/react";
+import { BrowserProvider, type Eip1193Provider } from "ethers";
 import { useTranslations } from "next-intl";
 import { type ComponentProps, useEffect, useState } from "react";
 import HowlBadge from "@/components/ui/HowlBadge";
@@ -9,22 +17,6 @@ import {
   getSelfVerification,
   subscribeToSelfVerification,
 } from "@/lib/selfVerification";
-
-declare global {
-  interface Window {
-    ethereum?: {
-      request: (args: {
-        method: string;
-        params?: unknown[];
-      }) => Promise<unknown>;
-      on?: (event: string, listener: (...args: unknown[]) => void) => void;
-      removeListener?: (
-        event: string,
-        listener: (...args: unknown[]) => void,
-      ) => void;
-    };
-  }
-}
 
 type StatusStripProps = {
   level?: ComponentProps<typeof HowlBadge>["level"];
@@ -61,14 +53,12 @@ export function StatusStrip({
   const tSpray = useTranslations("SprayDisperser");
   const [isSelfVerified, setIsSelfVerified] = useState(false);
   const [provider, setProvider] = useState<BrowserProvider | null>(null);
-  const [isManuallyDisconnected, setIsManuallyDisconnected] = useState(false);
-  const [walletState, setWalletState] = useState<
-    Omit<WalletBroadcastDetail, "provider">
-  >({
-    address: null,
-    isConnecting: false,
-    chainId: null,
-  });
+  const { open } = useAppKit();
+  const { disconnect } = useDisconnect();
+  const { address, isConnected } = useAppKitAccount();
+  const { caipNetwork, chainId } = useAppKitNetwork();
+  const { walletProvider } = useAppKitProvider<Eip1193Provider>("eip155");
+  const { loading } = useAppKitState();
 
   const socialLinks = [
     {
@@ -132,144 +122,47 @@ export function StatusStrip({
       ? address
       : `${address.slice(0, 6)}...${address.slice(-4)}`;
 
-  const handleWalletConnect = async () => {
-    if (walletState.isConnecting) {
-      return;
+  const normalizeChainId = (
+    value: number | string | undefined,
+  ): number | null => {
+    if (typeof value === "number") {
+      return Number.isFinite(value) ? value : null;
     }
-    if (typeof window === "undefined" || !window.ethereum) {
-      return;
+    if (typeof value === "string" && value.length > 0) {
+      if (value.startsWith("eip155:")) {
+        const [, raw] = value.split(":");
+        const parsed = Number.parseInt(raw ?? "", 10);
+        return Number.isNaN(parsed) ? null : parsed;
+      }
+      if (value.startsWith("0x")) {
+        const parsed = Number.parseInt(value, 16);
+        return Number.isNaN(parsed) ? null : parsed;
+      }
+      const parsed = Number.parseInt(value, 10);
+      return Number.isNaN(parsed) ? null : parsed;
     }
-    setWalletState((prev) => ({ ...prev, isConnecting: true }));
-    try {
-      const nextProvider = new BrowserProvider(window.ethereum);
-      await nextProvider.send("eth_requestAccounts", []);
-      const signer = await nextProvider.getSigner();
-      const address = await signer.getAddress();
-      const network = await nextProvider.getNetwork();
-      setProvider(nextProvider);
-      setIsManuallyDisconnected(false);
-      setWalletState({
-        address,
-        isConnecting: false,
-        chainId: Number(network.chainId),
-      });
-    } catch {
-      setProvider(null);
-      setWalletState({
-        address: null,
-        isConnecting: false,
-        chainId: null,
-      });
-    }
+    return null;
   };
 
-  const handleWalletDisconnect = () => {
-    setProvider(null);
-    setIsManuallyDisconnected(true);
-    setWalletState({
-      address: null,
-      isConnecting: false,
-      chainId: null,
-    });
-  };
+  const normalizedChainId = normalizeChainId(chainId);
 
   useEffect(() => {
-    if (typeof window === "undefined" || !window.ethereum) {
+    if (!walletProvider || !isConnected) {
+      setProvider(null);
       return;
     }
-    let mounted = true;
-
-    const syncExisting = async () => {
-      try {
-        const { ethereum } = window;
-        if (!ethereum?.request) {
-          return;
-        }
-        const accounts = (await ethereum.request({
-          method: "eth_accounts",
-        })) as string[] | undefined;
-        if (!mounted || !accounts || accounts.length === 0) {
-          return;
-        }
-        if (isManuallyDisconnected) {
-          return;
-        }
-        const nextProvider = new BrowserProvider(ethereum);
-        const network = await nextProvider.getNetwork();
-        setProvider(nextProvider);
-        setWalletState({
-          address: accounts[0],
-          isConnecting: false,
-          chainId: Number(network.chainId),
-        });
-      } catch {
-        // ignore
-      }
-    };
-
-    void syncExisting();
-
-    const handleAccountsChanged = async (accounts: unknown) => {
-      if (!Array.isArray(accounts) || accounts.length === 0) {
-        setProvider(null);
-        setWalletState({
-          address: null,
-          isConnecting: false,
-          chainId: null,
-        });
-        return;
-      }
-      if (isManuallyDisconnected) {
-        return;
-      }
-      const { ethereum } = window;
-      if (!ethereum) {
-        return;
-      }
-      const nextProvider = new BrowserProvider(ethereum);
-      const network = await nextProvider.getNetwork();
-      setProvider(nextProvider);
-      setWalletState({
-        address: String(accounts[0]),
-        isConnecting: false,
-        chainId: Number(network.chainId),
-      });
-    };
-
-    const handleChainChanged = (newChainId: unknown) => {
-      if (isManuallyDisconnected) {
-        return;
-      }
-      if (typeof newChainId === "string") {
-        const parsed = Number.parseInt(newChainId, 16);
-        setWalletState((prev) => ({
-          ...prev,
-          chainId: Number.isNaN(parsed) ? prev.chainId : parsed,
-        }));
-      }
-    };
-
-    window.ethereum.on?.("accountsChanged", handleAccountsChanged);
-    window.ethereum.on?.("chainChanged", handleChainChanged);
-
-    return () => {
-      mounted = false;
-      window.ethereum?.removeListener?.(
-        "accountsChanged",
-        handleAccountsChanged,
-      );
-      window.ethereum?.removeListener?.("chainChanged", handleChainChanged);
-    };
-  }, [isManuallyDisconnected]);
+    const nextProvider = new BrowserProvider(walletProvider);
+    setProvider(nextProvider);
+  }, [walletProvider, isConnected]);
 
   useEffect(() => {
     broadcastWalletState({
-      address: walletState.address,
-      isConnecting: walletState.isConnecting,
-      chainId: walletState.chainId,
+      address: address ?? null,
+      isConnecting: loading,
+      chainId: normalizedChainId,
       provider,
     });
-  }, [walletState, provider]);
+  }, [address, loading, normalizedChainId, provider]);
 
   useEffect(() => {
     return () => {
@@ -282,16 +175,33 @@ export function StatusStrip({
     };
   }, []);
 
-  const walletButtonLabel = walletState.isConnecting
+  const handleWalletConnect = () => {
+    if (loading) {
+      return;
+    }
+    open();
+  };
+
+  const handleWalletDisconnect = async () => {
+    try {
+      await disconnect();
+    } finally {
+      setProvider(null);
+    }
+  };
+
+  const walletButtonLabel = loading
     ? "Connecting..."
     : translateSpray("actions.connect", "Connect Wallet");
 
+  const connectedChainName = caipNetwork?.name ?? "Wallet";
+
   const walletInfoLabel =
-    walletState.address != null
+    address != null
       ? translateSpray(
           "actions.connected",
-          `Celo: ${formatAddress(walletState.address)}`,
-          { address: formatAddress(walletState.address) },
+          `${connectedChainName}: ${formatAddress(address)}`,
+          { address: formatAddress(address) },
         )
       : "";
 
@@ -306,7 +216,7 @@ export function StatusStrip({
         <SelfBadge status={isSelfVerified ? "verified" : "pending"} />
       </div>
       <div className="flex items-center gap-2">
-        {walletState.address ? (
+        {isConnected && address ? (
           <>
             <span className="inline-flex items-center gap-3 rounded-md border border-[#2a2f36] bg-[#14181f] px-3 py-1 text-[0.75rem] font-semibold uppercase tracking-[0.18em] text-[#c2c7d2]">
               {walletInfoLabel}
@@ -323,7 +233,7 @@ export function StatusStrip({
           <button
             type="button"
             onClick={handleWalletConnect}
-            disabled={walletState.isConnecting}
+            disabled={loading}
             className="inline-flex items-center gap-3 rounded-md border px-3 py-1 text-[0.75rem] font-semibold uppercase tracking-[0.18em] transition cursor-pointer disabled:cursor-not-allowed disabled:opacity-70"
           >
             {walletButtonLabel}

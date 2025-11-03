@@ -47,20 +47,23 @@ type TransactionRecord = {
   errorMessage?: string;
 };
 
-declare global {
-  interface Window {
-    ethereum?: {
-      request: (args: {
-        method: string;
-        params?: unknown[];
-      }) => Promise<unknown>;
-      on?: (event: string, listener: (...args: unknown[]) => void) => void;
-      removeListener?: (
-        event: string,
-        listener: (...args: unknown[]) => void,
-      ) => void;
-    };
+type EthereumProvider = {
+  request: (args: { method: string; params?: unknown[] }) => Promise<unknown>;
+  on?: (event: string, listener: (...args: unknown[]) => void) => void;
+  removeListener?: (
+    event: string,
+    listener: (...args: unknown[]) => void,
+  ) => void;
+};
+
+function getEthereum(): EthereumProvider | undefined {
+  if (typeof window === "undefined") {
+    return undefined;
   }
+  const { ethereum } = window as typeof window & {
+    ethereum?: EthereumProvider;
+  };
+  return ethereum;
 }
 
 function createRow(): RecipientRow {
@@ -123,7 +126,8 @@ export default function SprayDisperser() {
   const tips = t.raw("tips.items") as string[];
 
   useEffect(() => {
-    if (typeof window === "undefined" || !window.ethereum) {
+    const ethereum = getEthereum();
+    if (!ethereum) {
       return;
     }
 
@@ -143,15 +147,12 @@ export default function SprayDisperser() {
       }
     };
 
-    window.ethereum.on?.("accountsChanged", handleAccountsChanged);
-    window.ethereum.on?.("chainChanged", handleChainChanged);
+    ethereum.on?.("accountsChanged", handleAccountsChanged);
+    ethereum.on?.("chainChanged", handleChainChanged);
 
     return () => {
-      window.ethereum?.removeListener?.(
-        "accountsChanged",
-        handleAccountsChanged,
-      );
-      window.ethereum?.removeListener?.("chainChanged", handleChainChanged);
+      ethereum.removeListener?.("accountsChanged", handleAccountsChanged);
+      ethereum.removeListener?.("chainChanged", handleChainChanged);
     };
   }, []);
 
@@ -246,13 +247,14 @@ export default function SprayDisperser() {
   }, []);
 
   async function ensureCeloNetwork() {
-    if (typeof window === "undefined" || !window.ethereum) {
+    const ethereum = getEthereum();
+    if (!ethereum) {
       setError(t("errors.noWallet"));
       return false;
     }
 
     try {
-      await window.ethereum.request({
+      await ethereum.request({
         method: "wallet_switchEthereumChain",
         params: [{ chainId: CELO_CHAIN_HEX }],
       });
@@ -262,7 +264,7 @@ export default function SprayDisperser() {
       const errorWithCode = switchError as { code?: number };
       if (errorWithCode.code === 4902) {
         try {
-          await window.ethereum.request({
+          await ethereum.request({
             method: "wallet_addEthereumChain",
             params: [
               {

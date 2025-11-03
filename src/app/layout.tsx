@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { DM_Sans, Geist_Mono } from "next/font/google";
+import AppKitProvider from "@/providers/AppKitProvider";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -44,7 +45,7 @@ export default function RootLayout({
       <body className={`${dmSans.variable} ${geistMono.variable} antialiased`}>
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: theme bootstrap */}
         <script dangerouslySetInnerHTML={{ __html: themeInitializer }} />
-        {children}
+        <AppKitProvider>{children}</AppKitProvider>
       </body>
     </html>
   );

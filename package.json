@@ -13,6 +13,8 @@
     "bmad:validate": "bmad-method validate"
   },
   "dependencies": {
+    "@reown/appkit": "^1.5.2",
+    "@reown/appkit-adapter-ethers": "^1.5.2",
     "@selfxyz/core": "1.0.8",
     "@selfxyz/qrcode": "1.0.11",
     "clsx": "^2.1.1",
