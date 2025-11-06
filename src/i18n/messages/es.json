@@ -749,6 +749,9 @@
       "tokenPlaceholder": "0x...",
       "tokenLoading": "Cargando metadata del token...",
       "tokenResolved": "{symbol} detectado · {decimals} decimales",
+      "trustedTokenLabel": "Token de confianza (opcional)",
+      "trustedTokenPlaceholder": "Selecciona un token de confianza o elige personalizado",
+      "useCustom": "Usar personalizado",
       "recipientLabel": "Destinatario #{index}",
       "addressPlaceholder": "Wallet del destinatario",
       "amountPlaceholder": "Monto"

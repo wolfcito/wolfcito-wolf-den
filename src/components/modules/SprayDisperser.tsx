@@ -9,7 +9,7 @@ import {
   parseUnits,
 } from "ethers";
 import { useTranslations } from "next-intl";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const SPRAY_ADDRESS = (
   process.env.NEXT_PUBLIC_SPRAY_ADDRESS ??
@@ -28,6 +28,16 @@ const ERC20_ABI = [
   "function allowance(address owner, address spender) view returns (uint256)",
   "function decimals() view returns (uint8)",
   "function symbol() view returns (string)",
+];
+
+// Trusted ERC20 tokens (Celo mainnet)
+// Users can select from this list or enter any ERC20 address manually.
+const TRUSTED_TOKENS: Array<{ label: string; address: string }> = [
+  {
+    label: "Celo Colombian Peso (cCOP)",
+    address: "0x8A567e2aE79CA692Bd748aB832081C45de4041eA",
+  },
+  // Add more trusted tokens below as needed, keeping cCOP first in the list
 ];
 
 type RecipientRow = {
@@ -114,12 +124,18 @@ export default function SprayDisperser() {
   const [isApproving, setIsApproving] = useState(false);
   const [mode, setMode] = useState<"native" | "token">("native");
   const [tokenAddress, setTokenAddress] = useState("");
+  const [selectedTrustedToken, setSelectedTrustedToken] = useState<string>("");
+  const [isTrustedOpen, setIsTrustedOpen] = useState(false);
+  const trustedDropdownRef = useRef<HTMLDivElement | null>(null);
   const [tokenInfo, setTokenInfo] = useState<{
     symbol: string;
     decimals: number;
   } | null>(null);
   const [isFetchingTokenInfo, setIsFetchingTokenInfo] = useState(false);
-  const [rows, setRows] = useState<RecipientRow[]>([createRow()]);
+  // Use a deterministic initial row to avoid SSR/CSR mismatch from Math.random/Date.now()
+  const [rows, setRows] = useState<RecipientRow[]>([
+    { id: "initial", address: "", amount: "" },
+  ]);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [history, setHistory] = useState<TransactionRecord[]>([]);
@@ -203,6 +219,33 @@ export default function SprayDisperser() {
       isCancelled = true;
     };
   }, [provider, tokenAddress, mode, t]);
+
+  // When the user selects a trusted token, keep the address input in sync
+  useEffect(() => {
+    if (mode !== "token") return;
+    if (!selectedTrustedToken) return;
+    const found = TRUSTED_TOKENS.find((t) => t.address === selectedTrustedToken);
+    if (found) {
+      setTokenAddress(found.address);
+    }
+  }, [selectedTrustedToken, mode]);
+
+  // Close the trusted token dropdown on outside click
+  useEffect(() => {
+    if (!isTrustedOpen) return;
+    function handleClickOutside(event: MouseEvent) {
+      const target = event.target as Node | null;
+      if (
+        trustedDropdownRef.current &&
+        target &&
+        !trustedDropdownRef.current.contains(target)
+      ) {
+        setIsTrustedOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isTrustedOpen]);
 
   const totalEntered = useMemo(() => {
     const rawTotal = rows.reduce(
@@ -657,32 +700,114 @@ export default function SprayDisperser() {
             </div>
 
             {mode === "token" ? (
-              <div className="mt-6 space-y-2">
-                <label
-                  htmlFor="token-address-input"
-                  className="text-xs uppercase tracking-[0.32em] text-wolf-text-subtle"
-                >
-                  {t("form.tokenLabel")}
-                </label>
-                <input
-                  id="token-address-input"
-                  value={tokenAddress}
-                  onChange={(event) => setTokenAddress(event.target.value)}
-                  placeholder={t("form.tokenPlaceholder")}
-                  className="w-full rounded-lg border border-wolf-border bg-wolf-charcoal-85 px-4 py-3 text-sm text-white/80 placeholder:text-white/30 focus:border-wolf-emerald focus:outline-none"
-                />
-                {isFetchingTokenInfo ? (
-                  <p className="text-xs text-wolf-text-subtle">
-                    {t("form.tokenLoading")}
-                  </p>
-                ) : tokenInfo ? (
-                  <p className="text-xs text-wolf-text-subtle">
-                    {t("form.tokenResolved", {
-                      symbol: tokenInfo.symbol,
-                      decimals: tokenInfo.decimals,
-                    })}
-                  </p>
-                ) : null}
+              <div className="mt-6 space-y-3">
+                <div className="space-y-2">
+                  <label
+                    htmlFor="trusted-token-select"
+                    className="text-xs uppercase tracking-[0.32em] text-wolf-text-subtle"
+                  >
+                    {translate("form.trustedTokenLabel", "Trusted token (optional)")}
+                  </label>
+                  <div
+                    ref={trustedDropdownRef}
+                    className="relative"
+                    id="trusted-token-select"
+                  >
+                    <button
+                      type="button"
+                      aria-haspopup="listbox"
+                      aria-expanded={isTrustedOpen}
+                      aria-controls="trusted-token-options"
+                      onClick={() => setIsTrustedOpen((v) => !v)}
+                    className="w-full rounded-lg border border-wolf-border bg-wolf-panel px-4 py-3 text-left text-sm text-white/80 focus:border-wolf-emerald focus:outline-none"
+                    >
+                      {selectedTrustedToken
+                        ? TRUSTED_TOKENS.find(
+                            (t) => t.address === selectedTrustedToken,
+                          )?.label ?? ""
+                        : translate(
+                            "form.trustedTokenPlaceholder",
+                            "Select a trusted token or choose custom",
+                          )}
+                    </button>
+                    {isTrustedOpen ? (
+                      <ul
+                        id="trusted-token-options"
+                        role="listbox"
+                        className="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-md border border-wolf-border bg-wolf-panel py-1 text-sm text-white/80 shadow-lg"
+                      >
+                        <li
+                          role="option"
+                          aria-selected={!selectedTrustedToken}
+                          className="cursor-pointer px-3 py-2 hover:bg-wolf-neutral-haze"
+                          onClick={() => {
+                            setSelectedTrustedToken("");
+                            setIsTrustedOpen(false);
+                          }}
+                        >
+                          {translate(
+                            "form.trustedTokenPlaceholder",
+                            "Select a trusted token or choose custom",
+                          )}
+                        </li>
+                        {TRUSTED_TOKENS.map((tok) => (
+                          <li
+                            key={tok.address}
+                            role="option"
+                            aria-selected={selectedTrustedToken === tok.address}
+                            className="cursor-pointer px-3 py-2 hover:bg-wolf-neutral-haze"
+                            onClick={() => {
+                              setSelectedTrustedToken(tok.address);
+                              setIsTrustedOpen(false);
+                            }}
+                          >
+                            {tok.label}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label
+                      htmlFor="token-address-input"
+                      className="text-xs uppercase tracking-[0.32em] text-wolf-text-subtle"
+                    >
+                      {t("form.tokenLabel")}
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedTrustedToken("");
+                        setTokenAddress("");
+                      }}
+                      className="text-[11px] uppercase tracking-[0.28em] text-wolf-emerald hover:text-white"
+                    >
+                      {translate("form.useCustom", "Use custom")}
+                    </button>
+                  </div>
+                  <input
+                    id="token-address-input"
+                    value={tokenAddress}
+                    onChange={(event) => setTokenAddress(event.target.value)}
+                    placeholder={t("form.tokenPlaceholder")}
+                    className="w-full rounded-lg border border-wolf-border bg-wolf-panel px-4 py-3 text-sm text-white/80 placeholder:text-white/30 focus:border-wolf-emerald focus:outline-none"
+                  />
+                  {isFetchingTokenInfo ? (
+                    <p className="text-xs text-wolf-text-subtle">
+                      {t("form.tokenLoading")}
+                    </p>
+                  ) : tokenInfo ? (
+                    <p className="text-xs text-wolf-text-subtle">
+                      {t("form.tokenResolved", {
+                        symbol: tokenInfo.symbol,
+                        decimals: tokenInfo.decimals,
+                      })}
+                    </p>
+                  ) : null}
+                </div>
               </div>
             ) : null}
 
@@ -710,7 +835,7 @@ export default function SprayDisperser() {
                         updateRow(row.id, "address", event.target.value)
                       }
                       placeholder={t("form.addressPlaceholder")}
-                      className="flex-1 rounded-lg border border-wolf-border bg-wolf-charcoal-70 px-4 py-3 text-sm text-white/80 placeholder:text-white/30 focus:border-wolf-emerald focus:outline-none"
+                      className="flex-1 rounded-lg border border-wolf-border bg-wolf-panel px-4 py-3 text-sm text-white/80 placeholder:text-white/30 focus:border-wolf-emerald focus:outline-none"
                     />
                     <input
                       value={row.amount}
@@ -718,7 +843,7 @@ export default function SprayDisperser() {
                         updateRow(row.id, "amount", event.target.value)
                       }
                       placeholder={t("form.amountPlaceholder")}
-                      className="w-full rounded-lg border border-wolf-border bg-wolf-charcoal-70 px-4 py-3 text-sm text-white/80 placeholder:text-white/30 focus:border-wolf-emerald focus:outline-none md:w-40"
+                      className="w-full rounded-lg border border-wolf-border bg-wolf-panel px-4 py-3 text-sm text-white/80 placeholder:text-white/30 focus:border-wolf-emerald focus:outline-none md:w-40"
                     />
                   </div>
                 </div>

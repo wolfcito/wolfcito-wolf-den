@@ -749,6 +749,9 @@
       "tokenPlaceholder": "0x...",
       "tokenLoading": "Resolving token metadata...",
       "tokenResolved": "{symbol} detected · {decimals} decimals",
+      "trustedTokenLabel": "Trusted token (optional)",
+      "trustedTokenPlaceholder": "Select a trusted token or choose custom",
+      "useCustom": "Use custom",
       "recipientLabel": "Recipient #{index}",
       "addressPlaceholder": "Recipient wallet address",
       "amountPlaceholder": "Amount"
