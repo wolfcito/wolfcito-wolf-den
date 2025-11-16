@@ -209,7 +209,7 @@ export function StatusStrip({
 
   return (
     <div
-      className={`flex items-center gap-4 bg-[#14181f]/70 rounded-lg p-2 ${className}`}
+      className={`flex flex-wrap items-center gap-2 md:gap-4 bg-[#14181f]/70 rounded-lg p-2 ${className}`}
     >
       <div className="flex items-center gap-3">
         <HowlBadge level={level} />

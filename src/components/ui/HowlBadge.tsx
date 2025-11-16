@@ -27,7 +27,9 @@ export function HowlBadge({
   return (
     <span className={`${baseClasses} ${levelTone[level]} ${className}`.trim()}>
       <MoonStar className="h-4 w-4" aria-hidden />
-      <span className="truncate">{t(`levels.${level}`)}</span>
+      <span className="hidden sm:inline-block sm:truncate">
+        {t(`levels.${level}`)}
+      </span>
     </span>
   );
 }

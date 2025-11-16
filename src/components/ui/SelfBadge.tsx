@@ -54,7 +54,9 @@ export function SelfBadge({
         }`}
         aria-hidden
       />
-      <span className="truncate">{t(`statuses.${status}`)}</span>
+      <span className="hidden sm:inline-block sm:truncate">
+        {t(`statuses.${status}`)}
+      </span>
     </span>
   );
 }
