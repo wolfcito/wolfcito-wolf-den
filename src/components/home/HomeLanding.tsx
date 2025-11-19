@@ -3,8 +3,8 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { useState } from "react";
-import { Link } from "@/i18n/routing";
 import ConnectWalletButton from "@/components/ui/ConnectWalletButton";
+import { Link } from "@/i18n/routing";
 
 const HOW_IT_WORKS_STEPS = [
   {
