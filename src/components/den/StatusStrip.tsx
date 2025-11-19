@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  useAppKit,
   useAppKitAccount,
   useAppKitNetwork,
   useAppKitProvider,
@@ -11,6 +10,7 @@ import {
 import { BrowserProvider, type Eip1193Provider } from "ethers";
 import { useTranslations } from "next-intl";
 import { type ComponentProps, useEffect, useState } from "react";
+import ConnectWalletButton from "@/components/ui/ConnectWalletButton";
 import HowlBadge from "@/components/ui/HowlBadge";
 import SelfBadge from "@/components/ui/SelfBadge";
 import {
@@ -53,7 +53,6 @@ export function StatusStrip({
   const tSpray = useTranslations("SprayDisperser");
   const [isSelfVerified, setIsSelfVerified] = useState(false);
   const [provider, setProvider] = useState<BrowserProvider | null>(null);
-  const { open } = useAppKit();
   const { disconnect } = useDisconnect();
   const { address, isConnected } = useAppKitAccount();
   const { caipNetwork, chainId } = useAppKitNetwork();
@@ -175,13 +174,6 @@ export function StatusStrip({
     };
   }, []);
 
-  const handleWalletConnect = () => {
-    if (loading) {
-      return;
-    }
-    open();
-  };
-
   const handleWalletDisconnect = async () => {
     try {
       await disconnect();
@@ -226,14 +218,12 @@ export function StatusStrip({
             </button>
           </>
         ) : (
-          <button
-            type="button"
-            onClick={handleWalletConnect}
-            disabled={loading}
+          <ConnectWalletButton
             className="inline-flex items-center gap-3 rounded-md border px-3 py-1 text-[0.75rem] font-semibold uppercase tracking-[0.18em] transition cursor-pointer disabled:cursor-not-allowed disabled:opacity-70"
-          >
-            {walletButtonLabel}
-          </button>
+            connectLabel={walletButtonLabel}
+            connectedLabel={walletButtonLabel}
+            disabled={loading}
+          />
         )}
       </div>
       <div className="order-2 sm:order-1 flex items-center gap-3">
