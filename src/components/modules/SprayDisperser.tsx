@@ -16,7 +16,7 @@ import {
   parseEther,
   parseUnits,
 } from "ethers";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   DEFAULT_SPRAY_NETWORK_KEY,
@@ -51,6 +51,9 @@ type TransactionRecord = {
   timestamp: string;
   recipients: number;
   totalFormatted: string;
+  tokenSymbol: string;
+  networkKey: string;
+  sequence: number;
   errorMessage?: string;
 };
 
@@ -85,6 +88,26 @@ function formatAddress(address: string) {
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
 }
 
+function formatHash(hash: string) {
+  if (hash.length <= 10) {
+    return hash;
+  }
+  return `${hash.slice(0, 6)}...${hash.slice(-5)}`;
+}
+
+function getExplorerTxUrl(networkKey: string, txHash: string) {
+  const explorerBase =
+    SPRAY_NETWORKS[networkKey]?.explorerUrls?.[0] ??
+    SPRAY_NETWORKS[DEFAULT_SPRAY_NETWORK_KEY]?.explorerUrls?.[0];
+  if (!explorerBase) {
+    return null;
+  }
+  const trimmedBase = explorerBase.endsWith("/")
+    ? explorerBase.slice(0, -1)
+    : explorerBase;
+  return `${trimmedBase}/tx/${txHash}`;
+}
+
 function isSuccessfulReceiptStatus(status: unknown) {
   if (status == null) {
     return true;
@@ -110,6 +133,7 @@ const APPKIT_NETWORKS_BY_KEY: Partial<Record<string, AppKitNetwork>> = {
 
 export default function SprayDisperser() {
   const t = useTranslations("SprayDisperser");
+  const locale = useLocale();
   const { open } = useAppKit();
   const { switchNetwork } = useAppKitNetwork();
   const translate = (
@@ -149,6 +173,7 @@ export default function SprayDisperser() {
   const [feedback, setFeedback] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [history, setHistory] = useState<TransactionRecord[]>([]);
+  const spraySequenceRef = useRef(0);
   const tips = t.raw("tips.items") as string[];
   const selectedNetwork =
     SPRAY_NETWORKS[selectedNetworkKey] ??
@@ -270,10 +295,23 @@ export default function SprayDisperser() {
     );
     return Number.isFinite(rawTotal) ? rawTotal : 0;
   }, [rows]);
+  const activityTimestampFormatter = useMemo(
+    () =>
+      new Intl.DateTimeFormat(locale, {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+      }),
+    [locale],
+  );
 
   const isTargetNetworkReady =
     signerAddress != null && chainId === selectedNetwork.chainId;
   const nativeSymbol = selectedNetwork.nativeCurrency.symbol;
+  const displayedHistory = history.slice(0, 5);
+  const hasMoreHistory = history.length > displayedHistory.length;
 
   const handleNetworkSelect = (networkKey: string) => {
     setSelectedNetworkKey(networkKey);
@@ -441,8 +479,11 @@ export default function SprayDisperser() {
     setRows((prev) => prev.filter((row) => row.id !== id));
   }
 
-  function addHistoryRecord(record: TransactionRecord) {
-    setHistory((prev) => [record, ...prev].slice(0, 10));
+  function addHistoryRecord(record: Omit<TransactionRecord, "sequence">) {
+    spraySequenceRef.current += 1;
+    setHistory((prev) =>
+      [{ ...record, sequence: spraySequenceRef.current }, ...prev].slice(0, 10),
+    );
   }
 
   function buildTokenAmounts(decimals: number) {
@@ -488,6 +529,8 @@ export default function SprayDisperser() {
     }
 
     const { total: totalValue } = parsed;
+    const totalAmountLabel = totalEntered.toFixed(4);
+    const tokenSymbolLabel = tokenInfo?.symbol ?? t("summary.tokenPlaceholder");
 
     setIsApproving(true);
     setError(null);
@@ -517,8 +560,9 @@ export default function SprayDisperser() {
         status: "pending",
         timestamp: new Date().toISOString(),
         recipients: rows.length,
-        totalFormatted:
-          `${totalEntered.toFixed(4)} ${tokenInfo?.symbol ?? ""}`.trim(),
+        totalFormatted: totalAmountLabel,
+        tokenSymbol: tokenSymbolLabel,
+        networkKey: selectedNetworkKey,
       });
       setFeedback(t("messages.approvalSent"));
       await tx.wait();
@@ -600,7 +644,9 @@ export default function SprayDisperser() {
           status: "pending",
           timestamp: new Date().toISOString(),
           recipients: recipients.length,
-          totalFormatted: `${formatEther(totalValue)} ${nativeSymbol}`,
+          totalFormatted: formatEther(totalValue),
+          tokenSymbol: nativeSymbol,
+          networkKey: selectedNetworkKey,
         });
         setFeedback(t("messages.transactionSent"));
         const receipt = await tx.wait();
@@ -667,7 +713,9 @@ export default function SprayDisperser() {
           status: "pending",
           timestamp: new Date().toISOString(),
           recipients: recipients.length,
-          totalFormatted: `${totalEntered.toFixed(4)} ${tokenInfo.symbol}`,
+          totalFormatted: totalEntered.toFixed(4),
+          tokenSymbol: tokenInfo.symbol,
+          networkKey: selectedNetworkKey,
         });
         setFeedback(t("messages.transactionSent"));
         const receipt = await tx.wait();
@@ -705,6 +753,24 @@ export default function SprayDisperser() {
     isSubmitting ||
     rows.some((row) => row.address.trim() === "" || row.amount.trim() === "") ||
     (mode === "token" && (!isAddress(tokenAddress.trim()) || !tokenInfo));
+  const formatActivityTimestamp = (value: string) => {
+    try {
+      return activityTimestampFormatter.format(new Date(value));
+    } catch {
+      return new Date(value).toLocaleString();
+    }
+  };
+  const getActivitySummary = (entry: TransactionRecord) => {
+    const key =
+      entry.recipients === 1
+        ? "activity.summarySingle"
+        : "activity.summaryMany";
+    return t(key, {
+      amount: entry.totalFormatted,
+      symbol: entry.tokenSymbol,
+      count: entry.recipients,
+    });
+  };
 
   return (
     <div className="space-y-8 text-wolf-foreground">
@@ -1031,57 +1097,82 @@ export default function SprayDisperser() {
 
             <div className="wolf-card--muted border border-wolf-border px-5 py-5">
               <p className="text-xs uppercase tracking-[0.32em] text-wolf-text-subtle">
-                {t("history.title")}
+                {t("activity.title")}
               </p>
               {history.length === 0 ? (
                 <p className="mt-3 text-sm text-white/60">
-                  {t("history.empty")}
+                  {t("activity.empty")}
                 </p>
               ) : (
-                <ul className="mt-4 space-y-3 text-xs text-white/70">
-                  {history.map((entry) => (
-                    <li
-                      key={entry.id}
-                      className="rounded-lg border border-wolf-border-soft bg-wolf-charcoal-70 px-4 py-3"
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="uppercase tracking-[0.3em] text-wolf-text-subtle">
-                          {entry.type === "native"
-                            ? t("history.native")
-                            : t("history.token")}
-                        </span>
-                        <span
-                          className={`uppercase tracking-[0.3em] ${
-                            entry.status === "success"
-                              ? "text-wolf-emerald"
-                              : entry.status === "pending"
-                                ? "text-wolf-amber"
-                                : "text-rose-300"
-                          }`}
+                <>
+                  <ul className="mt-4 space-y-3">
+                    {displayedHistory.map((entry) => {
+                      const statusLabel =
+                        entry.status === "success"
+                          ? t("activity.confirmed")
+                          : t(`activity.status.${entry.status}`);
+                      const statusPillClass =
+                        entry.status === "success"
+                          ? "bg-wolf-emerald-soft text-wolf-emerald"
+                          : entry.status === "pending"
+                            ? "bg-wolf-charcoal-70 text-wolf-amber"
+                            : "bg-rose-500/10 text-rose-300";
+                      const explorerUrl = getExplorerTxUrl(
+                        entry.networkKey,
+                        entry.hash,
+                      );
+                      return (
+                        <li
+                          key={entry.id}
+                          className="rounded-lg border border-wolf-border-soft bg-wolf-charcoal-70 px-4 py-3"
                         >
-                          {t(`history.status.${entry.status}`)}
-                        </span>
-                      </div>
-                      <p className="mt-2 break-words text-[11px] uppercase tracking-[0.26em] text-white/40">
-                        {entry.hash}
-                      </p>
-                      <p className="mt-2 text-[11px] uppercase tracking-[0.28em] text-white/60">
-                        {t("history.summary", {
-                          recipients: entry.recipients,
-                          total: entry.totalFormatted,
-                        })}
-                      </p>
-                      <p className="mt-1 text-[11px] uppercase tracking-[0.22em] text-white/40">
-                        {new Date(entry.timestamp).toLocaleString()}
-                      </p>
-                      {entry.errorMessage ? (
-                        <p className="mt-2 text-[11px] uppercase tracking-[0.22em] text-rose-300">
-                          {entry.errorMessage}
-                        </p>
-                      ) : null}
-                    </li>
-                  ))}
-                </ul>
+                          <div className="flex flex-wrap items-center justify-between gap-2">
+                            <p className="text-sm font-semibold text-white">
+                              {`Spray #${entry.sequence} · ${getActivitySummary(entry)}`}
+                            </p>
+                            <span
+                              className={`wolf-pill text-[10px] uppercase tracking-[0.26em] ${statusPillClass}`}
+                            >
+                              {t(`activity.status.${entry.status}`)}
+                            </span>
+                          </div>
+                          <p className="mt-1 text-xs text-white/70">
+                            {`${statusLabel} • ${formatActivityTimestamp(entry.timestamp)}`}
+                          </p>
+                          <div className="mt-3 flex flex-wrap items-center gap-3 text-[11px] text-white/60">
+                            <span className="font-mono text-white/50">
+                              {formatHash(entry.hash)}
+                            </span>
+                            {explorerUrl ? (
+                              <a
+                                href={explorerUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex items-center gap-1 text-xs font-semibold text-wolf-emerald hover:text-wolf-emerald/80"
+                              >
+                                {t("activity.viewOnExplorer")}
+                                <span aria-hidden="true">↗</span>
+                              </a>
+                            ) : null}
+                          </div>
+                          {entry.errorMessage ? (
+                            <p className="mt-2 text-[11px] uppercase tracking-[0.22em] text-rose-300">
+                              {entry.errorMessage}
+                            </p>
+                          ) : null}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                  {hasMoreHistory ? (
+                    <button
+                      type="button"
+                      className="mt-4 text-xs font-semibold text-white/70 underline underline-offset-4 transition hover:text-white"
+                    >
+                      {t("activity.viewAll")}
+                    </button>
+                  ) : null}
+                </>
               )}
             </div>
           </aside>
