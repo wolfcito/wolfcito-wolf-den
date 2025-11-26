@@ -42,8 +42,8 @@
         "description": "Spin up ruleta and animal races with sponsor-ready overlays."
       },
       "spray": {
-        "title": "Spray Console",
-        "description": "Disperse CELO or ERC20 rewards to multiple wallets at once."
+        "title": "Spray Rewards",
+        "description": "Distribute tokens to your community in just a few clicks."
       },
       "auth": {
         "title": "Self Auth",
@@ -317,8 +317,8 @@
     "description": "Check in, share progress in Showcase, and ship evidence to earn HOWL points."
   },
   "SprayPage": {
-    "title": "Spray Console",
-    "description": "Bundle CELO or ERC20 rewards into one powered drop."
+    "title": "Spray Rewards",
+    "description": "Distribute tokens to your community in just a few clicks."
   },
   "VotingList": {
     "title": "Demo Day",
@@ -722,7 +722,7 @@
   "wallet": {
     "helper": "Use the top bar to connect your wallet and get your Spray ready."
   },
-  "badge": "Spray Console",
+  "badge": "Spray Rewards",
   "heading": "Send rewards in one clean shot",
   "description": "Paste wallets, pick a network, and Spray rewards in one go instead of sending them one by one.",
   "actions": {
