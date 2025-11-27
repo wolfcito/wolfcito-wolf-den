@@ -30,6 +30,10 @@ export const SPRAY_NETWORKS: Record<string, SprayNetworkConfig> = {
     explorerUrls: ["https://celoscan.io"],
     trustedTokens: [
       {
+        label: "USD Coin (USDC)",
+        address: "0xcebA9300f2b948710d2653dD7B07f33A8B32118C",
+      },
+      {
         label: "Celo Colombian Peso (cCOP)",
         address: "0x8A567e2aE79CA692Bd748aB832081C45de4041eA",
       },
@@ -48,6 +52,12 @@ export const SPRAY_NETWORKS: Record<string, SprayNetworkConfig> = {
     },
     rpcUrls: ["https://mainnet.optimism.io"],
     explorerUrls: ["https://optimistic.etherscan.io"],
+    trustedTokens: [
+      {
+        label: "USD Coin (USDC)",
+        address: "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85",
+      },
+    ],
   },
   base: {
     key: "base",
@@ -62,6 +72,12 @@ export const SPRAY_NETWORKS: Record<string, SprayNetworkConfig> = {
     },
     rpcUrls: ["https://mainnet.base.org"],
     explorerUrls: ["https://basescan.org"],
+    trustedTokens: [
+      {
+        label: "USD Coin (USDC)",
+        address: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      },
+    ],
   },
   avalanche: {
     key: "avalanche",
@@ -76,6 +92,12 @@ export const SPRAY_NETWORKS: Record<string, SprayNetworkConfig> = {
     },
     rpcUrls: ["https://api.avax.network/ext/bc/C/rpc"],
     explorerUrls: ["https://snowtrace.io"],
+    trustedTokens: [
+      {
+        label: "USD Coin (USDC)",
+        address: "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
+      },
+    ],
   },
 };
 
