@@ -77,6 +77,10 @@ export const SPRAY_NETWORKS: Record<string, SprayNetworkConfig> = {
         label: "USD Coin (USDC)",
         address: "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85",
       },
+      {
+        label: "Optimism (OP)",
+        address: "0x4200000000000000000000000000000000000042",
+      },
     ],
   },
   base: {
