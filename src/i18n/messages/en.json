@@ -719,92 +719,92 @@
     }
   },
   "SprayDisperser": {
-  "wallet": {
-    "helper": "Use the top bar to connect your wallet and get your Spray ready."
-  },
-  "badge": "Spray Rewards",
-  "heading": "Send rewards in one clean shot",
-  "description": "Paste wallets, pick a network, and Spray rewards in one go instead of sending them one by one.",
-  "actions": {
-    "connect": "Connect Wallet",
-    "connected": "{network}: {address}",
-    "logout": "Logout",
-    "remove": "Remove",
-    "addRecipient": "Add Recipient",
-    "approve": "Approve Spend",
-    "approving": "Approving...",
-    "send": "Send Dispersion",
-    "submitting": "Sending..."
-  },
-  "network": {
-    "prompt": "Connect a wallet to get started with Spray.",
-    "ready": "{network} ready",
-    "switch": "Switch to {network}",
-    "selectorLabel": "Choose a network"
-  },
-  "modes": {
-    "native": "Main token ({symbol})",
-    "token": "Custom token"
-  },
-  "form": {
-    "tokenLabel": "Token address",
-    "tokenPlaceholder": "Paste ERC20 address",
-    "tokenLoading": "Resolving token details...",
-    "tokenResolved": "{symbol} detected · {decimals} decimals",
-    "trustedTokenLabel": "Quick pick (optional)",
-    "trustedTokenPlaceholder": "Choose a token or use custom",
-    "useCustom": "Use custom",
-    "recipientLabel": "Recipient wallet #{index}",
-    "addressPlaceholder": "Wallet address",
-    "amountPlaceholder": "Amount to send"
-  },
-  "summary": {
-    "recipients": "{count, plural, one {1 wallet} other {{count} wallets}}",
-    "totalNative": "Total: {amount} {symbol}",
-    "totalToken": "Total: {amount} {symbol}",
-    "tokenPlaceholder": "TOKEN"
-  },
-  "tips": {
-    "title": "How Spray works",
-    "items": [
-      "Pick the network and token you want to use.",
-      "Add the wallets and amounts you’d like to reward.",
-      "Review the total and hit \"Send Dispersion\".",
-      "Track the result in your wallet or on the block explorer."
-    ]
-  },
-  "activity": {
-    "title": "Latest sprays",
-    "empty": "No sprays yet—send a small test sprint ✨",
-    "confirmed": "Confirmed",
-    "viewOnExplorer": "Open in explorer",
-    "viewAll": "View all sprays",
-    "summarySingle": "{amount} {symbol} · {count} wallet",
-    "summaryMany": "{amount} {symbol} · {count} wallets",
-    "status": {
-      "pending": "Pending",
-      "success": "Confirmed",
-      "error": "Failed"
+    "wallet": {
+      "helper": "Use the top bar to connect your wallet and get your Spray ready."
+    },
+    "badge": "Spray Rewards",
+    "heading": "Send rewards in one clean shot",
+    "description": "Paste wallets, pick a network, and Spray rewards in one go instead of sending them one by one.",
+    "actions": {
+      "connect": "Connect Wallet",
+      "connected": "{network}: {address}",
+      "logout": "Logout",
+      "remove": "Remove",
+      "addRecipient": "Add Recipient",
+      "approve": "Approve Spend",
+      "approving": "Approving...",
+      "send": "Send Dispersion",
+      "submitting": "Sending..."
+    },
+    "network": {
+      "prompt": "Connect a wallet to get started with Spray.",
+      "ready": "{network} ready",
+      "switch": "Switch to {network}",
+      "selectorLabel": "Choose a network"
+    },
+    "modes": {
+      "native": "Main token ({symbol})",
+      "token": "Custom token"
+    },
+    "form": {
+      "tokenLabel": "Token address",
+      "tokenPlaceholder": "Paste ERC20 address",
+      "tokenLoading": "Resolving token details...",
+      "tokenResolved": "{symbol} detected · {decimals} decimals",
+      "trustedTokenLabel": "Quick pick (optional)",
+      "trustedTokenPlaceholder": "Choose a token or use custom",
+      "useCustom": "Use custom",
+      "recipientLabel": "Recipient wallet #{index}",
+      "addressPlaceholder": "Wallet address",
+      "amountPlaceholder": "Amount to send"
+    },
+    "summary": {
+      "recipients": "{count, plural, one {1 wallet} other {{count} wallets}}",
+      "totalNative": "Total: {amount} {symbol}",
+      "totalToken": "Total: {amount} {symbol}",
+      "tokenPlaceholder": "TOKEN"
+    },
+    "tips": {
+      "title": "How Spray works",
+      "items": [
+        "Pick the network and token you want to use.",
+        "Add the wallets and amounts you’d like to reward.",
+        "Review the total and hit \"Send Dispersion\".",
+        "Track the result in your wallet or on the block explorer."
+      ]
+    },
+    "activity": {
+      "title": "Latest sprays",
+      "empty": "No sprays yet—send a small test sprint ✨",
+      "confirmed": "Confirmed",
+      "viewOnExplorer": "Open in explorer",
+      "viewAll": "View all sprays",
+      "summarySingle": "{amount} {symbol} · {count} wallet",
+      "summaryMany": "{amount} {symbol} · {count} wallets",
+      "status": {
+        "pending": "Pending",
+        "success": "Confirmed",
+        "error": "Failed"
+      }
+    },
+    "messages": {
+      "alreadyApproved": "Allowance already covers this spray.",
+      "approvalSent": "Approval transaction sent.",
+      "approvalComplete": "Approval confirmed.",
+      "transactionSent": "Dispersion queued on-chain.",
+      "transactionConfirmed": "Dispersion confirmed."
+    },
+    "errors": {
+      "noWallet": "Wallet provider not detected.",
+      "connectFailed": "Unable to connect wallet.",
+      "switchFailed": "Could not switch networks.",
+      "tokenLookupFailed": "Could not fetch token metadata.",
+      "invalidToken": "Provide a valid ERC20 token address.",
+      "invalidRecipient": "All recipients must be valid addresses.",
+      "invalidAmount": "Enter a positive amount for each recipient.",
+      "needsApproval": "Approve token spend for the Spray contract first.",
+      "approvalFailed": "Token approval failed.",
+      "transactionFailed": "Dispersion transaction failed."
     }
-  },
-  "messages": {
-    "alreadyApproved": "Allowance already covers this spray.",
-    "approvalSent": "Approval transaction sent.",
-    "approvalComplete": "Approval confirmed.",
-    "transactionSent": "Dispersion queued on-chain.",
-    "transactionConfirmed": "Dispersion confirmed."
-  },
-  "errors": {
-    "noWallet": "Wallet provider not detected.",
-    "connectFailed": "Unable to connect wallet.",
-    "switchFailed": "Could not switch networks.",
-    "tokenLookupFailed": "Could not fetch token metadata.",
-    "invalidToken": "Provide a valid ERC20 token address.",
-    "invalidRecipient": "All recipients must be valid addresses.",
-    "invalidAmount": "Enter a positive amount for each recipient.",
-    "needsApproval": "Approve token spend for the Spray contract first.",
-    "approvalFailed": "Token approval failed.",
-    "transactionFailed": "Dispersion transaction failed."
   }
-}
 }
