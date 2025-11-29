@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  useAppKitAccount,
   useAppKitNetwork,
   useAppKitProvider,
   useAppKitState,
@@ -12,10 +11,7 @@ import { type ComponentProps, useEffect, useState } from "react";
 import ConnectWalletButton from "@/components/ui/ConnectWalletButton";
 import HowlBadge from "@/components/ui/HowlBadge";
 import SelfBadge from "@/components/ui/SelfBadge";
-import {
-  getSelfVerification,
-  subscribeToSelfVerification,
-} from "@/lib/selfVerification";
+import { useDenUser } from "@/hooks/useDenUser";
 
 type StatusStripProps = {
   level?: ComponentProps<typeof HowlBadge>["level"];
@@ -50,12 +46,14 @@ export function StatusStrip({
   className = "",
 }: StatusStripProps) {
   const tSpray = useTranslations("SprayDisperser");
-  const [isSelfVerified, setIsSelfVerified] = useState(false);
   const [provider, setProvider] = useState<BrowserProvider | null>(null);
-  const { address, isConnected } = useAppKitAccount();
   const { caipNetwork, chainId } = useAppKitNetwork();
   const { walletProvider } = useAppKitProvider<Eip1193Provider>("eip155");
   const { loading } = useAppKitState();
+  const user = useDenUser();
+  const walletAddress = user.walletAddress;
+  const isSelfVerified = user.selfVerified;
+  const isConnected = user.isBuilder;
 
   const socialLinks = [
     {
@@ -93,14 +91,6 @@ export function StatusStrip({
       ),
     },
   ];
-
-  useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-    setIsSelfVerified(getSelfVerification());
-    return subscribeToSelfVerification(setIsSelfVerified);
-  }, []);
 
   const translateSpray = (
     key: string,
@@ -154,12 +144,12 @@ export function StatusStrip({
 
   useEffect(() => {
     broadcastWalletState({
-      address: address ?? null,
+      address: walletAddress ?? null,
       isConnecting: loading,
       chainId: normalizedChainId,
       provider,
     });
-  }, [address, loading, normalizedChainId, provider]);
+  }, [walletAddress, loading, normalizedChainId, provider]);
 
   useEffect(() => {
     return () => {
@@ -179,12 +169,12 @@ export function StatusStrip({
   const connectedChainName = caipNetwork?.name ?? "Wallet";
 
   const walletInfoLabel =
-    address != null
+    walletAddress != null
       ? translateSpray(
           "actions.connected",
-          `${connectedChainName}: ${formatAddress(address)}`,
+          `${connectedChainName}: ${formatAddress(walletAddress)}`,
           {
-            address: formatAddress(address),
+            address: formatAddress(walletAddress),
             network: connectedChainName,
           },
         )
@@ -193,7 +183,7 @@ export function StatusStrip({
   const connectedWalletButtonLabel =
     walletInfoLabel ||
     translateSpray("actions.connected", "Wallet Connected", {
-      address: address ? formatAddress(address) : "—",
+      address: walletAddress != null ? formatAddress(walletAddress) : "—",
       network: connectedChainName,
     });
 
