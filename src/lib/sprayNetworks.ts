@@ -1,3 +1,9 @@
+const DEFAULT_TOKEN_ICON = "/tokens-usdc.png";
+const CELO_DOLLAR_ICON = "/tokens-celodollar.png";
+const CELO_CCOP_ICON = "/tokens-ccop.png";
+const CELO_GOOD_ICON = "/tokens-gooddollar.png";
+const OPTIMISM_OP_ICON = "/tokens-op.png";
+
 export type SprayNetworkConfig = {
   key: string;
   name: string;
@@ -11,7 +17,12 @@ export type SprayNetworkConfig = {
   };
   rpcUrls: string[];
   explorerUrls: string[];
-  trustedTokens?: Array<{ label: string; address: string }>;
+  trustedTokens?: Array<{
+    label: string;
+    address: string;
+    symbol?: string;
+    iconUrl?: string;
+  }>;
 };
 
 export const SPRAY_NETWORKS: Record<string, SprayNetworkConfig> = {
@@ -30,32 +41,40 @@ export const SPRAY_NETWORKS: Record<string, SprayNetworkConfig> = {
     explorerUrls: ["https://celoscan.io"],
     trustedTokens: [
       {
-        label: "USD Coin (USDC)",
-        address: "0xcebA9300f2b948710d2653dD7B07f33A8B32118C",
-      },
-      {
         label: "Celo Colombian Peso (cCOP)",
+        symbol: "cCOP",
         address: "0x8A567e2aE79CA692Bd748aB832081C45de4041eA",
-      },
-      {
-        label: "GoodDollar (G$)",
-        address: "0x62b8b11039FCfE5ab0C56E502B1c372A3D2a9C7a",
-      },
-      {
-        label: "USD Coin (USDC)",
-        address: "0xceba9300F2b948710D2653dD7B07f33A8B32118c",
+        iconUrl: CELO_CCOP_ICON,
       },
       {
         label: "Celo Dollar (cUSD)",
+        symbol: "cUSD",
         address: "0x765DE816845861E75A25fCA122bb6898B8B1282a",
+        iconUrl: CELO_DOLLAR_ICON,
       },
       {
         label: "Celo Euro (cEUR)",
+        symbol: "cEUR",
         address: "0xd8763CBa276a3738e6DE85b4B3BF5Fded6d6CA73",
+        iconUrl: CELO_DOLLAR_ICON,
       },
       {
         label: "Celo Brazilian Real (cREAL)",
+        symbol: "cREAL",
         address: "0xE8537A3d056DA446677B9E9d6C5dB704EaAb4787",
+        iconUrl: CELO_DOLLAR_ICON,
+      },
+      {
+        label: "GoodDollar (G$)",
+        symbol: "G$",
+        address: "0x62b8b11039FCfE5ab0C56E502B1c372A3D2a9C7a",
+        iconUrl: CELO_GOOD_ICON,
+      },
+      {
+        label: "USD Coin (USDC)",
+        symbol: "USDC",
+        address: "0xcebA9300f2b948710d2653dD7B07f33A8B32118C",
+        iconUrl: DEFAULT_TOKEN_ICON,
       },
     ],
   },
@@ -75,11 +94,15 @@ export const SPRAY_NETWORKS: Record<string, SprayNetworkConfig> = {
     trustedTokens: [
       {
         label: "USD Coin (USDC)",
+        symbol: "USDC",
         address: "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85",
+        iconUrl: DEFAULT_TOKEN_ICON,
       },
       {
         label: "Optimism (OP)",
+        symbol: "OP",
         address: "0x4200000000000000000000000000000000000042",
+        iconUrl: OPTIMISM_OP_ICON,
       },
     ],
   },
@@ -99,7 +122,9 @@ export const SPRAY_NETWORKS: Record<string, SprayNetworkConfig> = {
     trustedTokens: [
       {
         label: "USD Coin (USDC)",
+        symbol: "USDC",
         address: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        iconUrl: DEFAULT_TOKEN_ICON,
       },
     ],
   },
@@ -119,7 +144,9 @@ export const SPRAY_NETWORKS: Record<string, SprayNetworkConfig> = {
     trustedTokens: [
       {
         label: "USD Coin (USDC)",
+        symbol: "USDC",
         address: "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
+        iconUrl: DEFAULT_TOKEN_ICON,
       },
     ],
   },

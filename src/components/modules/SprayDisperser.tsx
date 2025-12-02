@@ -22,6 +22,7 @@ import {
   type Eip1193Provider,
 } from "ethers";
 import { useLocale, useTranslations } from "next-intl";
+import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   DEFAULT_SPRAY_NETWORK_KEY,
@@ -136,6 +137,9 @@ const APPKIT_NETWORKS_BY_KEY: Partial<Record<string, AppKitNetwork>> = {
   base: baseNetwork,
   avalanche: avalancheNetwork,
 };
+const DEFAULT_TOKEN_ICON = "/tokens-usdc.png";
+const INITIAL_TRUSTED_TOKEN =
+  SPRAY_NETWORKS[DEFAULT_SPRAY_NETWORK_KEY]?.trustedTokens?.[0]?.address ?? "";
 
 function normalizeChainId(value: unknown): number | null {
   if (typeof value === "number") {
@@ -186,7 +190,8 @@ export default function SprayDisperser() {
   const [isApproving, setIsApproving] = useState(false);
   const [mode, setMode] = useState<"native" | "token">("native");
   const [tokenAddress, setTokenAddress] = useState("");
-  const [selectedTrustedToken, setSelectedTrustedToken] = useState<string>("");
+  const [selectedTrustedToken, setSelectedTrustedToken] =
+    useState<string>(INITIAL_TRUSTED_TOKEN);
   const [isTrustedOpen, setIsTrustedOpen] = useState(false);
   const trustedDropdownRef = useRef<HTMLDivElement | null>(null);
   const [tokenInfo, setTokenInfo] = useState<{
@@ -208,6 +213,25 @@ export default function SprayDisperser() {
     SPRAY_NETWORKS[DEFAULT_SPRAY_NETWORK_KEY];
   const trustedTokens = selectedNetwork.trustedTokens ?? [];
   const sprayAddress = selectedNetwork.sprayAddress;
+  const selectedTrustedTokenData = selectedTrustedToken
+    ? trustedTokens.find((token) => token.address === selectedTrustedToken)
+    : null;
+  const tokenCardSymbol =
+    selectedTrustedTokenData?.symbol ??
+    tokenInfo?.symbol ??
+    t("summary.tokenPlaceholder");
+  const tokenCardIconSrc =
+    selectedTrustedTokenData?.iconUrl ?? DEFAULT_TOKEN_ICON;
+  const customTokenNameLabel = `${translate(
+    "form.customTokenLabel",
+    "Custom token",
+  )} (${t("summary.tokenPlaceholder", "TOKEN")})`;
+  const tokenCardPrimaryLabel =
+    selectedTrustedTokenData?.label ??
+    (tokenInfo?.symbol
+      ? `${tokenInfo.symbol} (${tokenInfo.symbol})`
+      : customTokenNameLabel);
+  const tokenReceiveLabel = translate("form.receiveLabel", "Receive");
 
   useEffect(() => {
     setSignerAddress(walletAddress ?? null);
@@ -452,6 +476,9 @@ export default function SprayDisperser() {
       if (selectedTrustedToken !== "") {
         setSelectedTrustedToken("");
       }
+      return;
+    }
+    if (selectedTrustedToken === "") {
       return;
     }
     const stillAvailable = trustedTokens.some(
@@ -935,15 +962,28 @@ export default function SprayDisperser() {
             {mode === "token" ? (
               <div className="mt-6 space-y-3">
                 <div className="space-y-2">
-                  <label
-                    htmlFor="trusted-token-select"
-                    className="text-xs uppercase tracking-[0.32em] text-wolf-text-subtle"
-                  >
-                    {translate(
-                      "form.trustedTokenLabel",
-                      "Trusted token (optional)",
-                    )}
-                  </label>
+                  <div className="flex items-center justify-between">
+                    <label
+                      htmlFor="trusted-token-select"
+                      className="text-xs uppercase tracking-[0.32em] text-wolf-text-subtle"
+                    >
+                      {translate(
+                        "form.trustedTokenLabel",
+                        "Trusted token (optional)",
+                      )}
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedTrustedToken("");
+                        setTokenAddress("");
+                        setIsTrustedOpen(false);
+                      }}
+                      className="text-[11px] uppercase tracking-[0.28em] text-wolf-emerald hover:text-white"
+                    >
+                      {translate("form.useCustom", "Use custom")}
+                    </button>
+                  </div>
                   <div
                     ref={trustedDropdownRef}
                     className="relative"
@@ -955,37 +995,75 @@ export default function SprayDisperser() {
                       aria-expanded={isTrustedOpen}
                       aria-controls="trusted-token-options"
                       onClick={() => setIsTrustedOpen((v) => !v)}
-                      className="w-full rounded-lg border border-wolf-border bg-wolf-panel px-4 py-3 text-left text-sm text-white/80 focus:border-wolf-emerald focus:outline-none"
+                      title={tokenCardPrimaryLabel}
+                      className="flex w-full items-center gap-3 rounded-xl border border-wolf-border bg-[#0f141d] px-3 py-2 text-left text-sm text-white/80 transition hover:border-wolf-emerald focus:border-wolf-emerald focus:outline-none"
                     >
-                      {selectedTrustedToken
-                        ? (trustedTokens.find(
-                            (t) => t.address === selectedTrustedToken,
-                          )?.label ?? "")
-                        : translate(
-                            "form.trustedTokenPlaceholder",
-                            "Select a trusted token or choose custom",
-                          )}
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10">
+                        <Image
+                          src={tokenCardIconSrc}
+                          alt={`${tokenCardSymbol} token icon`}
+                          width={32}
+                          height={32}
+                          className="h-8 w-8"
+                        />
+                      </div>
+                      <div className="text-left leading-tight">
+                        <p className="text-[11px] uppercase tracking-[0.26em] text-white/60">
+                          {tokenReceiveLabel}
+                        </p>
+                        <p className="text-lg font-semibold text-white">
+                          {tokenCardPrimaryLabel}
+                        </p>
+                      </div>
+                      <svg
+                        className="ml-auto h-4 w-4 text-white/70"
+                        viewBox="0 0 20 20"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M5 8l5 5 5-5"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
                     </button>
                     {isTrustedOpen ? (
                       <div
                         id="trusted-token-options"
                         role="listbox"
-                        className="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-md border border-wolf-border bg-wolf-panel py-1 text-sm text-white/80 shadow-lg"
+                        className="absolute z-20 mt-2 w-full overflow-hidden rounded-xl border border-wolf-border bg-[#0b111a] py-1 text-sm text-white/80 shadow-2xl"
                       >
                         <button
                           type="button"
                           role="option"
                           aria-selected={!selectedTrustedToken}
-                          className="block w-full cursor-pointer px-3 py-2 text-left hover:bg-wolf-neutral-haze"
+                          className="block w-full cursor-pointer px-3 py-2 text-left transition hover:bg-white/5"
                           onClick={() => {
                             setSelectedTrustedToken("");
                             setIsTrustedOpen(false);
                           }}
                         >
-                          {translate(
-                            "form.trustedTokenPlaceholder",
-                            "Select a trusted token or choose custom",
-                          )}
+                          <div className="flex items-center gap-3">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10">
+                              <Image
+                                src={DEFAULT_TOKEN_ICON}
+                                alt="Custom token icon"
+                                width={32}
+                                height={32}
+                                className="h-8 w-8"
+                              />
+                            </div>
+                            <div className="text-left leading-tight">
+                              <p className="text-sm font-semibold text-white">
+                                {customTokenNameLabel}
+                              </p>
+                              <p className="text-xs text-white/60">
+                                {t("form.tokenPlaceholder")}
+                              </p>
+                            </div>
+                          </div>
                         </button>
                         {trustedTokens.map((tok) => (
                           <button
@@ -993,13 +1071,35 @@ export default function SprayDisperser() {
                             type="button"
                             role="option"
                             aria-selected={selectedTrustedToken === tok.address}
-                            className="block w-full cursor-pointer px-3 py-2 text-left hover:bg-wolf-neutral-haze"
+                            className={`block w-full cursor-pointer px-3 py-2 text-left transition hover:bg-white/5 ${
+                              selectedTrustedToken === tok.address
+                                ? "bg-white/5"
+                                : ""
+                            }`}
                             onClick={() => {
                               setSelectedTrustedToken(tok.address);
                               setIsTrustedOpen(false);
                             }}
                           >
-                            {tok.label}
+                            <div className="flex items-center gap-3">
+                              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10">
+                                <Image
+                                  src={tok.iconUrl ?? DEFAULT_TOKEN_ICON}
+                                  alt={`${tok.symbol ?? tok.label} icon`}
+                                  width={32}
+                                  height={32}
+                                  className="h-8 w-8"
+                                />
+                              </div>
+                              <div className="text-left leading-tight">
+                                <p className="text-sm font-semibold text-white">
+                                  {tok.label}
+                                </p>
+                                <p className="font-mono text-xs text-white/60 break-all">
+                                  {tok.address}
+                                </p>
+                              </div>
+                            </div>
                           </button>
                         ))}
                       </div>
@@ -1008,24 +1108,12 @@ export default function SprayDisperser() {
                 </div>
 
                 <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <label
-                      htmlFor="token-address-input"
-                      className="text-xs uppercase tracking-[0.32em] text-wolf-text-subtle"
-                    >
-                      {t("form.tokenLabel")}
-                    </label>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedTrustedToken("");
-                        setTokenAddress("");
-                      }}
-                      className="text-[11px] uppercase tracking-[0.28em] text-wolf-emerald hover:text-white"
-                    >
-                      {translate("form.useCustom", "Use custom")}
-                    </button>
-                  </div>
+                  <label
+                    htmlFor="token-address-input"
+                    className="text-xs uppercase tracking-[0.32em] text-wolf-text-subtle"
+                  >
+                    {t("form.tokenLabel")}
+                  </label>
                   <input
                     id="token-address-input"
                     value={tokenAddress}

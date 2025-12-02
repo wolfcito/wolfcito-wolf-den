@@ -751,6 +751,8 @@
       "tokenPlaceholder": "Paste ERC20 address",
       "tokenLoading": "Resolving token details...",
       "tokenResolved": "{symbol} detected · {decimals} decimals",
+      "receiveLabel": "Receive",
+      "customTokenLabel": "Custom token",
       "trustedTokenLabel": "Quick pick (optional)",
       "trustedTokenPlaceholder": "Choose a token or use custom",
       "useCustom": "Use custom",
