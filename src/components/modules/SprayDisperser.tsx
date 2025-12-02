@@ -225,7 +225,7 @@ export default function SprayDisperser() {
   const customTokenNameLabel = `${translate(
     "form.customTokenLabel",
     "Custom token",
-  )} (${t("summary.tokenPlaceholder", "TOKEN")})`;
+  )} (${translate("summary.tokenPlaceholder", "TOKEN")})`;
   const tokenCardPrimaryLabel =
     selectedTrustedTokenData?.label ??
     (tokenInfo?.symbol
