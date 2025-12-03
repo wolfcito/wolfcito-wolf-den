@@ -751,7 +751,7 @@
       "tokenPlaceholder": "Pega la dirección ERC20",
       "tokenLoading": "Cargando detalles del token...",
       "tokenResolved": "{symbol} detectado · {decimals} decimales",
-      "trustedTokenLabel": "Pagar con",
+      "payWithLabel": "Pagar con",
       "trustedTokenPlaceholder": "Elige un token o usa personalizado",
       "useCustom": "Usar personalizado",
       "recipientLabel": "Wallet destinataria #{index}",
@@ -763,15 +763,6 @@
       "totalNative": "Total: {amount} {symbol}",
       "totalToken": "Total: {amount} {symbol}",
       "tokenPlaceholder": "TOKEN"
-    },
-    "tips": {
-      "title": "Cómo funciona Spray",
-      "items": [
-        "Elige la red y el token que quieres usar.",
-        "Agrega las wallets y los montos que quieres recompensar.",
-        "Revisa el total y presiona \"Enviar dispersión\".",
-        "Sigue el resultado desde tu wallet o en el explorador de bloques."
-      ]
     },
     "activity": {
       "title": "Sprays recientes",

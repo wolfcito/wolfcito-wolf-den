@@ -751,9 +751,8 @@
       "tokenPlaceholder": "Paste ERC20 address",
       "tokenLoading": "Resolving token details...",
       "tokenResolved": "{symbol} detected · {decimals} decimals",
-      "receiveLabel": "Receive",
+      "payWithLabel": "Pay with",
       "customTokenLabel": "Custom token",
-      "trustedTokenLabel": "Pay with",
       "trustedTokenPlaceholder": "Choose a token or use custom",
       "useCustom": "Use custom",
       "recipientLabel": "Recipient wallet #{index}",
@@ -765,15 +764,6 @@
       "totalNative": "Total: {amount} {symbol}",
       "totalToken": "Total: {amount} {symbol}",
       "tokenPlaceholder": "TOKEN"
-    },
-    "tips": {
-      "title": "How Spray works",
-      "items": [
-        "Pick the network and token you want to use.",
-        "Add the wallets and amounts you’d like to reward.",
-        "Review the total and hit \"Send Dispersion\".",
-        "Track the result in your wallet or on the block explorer."
-      ]
     },
     "activity": {
       "title": "Latest sprays",

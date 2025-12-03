@@ -139,6 +139,12 @@ const APPKIT_NETWORKS_BY_KEY: Partial<Record<string, AppKitNetwork>> = {
 };
 const DEFAULT_TOKEN_ICON = "/tokens-usdc.png";
 const NATIVE_TOKEN_KEY = "__native__";
+const NATIVE_TOKEN_ICONS: Record<string, string> = {
+  celo: "/tokens-celo.png",
+  optimism: "/tokens-eth.png",
+  base: "/tokens-eth.png",
+  avalanche: "/tokens-avax.png",
+};
 
 function normalizeChainId(value: unknown): number | null {
   if (typeof value === "number") {
@@ -206,7 +212,6 @@ export default function SprayDisperser() {
   const [error, setError] = useState<string | null>(null);
   const [history, setHistory] = useState<TransactionRecord[]>([]);
   const spraySequenceRef = useRef(0);
-  const tips = t.raw("tips.items") as string[];
   const selectedNetwork =
     SPRAY_NETWORKS[selectedNetworkKey] ??
     SPRAY_NETWORKS[DEFAULT_SPRAY_NETWORK_KEY];
@@ -226,8 +231,11 @@ export default function SprayDisperser() {
     : (selectedTrustedTokenData?.symbol ??
       tokenInfo?.symbol ??
       t("summary.tokenPlaceholder"));
-  const tokenCardIconSrc =
-    selectedTrustedTokenData?.iconUrl ?? DEFAULT_TOKEN_ICON;
+  const nativeTokenIconSrc =
+    NATIVE_TOKEN_ICONS[selectedNetworkKey] ?? DEFAULT_TOKEN_ICON;
+  const tokenCardIconSrc = isNativeTokenSelected
+    ? nativeTokenIconSrc
+    : (selectedTrustedTokenData?.iconUrl ?? DEFAULT_TOKEN_ICON);
   const customTokenNameLabel = `${translate(
     "form.customTokenLabel",
     "Custom token",
@@ -238,7 +246,7 @@ export default function SprayDisperser() {
       (tokenInfo?.symbol
         ? `${tokenInfo.symbol} (${tokenInfo.symbol})`
         : customTokenNameLabel));
-  const tokenReceiveLabel = translate("form.receiveLabel", "Receive");
+  const tokenPayWithLabel = translate("form.payWithLabel", "Pay with");
 
   useEffect(() => {
     setSignerAddress(walletAddress ?? null);
@@ -1025,13 +1033,7 @@ export default function SprayDisperser() {
 
             <div className="mt-6 space-y-3">
               <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <label
-                    htmlFor="trusted-token-select"
-                    className="text-xs uppercase tracking-[0.32em] text-wolf-text-subtle"
-                  >
-                    {translate("form.trustedTokenLabel", "Pay with")}
-                  </label>
+                <div className="flex justify-end">
                   <button
                     type="button"
                     onClick={handleSelectCustomToken}
@@ -1055,23 +1057,17 @@ export default function SprayDisperser() {
                     className="flex w-full items-center gap-3 rounded-xl border border-wolf-border bg-[#0f141d] px-3 py-2 text-left text-sm text-white/80 transition hover:border-wolf-emerald focus:border-wolf-emerald focus:outline-none"
                   >
                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10">
-                      {isNativeTokenSelected ? (
-                        <span className="text-sm font-semibold text-white">
-                          {selectedNetwork.nativeCurrency.symbol}
-                        </span>
-                      ) : (
-                        <Image
-                          src={tokenCardIconSrc}
-                          alt={`${tokenCardSymbol} token icon`}
-                          width={32}
-                          height={32}
-                          className="h-8 w-8"
-                        />
-                      )}
+                      <Image
+                        src={tokenCardIconSrc}
+                        alt={`${tokenCardSymbol} token icon`}
+                        width={32}
+                        height={32}
+                        className="h-8 w-8"
+                      />
                     </div>
                     <div className="text-left leading-tight">
                       <p className="text-[11px] uppercase tracking-[0.26em] text-white/60">
-                        {tokenReceiveLabel}
+                        {tokenPayWithLabel}
                       </p>
                       <p className="text-lg font-semibold text-white">
                         {tokenCardPrimaryLabel}
@@ -1108,9 +1104,13 @@ export default function SprayDisperser() {
                       >
                         <div className="flex items-center gap-3">
                           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10">
-                            <span className="text-sm font-semibold text-white">
-                              {selectedNetwork.nativeCurrency.symbol}
-                            </span>
+                            <Image
+                              src={nativeTokenIconSrc}
+                              alt={`${selectedNetwork.nativeCurrency.symbol} icon`}
+                              width={32}
+                              height={32}
+                              className="h-8 w-8"
+                            />
                           </div>
                           <div className="text-left leading-tight">
                             <p className="text-sm font-semibold text-white">
@@ -1301,17 +1301,6 @@ export default function SprayDisperser() {
           </section>
 
           <aside className="space-y-4">
-            <div className="wolf-card--muted border border-wolf-border px-5 py-5">
-              <p className="text-xs uppercase tracking-[0.32em] text-wolf-text-subtle">
-                {t("tips.title")}
-              </p>
-              <ul className="mt-3 space-y-2 text-sm text-white/70">
-                {tips.map((tip) => (
-                  <li key={tip}>{tip}</li>
-                ))}
-              </ul>
-            </div>
-
             <div className="wolf-card--muted border border-wolf-border px-5 py-5">
               <p className="text-xs uppercase tracking-[0.32em] text-wolf-text-subtle">
                 {t("activity.title")}
