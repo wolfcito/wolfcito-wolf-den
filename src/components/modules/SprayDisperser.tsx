@@ -141,8 +141,8 @@ const DEFAULT_TOKEN_ICON = "/tokens-usdc.png";
 const NATIVE_TOKEN_KEY = "__native__";
 const NATIVE_TOKEN_ICONS: Record<string, string> = {
   celo: "/tokens-celo.png",
-  optimism: "/tokens-eth.png",
-  base: "/tokens-eth.png",
+  optimism: "/tokens-optimism.png",
+  base: "/tokens-base.png",
   avalanche: "/tokens-avax.png",
 };
 
@@ -198,7 +198,9 @@ export default function SprayDisperser() {
   const [selectedTrustedToken, setSelectedTrustedToken] =
     useState<string>(NATIVE_TOKEN_KEY);
   const [isTrustedOpen, setIsTrustedOpen] = useState(false);
+  const [isNetworkDropdownOpen, setIsNetworkDropdownOpen] = useState(false);
   const trustedDropdownRef = useRef<HTMLDivElement | null>(null);
+  const networkDropdownRef = useRef<HTMLDivElement | null>(null);
   const [tokenInfo, setTokenInfo] = useState<{
     symbol: string;
     decimals: number;
@@ -247,6 +249,12 @@ export default function SprayDisperser() {
         ? `${tokenInfo.symbol} (${tokenInfo.symbol})`
         : customTokenNameLabel));
   const tokenPayWithLabel = translate("form.payWithLabel", "Pay with");
+  const networkSelectorLabel = translate(
+    "network.selectorLabel",
+    "Choose a network",
+  );
+  const selectedNetworkBadgeIcon =
+    NATIVE_TOKEN_ICONS[selectedNetworkKey] ?? DEFAULT_TOKEN_ICON;
 
   useEffect(() => {
     setSignerAddress(walletAddress ?? null);
@@ -376,6 +384,22 @@ export default function SprayDisperser() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isTrustedOpen]);
 
+  useEffect(() => {
+    if (!isNetworkDropdownOpen) return;
+    function handleClickOutside(event: MouseEvent) {
+      const target = event.target as Node | null;
+      if (
+        networkDropdownRef.current &&
+        target &&
+        !networkDropdownRef.current.contains(target)
+      ) {
+        setIsNetworkDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isNetworkDropdownOpen]);
+
   const totalEntered = useMemo(() => {
     const rawTotal = rows.reduce(
       (acc, row) => acc + (Number.parseFloat(row.amount) || 0),
@@ -404,6 +428,7 @@ export default function SprayDisperser() {
   const handleNetworkSelect = (networkKey: string) => {
     setSelectedNetworkKey(networkKey);
     setHasUserSelectedNetwork(true);
+    setIsNetworkDropdownOpen(false);
   };
 
   const handleNetworkPromptClick = async () => {
@@ -957,28 +982,6 @@ export default function SprayDisperser() {
               </p>
             )}
           </div>
-          <div className="flex flex-col gap-2 text-[11px] uppercase tracking-[0.26em] text-wolf-text-subtle">
-            <span>{translate("network.selectorLabel", "Target network")}</span>
-            <div className="flex flex-wrap gap-2">
-              {SUPPORTED_SPRAY_NETWORKS.map((network) => {
-                const isActive = network.key === selectedNetworkKey;
-                return (
-                  <button
-                    key={network.key}
-                    type="button"
-                    onClick={() => handleNetworkSelect(network.key)}
-                    className={`rounded-full border px-3 py-1 text-[10px] font-semibold tracking-[0.26em] transition ${
-                      isActive
-                        ? "border-wolf-emerald text-wolf-emerald bg-wolf-emerald-soft"
-                        : "border-wolf-border text-white/70 hover:border-white/80 hover:text-white"
-                    }`}
-                  >
-                    {network.name}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
         </header>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
@@ -1008,10 +1011,10 @@ export default function SprayDisperser() {
               >
                 {t("modes.token")}
               </button>
-              <span className="text-xs uppercase tracking-[0.28em] text-wolf-text-subtle">
-                {t("summary.recipients", { count: rows.length })}
-              </span>
-              <span className="text-xs uppercase tracking-[0.28em] text-wolf-text-subtle">
+            </div>
+            <div className="mt-4 flex flex-wrap items-center gap-4 text-xs uppercase tracking-[0.28em] text-wolf-text-subtle">
+              <span>{t("summary.recipients", { count: rows.length })}</span>
+              <span>
                 {mode === "native"
                   ? translate(
                       "summary.totalNative",
@@ -1029,6 +1032,95 @@ export default function SprayDisperser() {
                         t("summary.tokenPlaceholder"),
                     })}
               </span>
+            </div>
+            <div
+              ref={networkDropdownRef}
+              className="relative mt-4 w-full md:max-w-xs"
+            >
+              <button
+                type="button"
+                aria-haspopup="listbox"
+                aria-expanded={isNetworkDropdownOpen}
+                aria-controls="network-selector-options"
+                onClick={() => setIsNetworkDropdownOpen((prev) => !prev)}
+                className="flex w-full items-center gap-3 rounded-xl border border-wolf-border bg-[#0f141d] px-4 py-3 text-left text-sm text-white/80 transition hover:border-wolf-emerald focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-wolf-emerald"
+              >
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10">
+                  <Image
+                    src={selectedNetworkBadgeIcon}
+                    alt={`${selectedNetwork.name} badge`}
+                    width={32}
+                    height={32}
+                    className="h-8 w-8"
+                  />
+                </div>
+                <div className="flex-1 text-left leading-tight">
+                  <p className="text-[10px] uppercase tracking-[0.28em] text-white/50">
+                    {networkSelectorLabel}
+                  </p>
+                  <p className="text-base font-semibold text-white">
+                    {selectedNetwork.name}
+                  </p>
+                </div>
+                <svg
+                  className={`h-5 w-5 text-white/70 transition ${isNetworkDropdownOpen ? "rotate-180" : ""}`}
+                  viewBox="0 0 20 20"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.06l3.71-3.83a.75.75 0 0 1 1.08 1.04l-4.25 4.38a.75.75 0 0 1-1.08 0L5.21 8.27a.75.75 0 0 1 .02-1.06Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </button>
+              {isNetworkDropdownOpen ? (
+                <div className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-20 rounded-2xl border border-wolf-border-soft bg-wolf-panel p-2 shadow-2xl">
+                  <ul
+                    id="network-selector-options"
+                    role="listbox"
+                    className="space-y-1"
+                  >
+                    {SUPPORTED_SPRAY_NETWORKS.map((network) => {
+                      const isActive = network.key === selectedNetworkKey;
+                      const iconSrc =
+                        NATIVE_TOKEN_ICONS[network.key] ?? DEFAULT_TOKEN_ICON;
+                      return (
+                        <li key={network.key}>
+                          <button
+                            type="button"
+                            role="option"
+                            aria-selected={isActive}
+                            onClick={() => handleNetworkSelect(network.key)}
+                            className={`flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left transition ${
+                              isActive
+                                ? "bg-wolf-emerald-soft text-wolf-emerald"
+                                : "text-white/80 hover:bg-white/5"
+                            }`}
+                          >
+                            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10">
+                              <Image
+                                src={iconSrc}
+                                alt={`${network.name} icon`}
+                                width={24}
+                                height={24}
+                                className="h-6 w-6"
+                              />
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="text-sm font-semibold">
+                                {network.name}
+                              </span>
+                              <span className="text-[10px] uppercase tracking-[0.28em] text-white/50">
+                                {network.nativeCurrency.symbol}
+                              </span>
+                            </div>
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              ) : null}
             </div>
 
             <div className="mt-6 space-y-3">
