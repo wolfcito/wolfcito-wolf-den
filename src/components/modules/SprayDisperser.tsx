@@ -429,6 +429,36 @@ export default function SprayDisperser() {
     setSelectedNetworkKey(networkKey);
     setHasUserSelectedNetwork(true);
     setIsNetworkDropdownOpen(false);
+    attemptNetworkSwitch(networkKey).catch((switchError) => {
+      console.warn("Automatic network switch failed", switchError);
+    });
+  };
+
+  const attemptNetworkSwitch = async (networkKey: string) => {
+    const targetConfig =
+      SPRAY_NETWORKS[networkKey] ?? SPRAY_NETWORKS[DEFAULT_SPRAY_NETWORK_KEY];
+    const targetAppKitNetwork = APPKIT_NETWORKS_BY_KEY[networkKey];
+
+    if (targetAppKitNetwork) {
+      try {
+        await switchNetwork(targetAppKitNetwork);
+        return;
+      } catch (appKitSwitchError) {
+        console.warn("AppKit network switch failed", appKitSwitchError);
+      }
+    }
+
+    const hasInjectedProvider = Boolean(getEthereum());
+    if (hasInjectedProvider) {
+      const switched = await ensureTargetNetwork(targetConfig);
+      if (switched) {
+        return;
+      }
+    }
+
+    open?.({ view: "Networks" }).catch(() => {
+      setError(t("errors.switchFailed"));
+    });
   };
 
   const handleNetworkPromptClick = async () => {
