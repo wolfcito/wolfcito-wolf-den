@@ -610,11 +610,27 @@ export default function SprayDisperser() {
     }
   }
 
-  function updateRow(id: string, key: "address" | "amount", value: string) {
-    setRows((prev) =>
-      prev.map((row) => (row.id === id ? { ...row, [key]: value } : row)),
-    );
+const sanitizeDecimalInput = (rawValue: string) => {
+  const normalized = rawValue.replace(/,/g, ".");
+  const filtered = normalized.replace(/[^0-9.]/g, "");
+  if (!filtered) {
+    return "";
   }
+  const segments = filtered.split(".");
+  if (segments.length <= 1) {
+    return filtered;
+  }
+  const [integerPart, ...fractionParts] = segments;
+  return `${integerPart}.${fractionParts.join("")}`;
+};
+
+function updateRow(id: string, key: "address" | "amount", value: string) {
+  const nextValue =
+    key === "amount" ? sanitizeDecimalInput(value) : value;
+  setRows((prev) =>
+    prev.map((row) => (row.id === id ? { ...row, [key]: nextValue } : row)),
+  );
+}
 
   function addRow() {
     setRows((prev) => [...prev, createRow()]);
@@ -1272,31 +1288,56 @@ export default function SprayDisperser() {
             </div>
 
             <div className="mt-6 space-y-4">
-              {rows.map((row, index) => (
+              {rows.map((row) => (
                 <div key={row.id}>
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs uppercase tracking-[0.28em] text-wolf-text-subtle">
-                      {t("form.recipientLabel", { index: index + 1 })}
-                    </p>
-                    <button
-                      type="button"
-                      onClick={() => removeRow(row.id)}
-                      disabled={rows.length === 1}
-                      className="text-xs uppercase tracking-[0.28em] text-wolf-emerald transition hover:text-white disabled:cursor-not-allowed disabled:text-white/20"
-                    >
-                      {t("actions.remove")}
-                    </button>
-                  </div>
-
-                  <div className="mt-3 flex flex-col gap-3 md:flex-row">
-                    <input
-                      value={row.address}
-                      onChange={(event) =>
-                        updateRow(row.id, "address", event.target.value)
-                      }
-                      placeholder={t("form.addressPlaceholder")}
-                      className="flex-1 rounded-lg border border-wolf-border bg-wolf-panel px-4 py-3 text-sm text-white/80 placeholder:text-white/30 focus:border-wolf-emerald focus:outline-none"
-                    />
+                  <div className="mt-3 flex flex-col gap-3 md:flex-row md:items-center">
+                    <div className="flex flex-1 items-center gap-2">
+                      <input
+                        value={row.address}
+                        onChange={(event) =>
+                          updateRow(row.id, "address", event.target.value)
+                        }
+                        placeholder={t("form.addressPlaceholder")}
+                        className="flex-1 rounded-lg border border-wolf-border bg-wolf-panel px-4 py-3 text-sm text-white/80 placeholder:text-white/30 focus:border-wolf-emerald focus:outline-none"
+                      />
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          try {
+                            if (typeof navigator === "undefined") {
+                              setError(
+                                translate(
+                                  "errors.clipboardFailed",
+                                  "Unable to read clipboard.",
+                                ),
+                              );
+                              return;
+                            }
+                            const clipboardText =
+                              await navigator.clipboard.readText();
+                            if (clipboardText) {
+                              updateRow(row.id, "address", clipboardText.trim());
+                            }
+                          } catch {
+                            setError(
+                              translate("errors.clipboardFailed", "Unable to read clipboard."),
+                            );
+                          }
+                        }}
+                        className="flex h-10 w-10 items-center justify-center rounded-full border border-wolf-border text-white/70 transition hover:border-wolf-emerald hover:text-white"
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          className="h-5 w-5"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M8 3h8v2h3a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h3V3Zm2 0v2h4V3h-4Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </button>
+                    </div>
                     <input
                       value={row.amount}
                       onChange={(event) =>
@@ -1305,6 +1346,28 @@ export default function SprayDisperser() {
                       placeholder={t("form.amountPlaceholder")}
                       className="w-full rounded-lg border border-wolf-border bg-wolf-panel px-4 py-3 text-sm text-white/80 placeholder:text-white/30 focus:border-wolf-emerald focus:outline-none md:w-40"
                     />
+                    <button
+                      type="button"
+                      onClick={() => removeRow(row.id)}
+                      disabled={rows.length === 1}
+                      className="flex h-10 w-10 items-center justify-center rounded-full border border-transparent text-wolf-emerald transition hover:text-white disabled:cursor-not-allowed disabled:text-white/20"
+                      aria-label={t("actions.remove")}
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        className="h-5 w-5"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M6 7h12M10 7V5h4v2m-7 0v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V7"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          fill="none"
+                        />
+                      </svg>
+                    </button>
                   </div>
                 </div>
               ))}
@@ -1332,9 +1395,11 @@ export default function SprayDisperser() {
                 type="button"
                 onClick={handleSubmit}
                 disabled={ctaDisabled}
-                className="ml-auto items-center justify-center rounded-md den-button-primary px-6 py-3 text-xs font-semibold text-[#0b1407] disabled:cursor-not-allowed disabled:opacity-60"
+                className="ml-auto inline-flex items-center gap-3 rounded-xl border border-[#4ca22a] bg-[#89e24a] px-6 py-3 text-[0.75rem] font-semibold uppercase tracking-[0.22em] text-[#09140a] shadow-[0_0_20px_rgba(186,255,92,0.35)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_40px_rgba(186,255,92,0.45)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#baff5c] disabled:translate-y-0 disabled:border-wolf-border disabled:bg-wolf-border disabled:text-white/40 disabled:shadow-none"
               >
-                {isSubmitting ? t("actions.submitting") : t("actions.send")}
+                <span>
+                  {isSubmitting ? t("actions.submitting") : t("actions.send")}
+                </span>
               </button>
             </div>
 

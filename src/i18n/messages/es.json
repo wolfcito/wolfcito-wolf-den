@@ -730,6 +730,7 @@
       "connected": "{network}: {address}",
       "logout": "Cerrar sesión",
       "remove": "Eliminar",
+      "paste": "Pegar",
       "addRecipient": "Agregar destinatario",
       "approve": "Aprobar gasto",
       "approving": "Aprobando...",
@@ -795,7 +796,8 @@
       "invalidAmount": "Ingresa montos positivos para cada destinatario.",
       "needsApproval": "Primero aprueba el gasto del token para el contrato Spray.",
       "approvalFailed": "Falló la aprobación del token.",
-      "transactionFailed": "Falló la transacción de dispersión."
+      "transactionFailed": "Falló la transacción de dispersión.",
+      "clipboardFailed": "No se pudo leer el portapapeles."
     }
   }
 }

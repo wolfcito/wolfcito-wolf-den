@@ -730,6 +730,7 @@
       "connected": "{network}: {address}",
       "logout": "Logout",
       "remove": "Remove",
+      "paste": "Paste",
       "addRecipient": "Add Recipient",
       "approve": "Approve Spend",
       "approving": "Approving...",
@@ -796,7 +797,8 @@
       "invalidAmount": "Enter a positive amount for each recipient.",
       "needsApproval": "Approve token spend for the Spray contract first.",
       "approvalFailed": "Token approval failed.",
-      "transactionFailed": "Dispersion transaction failed."
+      "transactionFailed": "Dispersion transaction failed.",
+      "clipboardFailed": "Unable to read clipboard."
     }
   }
 }
