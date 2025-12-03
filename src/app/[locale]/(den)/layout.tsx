@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import ActivityBottomSheet from "@/components/den/ActivityBottomSheet";
 import ActivityRail from "@/components/den/ActivityRail";
 import MobileDenLayout from "@/components/den/MobileDenLayout";
 import SidebarNav from "@/components/den/SidebarNav";
@@ -12,18 +13,12 @@ export default function DenLayout({ children }: { children: ReactNode }) {
         <div className="hidden md:flex md:flex-col md:gap-4 lg:gap-4">
           <SidebarNav />
           <StatusStrip className="justify-end" />
-          <div className="grid grid-cols-[minmax(0,1fr)_320px] gap-6">
-            <main className="rounded-lg border border-wolf-border-strong bg-[#14181f]/70 p-6 shadow-[0_40px_110px_-80px_rgba(0,0,0,0.75)]">
-              <TopBar />
-              <section className="mt-6">{children}</section>
-            </main>
-            <aside>
-              <div className="rounded-lg border border-wolf-border-strong bg-[#14181f]/70 shadow-[0_30px_95px_-70px_rgba(0,0,0,0.75)]">
-                <ActivityRail />
-              </div>
-            </aside>
-          </div>
+          <main className="rounded-lg border border-wolf-border-strong bg-[#14181f]/70 p-6 shadow-[0_40px_110px_-80px_rgba(0,0,0,0.75)]">
+            <TopBar />
+            <section className="mt-6">{children}</section>
+          </main>
         </div>
+        <ActivityBottomSheet />
 
         <div className="md:hidden">
           <MobileDenLayout

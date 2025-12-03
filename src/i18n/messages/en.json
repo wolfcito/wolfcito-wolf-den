@@ -132,6 +132,12 @@
     }
   },
   "ActivityRail": {
+    "sheet": {
+      "title": "Activity & Chat",
+      "expand": "Expand activity panel",
+      "collapse": "Collapse activity panel",
+      "close": "Close activity panel"
+    },
     "sections": {
       "activity": {
         "title": "Activity",

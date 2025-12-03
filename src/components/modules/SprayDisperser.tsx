@@ -1175,6 +1175,7 @@ function updateRow(id: string, key: "address" | "amount", value: string) {
                           isNativeTokenSelected ? "bg-white/5" : ""
                         }`}
                         onClick={handleSelectNativeToken}
+                        aria-label={translate("actions.paste", "Paste")}
                       >
                         <div className="flex items-center gap-3">
                           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10">
