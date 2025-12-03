@@ -43,7 +43,7 @@
       },
       "spray": {
         "title": "Spray Rewards",
-        "description": "Distribute tokens to your community in just a few clicks."
+        "description": "Reward many wallets at once, in just one send."
       },
       "auth": {
         "title": "Self Auth",
@@ -318,7 +318,7 @@
   },
   "SprayPage": {
     "title": "Spray Rewards",
-    "description": "Distribute tokens to your community in just a few clicks."
+    "description": "Reward many wallets at once, in just one send."
   },
   "VotingList": {
     "title": "Demo Day",

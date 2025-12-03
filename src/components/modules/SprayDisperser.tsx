@@ -138,6 +138,7 @@ const APPKIT_NETWORKS_BY_KEY: Partial<Record<string, AppKitNetwork>> = {
   avalanche: avalancheNetwork,
 };
 const DEFAULT_TOKEN_ICON = "/tokens-usdc.png";
+const CUSTOM_TOKEN_ICON = "/tokens-custom.png";
 const NATIVE_TOKEN_KEY = "__native__";
 const NATIVE_TOKEN_ICONS: Record<string, string> = {
   celo: "/tokens-celo.png",
@@ -237,17 +238,21 @@ export default function SprayDisperser() {
     NATIVE_TOKEN_ICONS[selectedNetworkKey] ?? DEFAULT_TOKEN_ICON;
   const tokenCardIconSrc = isNativeTokenSelected
     ? nativeTokenIconSrc
-    : (selectedTrustedTokenData?.iconUrl ?? DEFAULT_TOKEN_ICON);
+    : isCustomTokenSelected
+      ? CUSTOM_TOKEN_ICON
+      : (selectedTrustedTokenData?.iconUrl ?? DEFAULT_TOKEN_ICON);
   const customTokenNameLabel = `${translate(
     "form.customTokenLabel",
     "Custom token",
   )} (${translate("summary.tokenPlaceholder", "TOKEN")})`;
   const tokenCardPrimaryLabel = isNativeTokenSelected
     ? nativeTokenLabel
-    : (selectedTrustedTokenData?.label ??
-      (tokenInfo?.symbol
-        ? `${tokenInfo.symbol} (${tokenInfo.symbol})`
-        : customTokenNameLabel));
+    : isCustomTokenSelected
+      ? tokenAddress || t("form.tokenPlaceholder")
+      : (selectedTrustedTokenData?.label ??
+        (tokenInfo?.symbol
+          ? `${tokenInfo.symbol} (${tokenInfo.symbol})`
+          : customTokenNameLabel));
   const tokenPayWithLabel = translate("form.payWithLabel", "Pay with");
   const networkSelectorLabel = translate(
     "network.selectorLabel",
@@ -461,42 +466,6 @@ export default function SprayDisperser() {
     });
   };
 
-  const handleNetworkPromptClick = async () => {
-    if (isTargetNetworkReady) {
-      return;
-    }
-
-    const targetAppKitNetwork = APPKIT_NETWORKS_BY_KEY[selectedNetworkKey];
-    if (targetAppKitNetwork) {
-      try {
-        await switchNetwork(targetAppKitNetwork);
-        return;
-      } catch (appKitSwitchError) {
-        console.warn("AppKit network switch failed", appKitSwitchError);
-      }
-    }
-
-    const hasInjectedProvider = Boolean(getEthereum());
-    if (hasInjectedProvider) {
-      const switched = await ensureTargetNetwork(selectedNetwork);
-      if (switched) {
-        return;
-      }
-    }
-
-    open?.({ view: "Networks" }).catch(() => {
-      setError(t("errors.switchFailed"));
-    });
-  };
-
-  const networkStatusLabel = isTargetNetworkReady
-    ? translate("network.ready", `${selectedNetwork.name} network detected`, {
-        network: selectedNetwork.name,
-      })
-    : translate("network.switch", `Switch to ${selectedNetwork.name}`, {
-        network: selectedNetwork.name,
-      });
-
   const signerPromise = provider?.getSigner();
 
   useEffect(() => {
@@ -594,24 +563,6 @@ export default function SprayDisperser() {
     setTokenAddress(tokenAddressValue);
     setTokenInfo(null);
     setIsTrustedOpen(false);
-  };
-
-  const ensureTokenMode = () => {
-    if (mode === "token" && selectedTrustedToken !== NATIVE_TOKEN_KEY) {
-      return;
-    }
-    setMode("token");
-    if (selectedTrustedToken === NATIVE_TOKEN_KEY) {
-      const fallbackToken = trustedTokens[0]?.address ?? "";
-      if (fallbackToken) {
-        setSelectedTrustedToken(fallbackToken);
-        setTokenAddress(fallbackToken);
-      } else {
-        setSelectedTrustedToken("");
-        setTokenAddress("");
-      }
-      setTokenInfo(null);
-    }
   };
 
   async function ensureTargetNetwork(
@@ -974,42 +925,21 @@ export default function SprayDisperser() {
       <div className="shadow-[0_45px_120px_-70px_rgba(160,83,255,0.35)]">
         <header className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-col items-start gap-2 text-sm text-white/80">
-            <span className="text-xs uppercase tracking-[0.3em] text-wolf-text-subtle">
-              {signerAddress
-                ? translate(
-                    "actions.connected",
-                    `${selectedNetwork.name}: ${formatAddress(signerAddress)}`,
-                    {
-                      address: formatAddress(signerAddress),
-                      network: selectedNetwork.name,
-                    },
-                  )
-                : translate(
+            {signerAddress ? null : (
+              <>
+                <span className="text-xs uppercase tracking-[0.3em] text-wolf-text-subtle">
+                  {translate(
                     "network.prompt",
                     "Connect a wallet to load Spray.",
                   )}
-            </span>
-            {signerAddress ? (
-              isTargetNetworkReady ? (
-                <span className="wolf-pill text-xs uppercase tracking-[0.26em] bg-wolf-emerald-soft text-wolf-emerald">
-                  {networkStatusLabel}
                 </span>
-              ) : (
-                <button
-                  type="button"
-                  onClick={handleNetworkPromptClick}
-                  className="wolf-pill text-xs uppercase tracking-[0.26em] bg-wolf-charcoal-70 text-wolf-text-subtle transition hover:bg-wolf-border hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-wolf-emerald"
-                >
-                  {networkStatusLabel}
-                </button>
-              )
-            ) : (
-              <p className="max-w-[32ch] text-xs text-white/60">
-                {translate(
-                  "wallet.helper",
-                  "Use the top bar to connect your wallet and load Spray rewards.",
-                )}
-              </p>
+                <p className="max-w-[32ch] text-xs text-white/60">
+                  {translate(
+                    "wallet.helper",
+                    "Use the top bar to connect your wallet and load Spray rewards.",
+                  )}
+                </p>
+              </>
             )}
           </div>
         </header>
@@ -1019,53 +949,42 @@ export default function SprayDisperser() {
             <div className="flex flex-wrap items-center gap-4">
               <button
                 type="button"
-                onClick={handleSelectNativeToken}
-                className={`rounded-lg px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] transition ${
-                  mode === "native"
-                    ? "bg-wolf-emerald-soft text-wolf-emerald"
-                    : "border border-wolf-border text-white/70"
-                }`}
+                onClick={() => {
+                  if (mode === "token") {
+                    handleSelectNativeToken();
+                  } else {
+                    handleSelectCustomToken();
+                  }
+                }}
+                className="relative flex items-center gap-1 rounded-lg border border-wolf-border-soft/80 bg-wolf-panel/80 px-1.5 py-1 text-xs font-semibold uppercase tracking-[0.26em] text-wolf-text-subtle shadow-[0_0_20px_rgba(160,83,255,0.12)] backdrop-blur-md transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent focus-visible:ring-[rgba(160,83,255,0.6)]"
+                aria-label="Toggle native or custom token"
+                aria-pressed={mode === "token"}
               >
-                {translate("modes.native", `Native (${nativeSymbol})`, {
-                  symbol: nativeSymbol,
-                })}
+                <span
+                  className={`flex items-center gap-1 rounded-lg px-3 py-1 transition ${
+                    mode === "native"
+                      ? "bg-wolf-neutral-soft text-white shadow-[0_0_16px_rgba(255,255,255,0.08)]"
+                      : "text-wolf-text-subtle"
+                  }`}
+                >
+                  {translate("modes.native", `Native (${nativeSymbol})`, {
+                    symbol: nativeSymbol,
+                  })}
+                </span>
+                <span
+                  className={`flex items-center gap-1 rounded-lg px-3 py-1 transition ${
+                    mode === "token"
+                      ? "bg-[linear-gradient(135deg,rgba(160,83,255,0.85),rgba(91,45,255,0.65))] text-white shadow-[0_0_24px_rgba(160,83,255,0.45)]"
+                      : "text-wolf-text-subtle"
+                  }`}
+                >
+                  {t("modes.token")}
+                </span>
               </button>
-              <button
-                type="button"
-                onClick={ensureTokenMode}
-                className={`rounded-lg px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] transition ${
-                  mode === "token"
-                    ? "bg-wolf-emerald-soft text-wolf-emerald"
-                    : "border border-wolf-border text-white/70"
-                }`}
-              >
-                {t("modes.token")}
-              </button>
-            </div>
-            <div className="mt-4 flex flex-wrap items-center gap-4 text-xs uppercase tracking-[0.28em] text-wolf-text-subtle">
-              <span>{t("summary.recipients", { count: rows.length })}</span>
-              <span>
-                {mode === "native"
-                  ? translate(
-                      "summary.totalNative",
-                      `Total: ${totalEntered.toFixed(4)} ${nativeSymbol}`,
-                      {
-                        amount: totalEntered.toFixed(4),
-                        symbol: nativeSymbol,
-                      },
-                    )
-                  : t("summary.totalToken", {
-                      amount: totalEntered.toFixed(4),
-                      symbol:
-                        tokenInfo?.symbol ??
-                        selectedTrustedTokenData?.symbol ??
-                        t("summary.tokenPlaceholder"),
-                    })}
-              </span>
             </div>
             <div
               ref={networkDropdownRef}
-              className="relative mt-4 w-full md:max-w-xs"
+              className="relative mt-4 w-full"
             >
               <button
                 type="button"
@@ -1155,15 +1074,6 @@ export default function SprayDisperser() {
 
             <div className="mt-6 space-y-3">
               <div className="space-y-2">
-                <div className="flex justify-end">
-                  <button
-                    type="button"
-                    onClick={handleSelectCustomToken}
-                    className="text-[11px] uppercase tracking-[0.28em] text-wolf-emerald hover:text-white"
-                  >
-                    {translate("form.useCustom", "Use custom")}
-                  </button>
-                </div>
                 <div
                   ref={trustedDropdownRef}
                   className="relative"
@@ -1187,13 +1097,39 @@ export default function SprayDisperser() {
                         className="h-8 w-8"
                       />
                     </div>
-                    <div className="text-left leading-tight">
+                    <div className="text-left leading-tight w-full">
                       <p className="text-[11px] uppercase tracking-[0.26em] text-white/60">
                         {tokenPayWithLabel}
                       </p>
-                      <p className="text-lg font-semibold text-white">
-                        {tokenCardPrimaryLabel}
-                      </p>
+                      {isCustomTokenSelected ? (
+                        <div className="mt-2 space-y-1">
+                          <input
+                            id="token-address-input-inline"
+                            value={tokenAddress}
+                            onChange={(event) =>
+                              setTokenAddress(event.target.value)
+                            }
+                            placeholder={t("form.tokenPlaceholder")}
+                            className="w-full rounded-md border border-wolf-border bg-wolf-panel px-3 py-2 text-sm text-white/80 placeholder:text-white/30 focus:border-wolf-emerald focus:outline-none"
+                          />
+                          {isFetchingTokenInfo ? (
+                            <p className="text-xs text-white/50">
+                              {t("form.tokenLoading")}
+                            </p>
+                          ) : tokenInfo ? (
+                            <p className="text-xs text-wolf-emerald">
+                              {t("form.tokenResolved", {
+                                symbol: tokenInfo.symbol,
+                                decimals: tokenInfo.decimals,
+                              })}
+                            </p>
+                          ) : null}
+                        </div>
+                      ) : (
+                        <p className="text-lg font-semibold text-white">
+                          {tokenCardPrimaryLabel}
+                        </p>
+                      )}
                     </div>
                     <svg
                       className="ml-auto h-4 w-4 text-white/70"
@@ -1256,7 +1192,7 @@ export default function SprayDisperser() {
                         <div className="flex items-center gap-3">
                           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10">
                             <Image
-                              src={DEFAULT_TOKEN_ICON}
+                              src={CUSTOM_TOKEN_ICON}
                               alt="Custom token icon"
                               width={32}
                               height={32}
@@ -1312,35 +1248,27 @@ export default function SprayDisperser() {
                 </div>
               </div>
 
-              {mode === "token" && isCustomTokenSelected ? (
-                <div className="space-y-2">
-                  <label
-                    htmlFor="token-address-input"
-                    className="text-xs uppercase tracking-[0.32em] text-wolf-text-subtle"
-                  >
-                    {t("form.tokenLabel")}
-                  </label>
-                  <input
-                    id="token-address-input"
-                    value={tokenAddress}
-                    onChange={(event) => setTokenAddress(event.target.value)}
-                    placeholder={t("form.tokenPlaceholder")}
-                    className="w-full rounded-lg border border-wolf-border bg-wolf-panel px-4 py-3 text-sm text-white/80 placeholder:text-white/30 focus:border-wolf-emerald focus:outline-none"
-                  />
-                  {isFetchingTokenInfo ? (
-                    <p className="text-xs text-wolf-text-subtle">
-                      {t("form.tokenLoading")}
-                    </p>
-                  ) : tokenInfo ? (
-                    <p className="text-xs text-wolf-text-subtle">
-                      {t("form.tokenResolved", {
-                        symbol: tokenInfo.symbol,
-                        decimals: tokenInfo.decimals,
+              <div className="text-xs uppercase tracking-[0.28em] text-wolf-emerald">
+                <span>{t("summary.recipients", { count: rows.length })}</span>
+                <span className="ml-3">
+                  {mode === "native"
+                    ? translate(
+                        "summary.totalNative",
+                        `Total: ${totalEntered.toFixed(4)} ${nativeSymbol}`,
+                        {
+                          amount: totalEntered.toFixed(4),
+                          symbol: nativeSymbol,
+                        },
+                      )
+                    : t("summary.totalToken", {
+                        amount: totalEntered.toFixed(4),
+                        symbol:
+                          tokenInfo?.symbol ??
+                          selectedTrustedTokenData?.symbol ??
+                          t("summary.tokenPlaceholder"),
                       })}
-                    </p>
-                  ) : null}
-                </div>
-              ) : null}
+                </span>
+              </div>
             </div>
 
             <div className="mt-6 space-y-4">
