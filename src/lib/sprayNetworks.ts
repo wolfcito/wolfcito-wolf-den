@@ -22,6 +22,7 @@ export type SprayNetworkConfig = {
     address: string;
     symbol?: string;
     iconUrl?: string;
+    decimals?: number;
   }>;
 };
 
@@ -45,36 +46,42 @@ export const SPRAY_NETWORKS: Record<string, SprayNetworkConfig> = {
         symbol: "cCOP",
         address: "0x8A567e2aE79CA692Bd748aB832081C45de4041eA",
         iconUrl: CELO_CCOP_ICON,
+        decimals: 18,
       },
       {
         label: "Celo Dollar (cUSD)",
         symbol: "cUSD",
         address: "0x765DE816845861E75A25fCA122bb6898B8B1282a",
         iconUrl: CELO_DOLLAR_ICON,
+        decimals: 18,
       },
       {
         label: "Celo Euro (cEUR)",
         symbol: "cEUR",
         address: "0xd8763CBa276a3738e6DE85b4B3BF5Fded6d6CA73",
         iconUrl: CELO_DOLLAR_ICON,
+        decimals: 18,
       },
       {
         label: "Celo Brazilian Real (cREAL)",
         symbol: "cREAL",
         address: "0xE8537A3d056DA446677B9E9d6C5dB704EaAb4787",
         iconUrl: CELO_DOLLAR_ICON,
+        decimals: 18,
       },
       {
         label: "GoodDollar (G$)",
         symbol: "G$",
         address: "0x62b8b11039FCfE5ab0C56E502B1c372A3D2a9C7a",
         iconUrl: CELO_GOOD_ICON,
+        decimals: 2,
       },
       {
         label: "USD Coin (USDC)",
         symbol: "USDC",
         address: "0xcebA9300f2b948710d2653dD7B07f33A8B32118C",
         iconUrl: DEFAULT_TOKEN_ICON,
+        decimals: 6,
       },
     ],
   },
@@ -97,12 +104,14 @@ export const SPRAY_NETWORKS: Record<string, SprayNetworkConfig> = {
         symbol: "USDC",
         address: "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85",
         iconUrl: DEFAULT_TOKEN_ICON,
+        decimals: 6,
       },
       {
         label: "Optimism (OP)",
         symbol: "OP",
         address: "0x4200000000000000000000000000000000000042",
         iconUrl: OPTIMISM_OP_ICON,
+        decimals: 18,
       },
     ],
   },
@@ -125,6 +134,7 @@ export const SPRAY_NETWORKS: Record<string, SprayNetworkConfig> = {
         symbol: "USDC",
         address: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         iconUrl: DEFAULT_TOKEN_ICON,
+        decimals: 6,
       },
     ],
   },
@@ -147,6 +157,7 @@ export const SPRAY_NETWORKS: Record<string, SprayNetworkConfig> = {
         symbol: "USDC",
         address: "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
         iconUrl: DEFAULT_TOKEN_ICON,
+        decimals: 6,
       },
     ],
   },

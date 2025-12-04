@@ -311,13 +311,11 @@ export default function SprayDisperser() {
   }, [])
 
   useEffect(() => {
-    if (!provider || mode !== 'token') {
+    if (mode !== 'token') {
       setTokenInfo(null)
       setIsFetchingTokenInfo(false)
       return
     }
-
-    const activeProvider = provider
 
     const normalized = tokenAddress.trim()
     if (!isAddress(normalized)) {
@@ -326,6 +324,30 @@ export default function SprayDisperser() {
       return
     }
 
+    const normalizedAddress = normalized.toLowerCase()
+    const trustedMetadata = trustedTokens.find(
+      (token) =>
+        token.address.toLowerCase() === normalizedAddress &&
+        typeof token.decimals === 'number',
+    )
+
+    if (trustedMetadata) {
+      setTokenInfo({
+        symbol: trustedMetadata.symbol ?? t('summary.tokenPlaceholder'),
+        decimals: trustedMetadata.decimals,
+      })
+      setIsFetchingTokenInfo(false)
+      setError(null)
+      return
+    }
+
+    if (!provider) {
+      setTokenInfo(null)
+      setIsFetchingTokenInfo(false)
+      return
+    }
+
+    const activeProvider = provider
     let isCancelled = false
 
     async function fetchTokenDetails(targetProvider: BrowserProvider) {
@@ -358,7 +380,7 @@ export default function SprayDisperser() {
     return () => {
       isCancelled = true
     }
-  }, [provider, tokenAddress, mode, t])
+  }, [provider, tokenAddress, mode, trustedTokens, t])
 
   // When the user selects a trusted token, keep the address input in sync
   useEffect(() => {
@@ -1276,35 +1298,6 @@ export default function SprayDisperser() {
                               </div>
                             </div>
                           </button>
-                          <button
-                            type="button"
-                            role="option"
-                            aria-selected={isCustomTokenSelected}
-                            className={`block w-full cursor-pointer px-3 py-2 text-left transition hover:bg-white/5 ${
-                              isCustomTokenSelected ? 'bg-white/5' : ''
-                            }`}
-                            onClick={handleSelectCustomToken}
-                          >
-                            <div className="flex items-center gap-3">
-                              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10">
-                                <Image
-                                  src={CUSTOM_TOKEN_ICON}
-                                  alt="Custom token icon"
-                                  width={32}
-                                  height={32}
-                                  className="h-8 w-8 object-contain"
-                                />
-                              </div>
-                              <div className="text-left leading-tight">
-                                <p className="text-sm font-semibold text-white">
-                                  {customTokenNameLabel}
-                                </p>
-                                <p className="text-xs text-white/60">
-                                  {t('form.tokenPlaceholder')}
-                                </p>
-                              </div>
-                            </div>
-                          </button>
                           {trustedTokens.map((tok) => (
                             <button
                               key={tok.address}
@@ -1343,6 +1336,35 @@ export default function SprayDisperser() {
                               </div>
                             </button>
                           ))}
+                          <button
+                            type="button"
+                            role="option"
+                            aria-selected={isCustomTokenSelected}
+                            className={`block w-full cursor-pointer px-3 py-2 text-left transition hover:bg-white/5 ${
+                              isCustomTokenSelected ? 'bg-white/5' : ''
+                            }`}
+                            onClick={handleSelectCustomToken}
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10">
+                                <Image
+                                  src={CUSTOM_TOKEN_ICON}
+                                  alt="Custom token icon"
+                                  width={32}
+                                  height={32}
+                                  className="h-8 w-8 object-contain"
+                                />
+                              </div>
+                              <div className="text-left leading-tight">
+                                <p className="text-sm font-semibold text-white">
+                                  {customTokenNameLabel}
+                                </p>
+                                <p className="text-xs text-white/60">
+                                  {t('form.tokenPlaceholder')}
+                                </p>
+                              </div>
+                            </div>
+                          </button>
                         </div>
                       ) : null}
                     </div>
