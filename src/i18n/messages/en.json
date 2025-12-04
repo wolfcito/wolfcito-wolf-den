@@ -59,7 +59,8 @@
     },
     "aria": {
       "navigation": "Wolf Den navigation",
-      "homeLink": "Go to Wolf Den home"
+      "homeLink": "Go to Wolf Den home",
+      "toggle": "Toggle sidebar"
     },
     "statusBar": {
       "helper": ""

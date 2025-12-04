@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { usePathname } from "@/i18n/routing";
 import LimelightNav from "@/components/ui/LimelightNav";
+import { useSidebar } from "@/components/ui/sidebar";
 
 type MobilePanelKey = "main" | "menu" | "activity";
 
@@ -22,17 +23,13 @@ const navigationItems: NavigationItemConfig[] = [
 
 type MobileDenLayoutProps = {
   main: ReactNode;
-  menu: ReactNode;
   activity: ReactNode;
 };
 
-export function MobileDenLayout({
-  main,
-  menu,
-  activity,
-}: MobileDenLayoutProps) {
+export function MobileDenLayout({ main, activity }: MobileDenLayoutProps) {
   const t = useTranslations("MobileDenLayout");
   const pathname = usePathname();
+  const { setOpenMobile } = useSidebar();
   const [activePanel, setActivePanel] = useState<MobilePanelKey>("main");
   const navItems = useMemo(() => {
     return navigationItems.map(({ key, icon: Icon, labelKey }) => ({
@@ -53,16 +50,12 @@ export function MobileDenLayout({
   }, [pathname]);
 
   const renderPanel = useMemo(() => {
-    if (activePanel === "menu") {
-      return <div className="max-h-[65vh] overflow-y-auto pr-1">{menu}</div>;
-    }
-
     if (activePanel === "activity") {
       return <div className="space-y-4">{activity}</div>;
     }
 
     return main;
-  }, [activity, main, menu, activePanel]);
+  }, [activity, main, activePanel]);
 
   return (
     <>
@@ -81,6 +74,10 @@ export function MobileDenLayout({
             onTabChange={(index) => {
               const next = navigationItems[index];
               if (next) {
+                if (next.key === "menu") {
+                  setOpenMobile(true);
+                  return;
+                }
                 setActivePanel(next.key);
               }
             }}
