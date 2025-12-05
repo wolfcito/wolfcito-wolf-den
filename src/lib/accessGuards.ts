@@ -33,7 +33,7 @@ export async function requireProfile({
   locale,
   nextPath,
 }: GuardOptions): Promise<LabUserProfile> {
-  const id = getStoredLabUserId();
+  const id = await getStoredLabUserId();
   if (!id) {
     redirect(buildAccessUrl({ locale, nextPath }));
   }

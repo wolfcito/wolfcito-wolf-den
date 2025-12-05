@@ -49,7 +49,7 @@ export async function PATCH(request: NextRequest) {
       throw error;
     }
 
-    persistLabUserId(data.id);
+    await persistLabUserId(data.id);
     return responseWithUser(data as LabUserProfile);
   } catch (error) {
     console.error("Failed to update Self state", error);

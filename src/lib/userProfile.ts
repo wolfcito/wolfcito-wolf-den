@@ -33,13 +33,15 @@ export type SelfUpdatePayload = {
 export const LAB_USER_COOKIE = "denlabs-user-id";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 
-export function getStoredLabUserId(): string | null {
-  const id = cookies().get(LAB_USER_COOKIE)?.value;
+export async function getStoredLabUserId(): Promise<string | null> {
+  const store = await cookies();
+  const id = store.get(LAB_USER_COOKIE)?.value;
   return id ?? null;
 }
 
-export function persistLabUserId(id: string) {
-  cookies().set(LAB_USER_COOKIE, id, {
+export async function persistLabUserId(id: string) {
+  const store = await cookies();
+  store.set(LAB_USER_COOKIE, id, {
     path: "/",
     httpOnly: true,
     sameSite: "lax",
@@ -48,8 +50,9 @@ export function persistLabUserId(id: string) {
   });
 }
 
-export function clearLabUserId() {
-  cookies().delete(LAB_USER_COOKIE);
+export async function clearLabUserId() {
+  const store = await cookies();
+  store.delete(LAB_USER_COOKIE);
 }
 
 export async function readJsonBody<T>(request: NextRequest): Promise<T | null> {

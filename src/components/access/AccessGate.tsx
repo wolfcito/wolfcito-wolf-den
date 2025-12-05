@@ -248,7 +248,12 @@ export default function AccessGate({
       await handleContinue();
       return;
     }
-    setCurrentStep((step) => Math.min((step + 1) as StepKey, 3));
+    setCurrentStep((step) => {
+      if (step >= 3) {
+        return 3;
+      }
+      return ((step + 1) as StepKey);
+    });
   }, [
     currentStep,
     handleContinue,
@@ -259,7 +264,12 @@ export default function AccessGate({
   ]);
 
   const handleBack = useCallback(() => {
-    setCurrentStep((step) => Math.max((step - 1) as StepKey, 1));
+    setCurrentStep((step) => {
+      if (step <= 1) {
+        return 1;
+      }
+      return ((step - 1) as StepKey);
+    });
   }, []);
 
   const handleSkip = useCallback(() => {

@@ -15,7 +15,7 @@ function responseWithUser(user: LabUserProfile | null, init?: ResponseInit) {
 }
 
 export async function GET() {
-  const id = getStoredLabUserId();
+  const id = await getStoredLabUserId();
   if (!id) {
     return responseWithUser(null);
   }
@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
         throw error;
       }
 
-      persistLabUserId(data.id);
+      await persistLabUserId(data.id);
       return responseWithUser(data as LabUserProfile);
     }
 
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
       throw error;
     }
 
-    persistLabUserId(data.id);
+    await persistLabUserId(data.id);
     return responseWithUser(data as LabUserProfile);
   } catch (error) {
     console.error("Failed to upsert lab user", error);
