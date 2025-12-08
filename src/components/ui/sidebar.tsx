@@ -4,9 +4,9 @@ import { Menu, X } from "lucide-react";
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-export const SIDEBAR_WIDTH = 272;
-export const SIDEBAR_COLLAPSED_WIDTH = 84;
-export const SIDEBAR_MOBILE_WIDTH = 288;
+export const SIDEBAR_WIDTH = 252;
+export const SIDEBAR_COLLAPSED_WIDTH = 76;
+export const SIDEBAR_MOBILE_WIDTH = 268;
 
 type SidebarContextValue = {
   open: boolean;
@@ -342,10 +342,14 @@ export function SidebarMenuSubButton({
   );
 
   if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(children, {
+    type ChildWithClassName = React.ReactElement<
+      Record<string, unknown> & { className?: string }
+    >;
+    const child = children as ChildWithClassName;
+    return React.cloneElement(child, {
       className: cn(
         baseClasses,
-        (children.props as Record<string, unknown>)?.className ?? "",
+        (child.props.className as string | undefined) ?? "",
       ),
       ...props,
     });
@@ -488,7 +492,7 @@ export function CollapsibleTrigger({
     "data-state": open ? "open" : "closed",
     "data-disabled": disabled ? "true" : undefined,
   };
-  const handleClick = (event: React.MouseEvent) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     onClick?.(event);
     if (!event.defaultPrevented) {
       setOpen((prev) => !prev);
@@ -496,27 +500,24 @@ export function CollapsibleTrigger({
   };
 
   if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(children, {
+    type ChildProps = {
+      className?: string;
+      disabled?: boolean;
+      onClick?: React.MouseEventHandler;
+    };
+    const child = children as React.ReactElement<ChildProps>;
+    return React.cloneElement(child, {
       ...rest,
       ...sharedProps,
-      className: cn(
-        (children.props as Record<string, unknown>)?.className ?? "",
-        className,
-      ),
+      className: cn(child.props.className ?? "", className),
       disabled:
-        typeof (children.props as Record<string, unknown>)?.disabled ===
-        "boolean"
-          ? (children.props as Record<string, unknown>).disabled
+        typeof child.props.disabled === "boolean"
+          ? child.props.disabled
           : disabled,
       onClick: (event: React.MouseEvent) => {
-        if ((children.props as Record<string, unknown>).onClick) {
-          (
-            (children.props as Record<string, unknown>)
-              .onClick as React.MouseEventHandler
-          )(event);
-        }
+        child.props.onClick?.(event);
         if (!disabled) {
-          handleClick(event);
+          handleClick(event as React.MouseEvent<HTMLButtonElement>);
         }
       },
     });

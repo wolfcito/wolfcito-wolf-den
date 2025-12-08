@@ -1,4 +1,4 @@
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import SelfAuth from "@/components/SelfAuth";
 import { requireWallet } from "@/lib/accessGuards";
 
@@ -9,7 +9,7 @@ export default async function AuthPage({
 }) {
   const { locale } = await params;
   await requireWallet({ locale, nextPath: "/auth" });
-  const t = useTranslations("AuthPage");
+  const t = await getTranslations({ locale, namespace: "AuthPage" });
   const tips = t.raw("tips") as string[];
 
   return (

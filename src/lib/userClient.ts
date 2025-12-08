@@ -1,66 +1,80 @@
-import type {
-  CreateLabUserPayload,
-  LabUserProfile,
-  SelfUpdatePayload,
-  WalletUpdatePayload,
-} from "@/lib/userProfile";
-
-type UserResponse = {
-  user: LabUserProfile | null;
-  error?: string;
+export type UserSession = {
+  isAuthenticated: boolean;
+  labUserId: string | null;
+  walletAddress: `0x${string}` | null;
+  handle: string | null;
+  hasProfile: boolean;
+  isSelfVerified: boolean;
+  holdScore: number;
 };
 
-async function handleResponse(
-  response: Response,
-): Promise<LabUserProfile | null> {
-  const data = (await response.json()) as UserResponse;
+export type WalletLoginResponse = {
+  labUserId: string;
+  walletAddress: string | null;
+  handle: string | null;
+  hasProfile: boolean;
+  isSelfVerified: boolean;
+  holdScore: number;
+};
+
+type HandleResponse = {
+  handle: string;
+  hasProfile: boolean;
+};
+
+async function handleJsonResponse<T>(response: Response): Promise<T> {
+  const data = (await response.json()) as T & { error?: string };
   if (!response.ok) {
     const message = data?.error ?? "Request failed";
     throw new Error(message);
   }
-  return data.user ?? null;
+  return data;
 }
 
-export async function fetchUserProfile() {
-  const response = await fetch("/api/lab-user", {
+export async function fetchUserSession(): Promise<UserSession> {
+  const response = await fetch("/api/auth/session", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
     cache: "no-store",
   });
-  return handleResponse(response);
+  return handleJsonResponse<UserSession>(response);
 }
 
-export async function saveUserProfile(payload: CreateLabUserPayload) {
-  const response = await fetch("/api/lab-user", {
+export async function loginWithWallet(
+  walletAddress: string,
+): Promise<WalletLoginResponse> {
+  const response = await fetch("/api/auth/wallet-login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(payload),
+    body: JSON.stringify({ walletAddress }),
   });
-  return handleResponse(response);
+  return handleJsonResponse<WalletLoginResponse>(response);
 }
 
-export async function updateUserWallet(payload: WalletUpdatePayload) {
-  const response = await fetch("/api/lab-user/wallet", {
-    method: "PATCH",
+export async function claimUserHandle(handle: string): Promise<HandleResponse> {
+  const response = await fetch("/api/profile", {
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(payload),
+    body: JSON.stringify({ handle }),
   });
-  return handleResponse(response);
+  return handleJsonResponse<HandleResponse>(response);
 }
 
-export async function markUserSelfVerified(payload: SelfUpdatePayload) {
-  const response = await fetch("/api/lab-user/self", {
-    method: "PATCH",
+export async function markUserSelfVerified(holdBonus?: number) {
+  const response = await fetch("/api/trust/self-verify", {
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(payload),
+    body: holdBonus ? JSON.stringify({ holdBonus }) : undefined,
   });
-  return handleResponse(response);
+  return handleJsonResponse<{ isSelfVerified: boolean; holdScore: number }>(
+    response,
+  );
 }

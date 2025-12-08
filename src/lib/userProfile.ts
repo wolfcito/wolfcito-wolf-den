@@ -5,7 +5,8 @@ export type UserRole = "player" | "organizer" | "sponsor";
 
 export type LabUserProfile = {
   id: string;
-  name: string;
+  handle: string | null;
+  display_name: string;
   role: UserRole;
   wallet_address: string | null;
   self_verified: boolean;
@@ -16,12 +17,13 @@ export type LabUserProfile = {
 
 export type CreateLabUserPayload = {
   id?: string;
-  name: string;
+  handle?: string;
+  name?: string;
   role?: UserRole;
 };
 
 export type WalletUpdatePayload = {
-  id: string;
+  id?: string;
   walletAddress: string;
 };
 
@@ -63,12 +65,17 @@ export async function readJsonBody<T>(request: NextRequest): Promise<T | null> {
   }
 }
 
-export function sanitizeName(value: unknown): string | null {
+const HANDLE_REGEX = /^[A-Za-z0-9_.-]{3,32}$/;
+
+export function sanitizeHandle(value: unknown): string | null {
   if (typeof value !== "string") {
     return null;
   }
   const trimmed = value.trim();
-  return trimmed.length ? trimmed : null;
+  if (!trimmed.length) {
+    return null;
+  }
+  return HANDLE_REGEX.test(trimmed) ? trimmed : null;
 }
 
 export function sanitizeRole(value: unknown): UserRole {
@@ -99,4 +106,16 @@ export function sanitizeWallet(
     return null;
   }
   return value as `0x${string}`;
+}
+
+export function buildDisplayNameFromWallet(
+  value: `0x${string}` | string | null | undefined,
+): string {
+  if (typeof value !== "string" || value.length === 0) {
+    return "Den Builder";
+  }
+  if (value.length <= 12) {
+    return value;
+  }
+  return `${value.slice(0, 6)}…${value.slice(-4)}`;
 }

@@ -3,9 +3,9 @@
 import { FlaskConical } from "lucide-react";
 import Image from "next/image";
 import type { ReactNode } from "react";
-import { useState } from "react";
-import ConnectWalletButton from "@/components/ui/ConnectWalletButton";
+import { useEffect, useState } from "react";
 import { Link } from "@/i18n/routing";
+import { fetchUserSession } from "@/lib/userClient";
 
 const HOW_IT_WORKS_STEPS = [
   {
@@ -86,6 +86,23 @@ export default function HomeLanding() {
   const [isSelfGateOpen, setIsSelfGateOpen] = useState(false);
   const [isOpsPanelOpen, setIsOpsPanelOpen] = useState(false);
   const [showMethodology, setShowMethodology] = useState(false);
+  const [enterLabHref, setEnterLabHref] = useState("/access");
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchUserSession()
+      .then((session) => {
+        if (!cancelled && session?.hasProfile) {
+          setEnterLabHref("/lab");
+        }
+      })
+      .catch(() => {
+        // ignore errors, default CTA stays on /access
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <>
@@ -120,18 +137,20 @@ export default function HomeLanding() {
               className="mx-auto h-48 w-48 sm:h-60 sm:w-60"
               priority
             />
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/80">
+              Ship fast, play smart
+            </p>
             <div className="flex flex-wrap justify-center gap-3">
               <Link
-                href="/auth"
+                href={enterLabHref}
                 className="inline-flex items-center gap-3 rounded-xl border border-[#4ca22a] bg-[#89e24a] px-6 py-3 text-[0.85rem] font-semibold uppercase tracking-[0.22em] text-[#09140a] shadow-[0_0_20px_rgba(186,255,92,0.35)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_40px_rgba(186,255,92,0.45)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#baff5c]"
               >
                 <FlaskConical
                   className="h-4 w-4 text-[#0b1b09]"
                   aria-hidden="true"
                 />
-                <span>Ship fast, play smart</span>
+                <span>Enter lab</span>
               </Link>
-              <ConnectWalletButton />
             </div>
             <div className="mt-6 flex w-full max-w-[420px] gap-6 text-white/80 justify-between">
               <svg

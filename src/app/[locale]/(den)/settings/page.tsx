@@ -1,4 +1,4 @@
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { requireProfile } from "@/lib/accessGuards";
@@ -10,7 +10,7 @@ export default async function SettingsPage({
 }) {
   const { locale } = await params;
   await requireProfile({ locale, nextPath: "/settings" });
-  const t = useTranslations("SettingsPage");
+  const t = await getTranslations({ locale, namespace: "SettingsPage" });
   const privacyItems = t.raw("privacy.items") as Array<{
     label: string;
     status: string;

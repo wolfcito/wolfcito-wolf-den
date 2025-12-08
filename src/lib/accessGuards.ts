@@ -16,16 +16,9 @@ function sanitizeNextPath(nextPath: string) {
   return withSlash.replace(/[^/A-Za-z0-9?=&._-]/g, "");
 }
 
-function buildAccessUrl({
-  locale,
-  nextPath,
-  walletRequired,
-}: GuardOptions & { walletRequired?: boolean }) {
+function buildAccessUrl({ locale, nextPath }: GuardOptions) {
   const params = new URLSearchParams();
   params.set("next", sanitizeNextPath(nextPath));
-  if (walletRequired) {
-    params.set("walletRequired", "true");
-  }
   return `/${locale}/access?${params.toString()}`;
 }
 
@@ -45,7 +38,11 @@ export async function requireProfile({
   if (error || !data) {
     redirect(buildAccessUrl({ locale, nextPath }));
   }
-  return data as LabUserProfile;
+  const profile = data as LabUserProfile;
+  if (!profile.wallet_address || !profile.handle) {
+    redirect(buildAccessUrl({ locale, nextPath }));
+  }
+  return profile;
 }
 
 export async function requireWallet({
@@ -53,8 +50,5 @@ export async function requireWallet({
   nextPath,
 }: GuardOptions): Promise<LabUserProfile> {
   const profile = await requireProfile({ locale, nextPath });
-  if (!profile.wallet_address) {
-    redirect(buildAccessUrl({ locale, nextPath, walletRequired: true }));
-  }
   return profile;
 }

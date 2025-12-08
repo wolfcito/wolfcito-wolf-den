@@ -3,40 +3,32 @@
 import { useAppKitAccount } from "@reown/appkit/react";
 import {
   Check,
-  ChevronDown,
+  ChevronRight,
   Lock,
   Shield,
   Sparkles,
-  User,
   Wallet,
 } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import {
-  type ChangeEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import ConnectWalletButton from "@/components/ui/ConnectWalletButton";
 import { useRouter } from "@/i18n/routing";
 import {
-  fetchUserProfile,
-  saveUserProfile,
-  updateUserWallet,
+  claimUserHandle,
+  fetchUserSession,
+  loginWithWallet,
+  type UserSession,
 } from "@/lib/userClient";
-import type { LabUserProfile, UserRole } from "@/lib/userProfile";
 import { cn } from "@/lib/utils";
 
 type AccessGateProps = {
-  walletRequired: boolean;
   nextPath?: string;
 };
 
-const ROLE_VALUES: UserRole[] = ["organizer", "player", "sponsor"];
-const HANDLE_REGEX = /^[a-zA-Z0-9_.-]{3,24}$/;
 type StepKey = 1 | 2 | 3;
+
+const HANDLE_REGEX = /^[A-Za-z0-9_.-]{3,32}$/;
 
 function formatAddress(address?: `0x${string}` | null) {
   if (!address) {
@@ -45,47 +37,43 @@ function formatAddress(address?: `0x${string}` | null) {
   return `${address.slice(0, 6)}…${address.slice(-4)}`;
 }
 
-export default function AccessGate({
-  walletRequired,
-  nextPath,
-}: AccessGateProps) {
+export default function AccessGate({ nextPath }: AccessGateProps) {
   const t = useTranslations("AccessGate");
   const router = useRouter();
   const { address } = useAppKitAccount();
-  const [user, setUser] = useState<LabUserProfile | null>(null);
-  const [nameInput, setNameInput] = useState("");
-  const [roleInput, setRoleInput] = useState<UserRole | "player">("player");
+  const [session, setSession] = useState<UserSession | null>(null);
+  const [currentStep, setCurrentStep] = useState<StepKey>(1);
+  const [handleInput, setHandleInput] = useState("");
+  const [handleError, setHandleError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isSavingProfile, setIsSavingProfile] = useState(false);
   const [isSyncingWallet, setIsSyncingWallet] = useState(false);
+  const [isSavingHandle, setIsSavingHandle] = useState(false);
   const [isContinuing, setIsContinuing] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [didPrefill, setDidPrefill] = useState(false);
-  const [currentStep, setCurrentStep] = useState<StepKey>(1);
-  const [handleError, setHandleError] = useState<string | null>(null);
 
-  const profileComplete = Boolean(user);
-  const hasWallet = Boolean(user?.wallet_address);
-  const walletStepRequired = walletRequired && !hasWallet;
-  const continueDisabled =
-    !profileComplete || walletStepRequired || isContinuing;
   const resolvedNext = nextPath ?? "/lab";
 
-  const loadProfile = useCallback(async () => {
+  const applySession = useCallback((next: UserSession) => {
+    setSession(next);
+    if (next.handle) {
+      setHandleInput(next.handle);
+    }
+    if (!next.isAuthenticated) {
+      setCurrentStep(1);
+    } else if (!next.hasProfile) {
+      setCurrentStep(2);
+    } else {
+      setCurrentStep(3);
+    }
+  }, []);
+
+  const loadSession = useCallback(async () => {
     setIsLoading(true);
     setErrorMessage(null);
     try {
-      const existing = await fetchUserProfile();
-      setUser(existing);
-      if (existing && !didPrefill) {
-        setNameInput(existing.name);
-        setRoleInput(existing.role ?? "player");
-        setDidPrefill(true);
-        setCurrentStep(existing.wallet_address ? 3 : 2);
-      } else if (!existing && !didPrefill) {
-        setCurrentStep(1);
-      }
+      const data = await fetchUserSession();
+      applySession(data);
     } catch (error) {
       setErrorMessage(
         error instanceof Error ? error.message : t("errors.generic"),
@@ -93,76 +81,100 @@ export default function AccessGate({
     } finally {
       setIsLoading(false);
     }
-  }, [didPrefill, t]);
+  }, [applySession, t]);
 
   useEffect(() => {
-    void loadProfile();
-  }, [loadProfile]);
+    void loadSession();
+  }, [loadSession]);
+
+  const connectedWallet =
+    typeof session?.walletAddress === "string" && session.walletAddress
+      ? (session.walletAddress as `0x${string}`)
+      : typeof address === "string" && address.startsWith("0x")
+        ? (address as `0x${string}`)
+        : null;
+  const hasWallet = Boolean(connectedWallet);
+  const hasHandle = Boolean(session?.hasProfile);
+  const continueDisabled = !hasWallet || !hasHandle || isContinuing;
+  const isHandleValid = HANDLE_REGEX.test(handleInput);
 
   useEffect(() => {
-    if (!user || !address || user.wallet_address === address) {
+    if (!address) {
       return;
     }
-    let aborted = false;
+    if (
+      session?.walletAddress &&
+      session.walletAddress.toLowerCase() === address.toLowerCase()
+    ) {
+      return;
+    }
+    let cancelled = false;
     setIsSyncingWallet(true);
-    setStatusMessage(null);
-    updateUserWallet({ id: user.id, walletAddress: address })
-      .then((updated) => {
-        if (!aborted && updated) {
-          setUser(updated);
-          setStatusMessage(t("status.walletConnected"));
+    setErrorMessage(null);
+    loginWithWallet(address)
+      .then((result) => {
+        if (cancelled) {
+          return;
         }
+        const nextSession: UserSession = {
+          isAuthenticated: true,
+          labUserId: result.labUserId,
+          walletAddress: (result.walletAddress ??
+            address.toLowerCase()) as `0x${string}`,
+          handle: result.handle as string | null,
+          hasProfile: result.hasProfile,
+          isSelfVerified: result.isSelfVerified,
+          holdScore: result.holdScore,
+        };
+        applySession(nextSession);
+        setStatusMessage(t("status.walletConnected"));
       })
       .catch((error) => {
-        if (!aborted) {
+        if (!cancelled) {
           setErrorMessage(
             error instanceof Error ? error.message : t("errors.generic"),
           );
         }
       })
       .finally(() => {
-        if (!aborted) {
+        if (!cancelled) {
           setIsSyncingWallet(false);
         }
       });
 
     return () => {
-      aborted = true;
+      cancelled = true;
     };
-  }, [address, t, user]);
+  }, [address, applySession, session?.walletAddress, t]);
 
   const handleProfileSave = useCallback(async () => {
-    if (!HANDLE_REGEX.test(nameInput)) {
+    if (!isHandleValid) {
       setHandleError(t("profile.handleInvalid"));
-      return false;
+      return;
     }
-    setIsSavingProfile(true);
-    setStatusMessage(null);
+    setIsSavingHandle(true);
     setErrorMessage(null);
     try {
-      const saved = await saveUserProfile({
-        id: user?.id,
-        name: nameInput,
-        role: roleInput || "player",
-      });
-      if (saved) {
-        setUser(saved);
-        setDidPrefill(true);
-        setStatusMessage(t("status.profileSaved"));
-        setCurrentStep(saved.wallet_address ? 3 : 2);
-        setHandleError(null);
-        return true;
+      const result = await claimUserHandle(handleInput);
+      if (session) {
+        applySession({
+          ...session,
+          handle: result.handle,
+          hasProfile: result.hasProfile,
+        });
+      } else {
+        await loadSession();
       }
-      return false;
+      setStatusMessage(t("status.profileSaved"));
+      setHandleError(null);
     } catch (error) {
       setErrorMessage(
         error instanceof Error ? error.message : t("errors.generic"),
       );
-      return false;
     } finally {
-      setIsSavingProfile(false);
+      setIsSavingHandle(false);
     }
-  }, [nameInput, roleInput, t, user?.id]);
+  }, [applySession, handleInput, isHandleValid, loadSession, session, t]);
 
   const handleContinue = useCallback(async () => {
     if (continueDisabled) {
@@ -178,109 +190,65 @@ export default function AccessGate({
   }, [continueDisabled, resolvedNext, router]);
 
   const walletStatus = useMemo(() => {
-    if (!profileComplete) {
-      return t("wallet.messages.profileFirst");
-    }
     if (isSyncingWallet) {
       return t("wallet.messages.connecting");
     }
-    if (user?.wallet_address) {
+    if (connectedWallet) {
       return `${t("wallet.messages.connected")} ${formatAddress(
-        user.wallet_address as `0x${string}`,
+        connectedWallet,
       )}`;
     }
     return t("wallet.messages.notConnected");
-  }, [profileComplete, isSyncingWallet, t, user?.wallet_address]);
+  }, [connectedWallet, isSyncingWallet, t]);
 
-  const showBlockedSelfCard = !user?.wallet_address;
-  const isHandleValid = HANDLE_REGEX.test(nameInput);
-  const continueHint = !profileComplete
-    ? t("continue.hintProfile")
-    : walletStepRequired
-      ? t("continue.hintWallet")
+  const continueHint = !hasWallet
+    ? t("continue.hintWallet")
+    : !hasHandle
+      ? t("continue.hintHandle")
       : t("continue.hintReady");
+
   const primaryActionLabel =
     currentStep === 1
-      ? t("profile.saveCta")
-      : currentStep === 3
-        ? t("continue.cta")
-        : t("navigation.next");
+      ? t("navigation.next")
+      : currentStep === 2
+        ? t("profile.saveCta")
+        : t("continue.cta");
+
   const canAdvance =
     currentStep === 1
-      ? isHandleValid && !isSavingProfile
+      ? hasWallet && !isSyncingWallet
       : currentStep === 2
-        ? !walletRequired || hasWallet
+        ? isHandleValid && !isSavingHandle
         : !continueDisabled;
 
-  const stepItems = [
-    {
-      id: 1 as StepKey,
-      icon: User,
-      label: t("steps.profile"),
-      completed: profileComplete,
-    },
-    {
-      id: 2 as StepKey,
-      icon: Wallet,
-      label: walletRequired
-        ? t("steps.walletRequired")
-        : t("steps.walletOptional"),
-      completed: hasWallet,
-    },
-    {
-      id: 3 as StepKey,
-      icon: Shield,
-      label: t("steps.self"),
-      completed: Boolean(user?.self_verified),
-    },
-  ];
-
-  const handlePrimaryAction = useCallback(async () => {
+  const handlePrimaryAction = useCallback(() => {
     if (currentStep === 1) {
-      if (!isHandleValid || isSavingProfile) {
-        setHandleError(t("profile.handleInvalid"));
-        return;
+      if (hasWallet) {
+        setCurrentStep(2);
       }
-      await handleProfileSave();
       return;
     }
-    if (currentStep === 3) {
-      await handleContinue();
+    if (currentStep === 2) {
+      void handleProfileSave();
       return;
     }
-    setCurrentStep((step) => {
-      if (step >= 3) {
-        return 3;
-      }
-      return ((step + 1) as StepKey);
-    });
-  }, [
-    currentStep,
-    handleContinue,
-    handleProfileSave,
-    isHandleValid,
-    isSavingProfile,
-    t,
-  ]);
+    void handleContinue();
+  }, [currentStep, handleContinue, handleProfileSave, hasWallet]);
 
   const handleBack = useCallback(() => {
     setCurrentStep((step) => {
       if (step <= 1) {
         return 1;
       }
-      return ((step - 1) as StepKey);
+      return (step - 1) as StepKey;
     });
   }, []);
 
   const handleSkip = useCallback(() => {
-    if (currentStep === 2 && !walletRequired) {
-      setCurrentStep(3);
-      return;
-    }
-    if (currentStep === 3 && !continueDisabled) {
+    if (currentStep === 3) {
       void handleContinue();
     }
-  }, [continueDisabled, currentStep, handleContinue, walletRequired]);
+  }, [currentStep, handleContinue]);
 
   if (isLoading) {
     return (
@@ -290,9 +258,28 @@ export default function AccessGate({
     );
   }
 
-  const showSkip =
-    (currentStep === 2 && !walletRequired) ||
-    (currentStep === 3 && !walletStepRequired);
+  const stepItems = [
+    {
+      id: 1 as StepKey,
+      icon: Wallet,
+      label: t("steps.walletRequired"),
+      completed: hasWallet,
+    },
+    {
+      id: 2 as StepKey,
+      icon: ChevronRight,
+      label: t("steps.profile"),
+      completed: hasHandle,
+    },
+    {
+      id: 3 as StepKey,
+      icon: Shield,
+      label: t("steps.self"),
+      completed: Boolean(session?.isSelfVerified),
+    },
+  ];
+
+  const showSkip = currentStep === 3;
 
   return (
     <div className="relative mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-3xl flex-col px-4 py-10 text-white sm:px-6 lg:px-0">
@@ -358,6 +345,36 @@ export default function AccessGate({
           </div>
 
           {currentStep === 1 ? (
+            <div className="space-y-6">
+              <div>
+                <p className="text-lg font-semibold text-white">
+                  {t("wallet.required.title")}
+                </p>
+                <p className="text-sm text-white/60">
+                  {t("wallet.required.copy")}
+                </p>
+              </div>
+              <ConnectWalletButton
+                disabled={isSyncingWallet}
+                className="inline-flex h-12 w-full justify-center rounded-full border border-white/20 bg-transparent text-sm font-semibold uppercase tracking-[0.28em] text-white transition hover:border-white/50"
+                connectLabel={t("wallet.connectCta")}
+                connectedLabel={t("wallet.changeCta")}
+              />
+              <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-sm text-white/70">
+                <p className="text-xs uppercase tracking-[0.32em] text-white/45">
+                  {t("wallet.statusLabel")}
+                </p>
+                <p className="mt-1 font-mono text-white">{walletStatus}</p>
+                {!connectedWallet ? (
+                  <p className="mt-3 rounded-lg bg-red-500/10 px-3 py-2 text-xs text-red-200">
+                    {t("wallet.required.blocker")}
+                  </p>
+                ) : null}
+              </div>
+            </div>
+          ) : null}
+
+          {currentStep === 2 ? (
             <div className="space-y-5">
               <p className="text-sm text-white/60">{t("profile.copy")}</p>
               <label className="block space-y-2">
@@ -366,13 +383,13 @@ export default function AccessGate({
                 </span>
                 <input
                   type="text"
-                  value={nameInput}
-                  maxLength={24}
-                  onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                  value={handleInput}
+                  maxLength={32}
+                  onChange={(event) => {
                     const sanitized = event.target.value
                       .replace(/\s+/g, "")
-                      .slice(0, 24);
-                    setNameInput(sanitized);
+                      .slice(0, 32);
+                    setHandleInput(sanitized);
                     setHandleError(null);
                   }}
                   className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/35 focus:border-white/40 focus:outline-none"
@@ -386,72 +403,6 @@ export default function AccessGate({
                   </p>
                 )}
               </label>
-              <label className="block space-y-2">
-                <span className="text-xs font-semibold uppercase tracking-[0.35em] text-white/55">
-                  {t("profile.roleLabel")}
-                </span>
-                <div className="relative">
-                  <select
-                    value={roleInput}
-                    onChange={(event: ChangeEvent<HTMLSelectElement>) =>
-                      setRoleInput(event.target.value as UserRole | "player")
-                    }
-                    className="w-full appearance-none rounded-2xl border border-white/15 bg-white/5 px-4 py-3 pr-10 text-sm text-white focus:border-white/40 focus:outline-none"
-                  >
-                    {ROLE_VALUES.map((value) => (
-                      <option
-                        key={value}
-                        value={value}
-                        className="bg-[#05090f]"
-                      >
-                        {t(
-                          `profile.roles.${value.toLowerCase() as Lowercase<UserRole>}`,
-                        )}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/60" />
-                </div>
-              </label>
-            </div>
-          ) : null}
-
-          {currentStep === 2 ? (
-            <div className="space-y-6">
-              <div>
-                <p className="text-lg font-semibold text-white">
-                  {walletRequired
-                    ? t("wallet.required.title")
-                    : t("wallet.optional.title")}
-                </p>
-                <p className="text-sm text-white/60">
-                  {walletRequired
-                    ? t("wallet.required.copy")
-                    : t("wallet.optional.copy")}
-                </p>
-              </div>
-              <ConnectWalletButton
-                disabled={!profileComplete}
-                className="inline-flex h-12 w-full justify-center rounded-full border border-white/20 bg-transparent text-sm font-semibold uppercase tracking-[0.28em] text-white transition hover:border-white/50"
-                connectLabel={t("wallet.connectCta")}
-                connectedLabel={t("wallet.changeCta")}
-              />
-              <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-sm text-white/70">
-                <p className="text-xs uppercase tracking-[0.32em] text-white/45">
-                  {t("wallet.statusLabel")}
-                </p>
-                <p className="mt-1 font-mono text-white">{walletStatus}</p>
-                {!walletRequired ? (
-                  <p className="mt-3 text-xs text-white/50">
-                    {t("wallet.skipMessage")}
-                  </p>
-                ) : null}
-                {walletStepRequired ? (
-                  <p className="mt-3 rounded-lg bg-red-500/10 px-3 py-2 text-xs text-red-200">
-                    {t("wallet.required.blocker")}
-                  </p>
-                ) : null}
-              </div>
             </div>
           ) : null}
 
@@ -463,7 +414,7 @@ export default function AccessGate({
                 </p>
                 <p className="text-sm text-white/60">{t("self.copy")}</p>
               </div>
-              {showBlockedSelfCard ? (
+              {!hasWallet ? (
                 <div className="flex items-center gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-4 text-sm text-amber-100">
                   <Lock className="h-4 w-4" aria-hidden />
                   <span>{t("self.requireWallet")}</span>
@@ -523,11 +474,9 @@ export default function AccessGate({
               type="button"
               onClick={handleSkip}
               className="w-full text-center text-xs font-semibold uppercase tracking-[0.32em] text-white/60 underline-offset-4 hover:text-white disabled:text-white/30"
-              disabled={currentStep === 3 && continueDisabled}
+              disabled={continueDisabled}
             >
-              {currentStep === 3
-                ? t("navigation.skipAndEnter")
-                : t("navigation.skip")}
+              {t("navigation.skipAndEnter")}
             </button>
           ) : null}
           <p className="text-center text-sm text-white/60">{continueHint}</p>

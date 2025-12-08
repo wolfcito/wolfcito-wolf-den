@@ -2,12 +2,12 @@
 
 import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
 import clsx from "clsx";
-import { useCallback } from "react";
+import { useCallback, type ReactNode } from "react";
 
 type ConnectWalletButtonProps = {
   className?: string;
-  connectLabel?: string;
-  connectedLabel?: string;
+  connectLabel?: ReactNode;
+  connectedLabel?: ReactNode;
   disabled?: boolean;
 };
 

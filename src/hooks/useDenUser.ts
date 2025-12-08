@@ -1,11 +1,12 @@
 "use client";
 
 import { useAppKitAccount } from "@reown/appkit/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   getSelfVerification,
   subscribeToSelfVerification,
 } from "@/lib/selfVerification";
+import { fetchUserSession, type UserSession } from "@/lib/userClient";
 
 export type DenUser = {
   walletAddress: `0x${string}` | null;
@@ -15,21 +16,50 @@ export type DenUser = {
   isBuilder: boolean;
   isMember: boolean;
   isAdmin: boolean;
+  holdScore: number | null;
 };
 
 export function useDenUser(): DenUser {
   const { address } = useAppKitAccount();
   const [selfVerified, setSelfVerified] = useState(false);
+  const [holdScore, setHoldScore] = useState<number | null>(null);
+  const [session, setSession] = useState<UserSession | null>(null);
 
   useEffect(() => {
     setSelfVerified(getSelfVerification());
     return subscribeToSelfVerification(setSelfVerified);
   }, []);
 
-  const normalizedAddress =
-    typeof address === "string" && address.startsWith("0x")
-      ? (address as `0x${string}`)
-      : null;
+  useEffect(() => {
+    let cancelled = false;
+    fetchUserSession()
+      .then((data) => {
+        if (cancelled) {
+          return;
+        }
+        setSession(data);
+        setHoldScore(data.holdScore ?? 0);
+        setSelfVerified(data.isSelfVerified ?? false);
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setHoldScore((previous) => previous ?? null);
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const normalizedAddress = useMemo(() => {
+    if (session?.walletAddress) {
+      return session.walletAddress;
+    }
+    if (typeof address === "string" && address.startsWith("0x")) {
+      return address as `0x${string}`;
+    }
+    return null;
+  }, [address, session?.walletAddress]);
 
   const isBuilder = normalizedAddress !== null;
   const roles = isBuilder ? ["BUILDER"] : [];
@@ -42,5 +72,6 @@ export function useDenUser(): DenUser {
     isBuilder,
     isMember: isBuilder && selfVerified,
     isAdmin: false,
+    holdScore,
   };
 }

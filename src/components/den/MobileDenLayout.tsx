@@ -1,36 +1,34 @@
 "use client";
 
-import { Home, LayoutGrid, Sparkles } from "lucide-react";
+import { ShieldCheck, SprayCan, UserCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { type ReactNode, useEffect, useMemo, useState } from "react";
-import { usePathname } from "@/i18n/routing";
+import { type ReactNode, useMemo } from "react";
+import { usePathname, useRouter } from "@/i18n/routing";
 import LimelightNav from "@/components/ui/LimelightNav";
-import { useSidebar } from "@/components/ui/sidebar";
 
-type MobilePanelKey = "main" | "menu" | "activity";
+type NavigationItemKey = "profile" | "spray" | "self";
 
 type NavigationItemConfig = {
-  key: MobilePanelKey;
-  icon: typeof Home;
+  key: NavigationItemKey;
+  icon: typeof UserCircle;
   labelKey: string;
+  href: string;
 };
 
 const navigationItems: NavigationItemConfig[] = [
-  { key: "main", icon: Home, labelKey: "tabs.main" },
-  { key: "menu", icon: LayoutGrid, labelKey: "tabs.menu" },
-  { key: "activity", icon: Sparkles, labelKey: "tabs.activity" },
+  { key: "profile", icon: UserCircle, labelKey: "tabs.profile", href: "/lab" },
+  { key: "spray", icon: SprayCan, labelKey: "tabs.spray", href: "/spray" },
+  { key: "self", icon: ShieldCheck, labelKey: "tabs.self", href: "/auth" },
 ];
 
 type MobileDenLayoutProps = {
   main: ReactNode;
-  activity: ReactNode;
 };
 
-export function MobileDenLayout({ main, activity }: MobileDenLayoutProps) {
+export function MobileDenLayout({ main }: MobileDenLayoutProps) {
   const t = useTranslations("MobileDenLayout");
   const pathname = usePathname();
-  const { setOpenMobile } = useSidebar();
-  const [activePanel, setActivePanel] = useState<MobilePanelKey>("main");
+  const router = useRouter();
   const navItems = useMemo(() => {
     return navigationItems.map(({ key, icon: Icon, labelKey }) => ({
       id: key,
@@ -38,35 +36,28 @@ export function MobileDenLayout({ main, activity }: MobileDenLayoutProps) {
       label: t(labelKey),
     }));
   }, [t]);
-  const activeIndex = navigationItems.findIndex(
-    (item) => item.key === activePanel,
-  );
-
-  useEffect(() => {
+  const activeKey = useMemo(() => {
     if (!pathname) {
-      return;
+      return "profile";
     }
-    setActivePanel("main");
+    const match = navigationItems.find(
+      (item) =>
+        pathname === item.href || pathname.startsWith(`${item.href}/`),
+    );
+    return match?.key ?? "profile";
   }, [pathname]);
-
-  const renderPanel = useMemo(() => {
-    if (activePanel === "activity") {
-      return <div className="space-y-4">{activity}</div>;
-    }
-
-    return main;
-  }, [activity, main, activePanel]);
+  const activeIndex = navigationItems.findIndex(
+    (item) => item.key === activeKey,
+  );
 
   return (
     <>
       <div className="flex min-h-screen flex-col gap-5 pb-[calc(env(safe-area-inset-bottom,0px)+6.5rem)]">
         <div className="wolf-card rounded-lg border border-wolf-border-strong p-4 shadow-[0_40px_110px_-80px_rgba(0,0,0,0.75)] backdrop-blur">
-          {renderPanel}
+          {main}
         </div>
       </div>
-      <nav
-        className="pointer-events-none fixed inset-x-0 bottom-4 z-40 flex justify-center px-4"
-      >
+      <nav className="pointer-events-none fixed inset-x-0 bottom-4 z-50 flex justify-center px-4">
         <div className="pointer-events-auto w-full max-w-md">
           <LimelightNav
             items={navItems}
@@ -74,11 +65,12 @@ export function MobileDenLayout({ main, activity }: MobileDenLayoutProps) {
             onTabChange={(index) => {
               const next = navigationItems[index];
               if (next) {
-                if (next.key === "menu") {
-                  setOpenMobile(true);
-                  return;
+                const matchesCurrent =
+                  pathname === next.href ||
+                  pathname?.startsWith(`${next.href}/`);
+                if (!matchesCurrent) {
+                  router.push(next.href);
                 }
-                setActivePanel(next.key);
               }
             }}
             className="w-full"

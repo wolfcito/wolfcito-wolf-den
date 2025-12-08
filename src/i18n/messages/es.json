@@ -1,10 +1,14 @@
 {
   "TopBar": {
     "fallback": {
-      "title": "Taberna - Wolf Den Labs",
-      "description": "Entra al laboratorio de eventos."
+      "title": "Perfil",
+      "description": "Mi laboratorio de eventos."
     },
     "modules": {
+      "profile": {
+        "title": "Perfil",
+        "description": "Mi laboratorio de eventos."
+      },
       "quests": {
         "title": "Quests",
         "description": "Misiones y automatizaciones creadas por builders que extienden cada evento."
@@ -66,33 +70,29 @@
       "helper": ""
     },
     "sections": {
-      "essentials": {
-        "title": "Esenciales del piloto",
-        "description": "Todo lo necesario para verificar equipos y lanzar eventos",
-        "items": {
-          "auth": "Autorización Self.xyz",
-          "taberna": "Mentoría Taberna",
-          "checkin": "Check-in de evento"
-        }
-      },
       "lab": {
-        "title": "Playground del laboratorio",
-        "description": "Experimenta, recompensa y destaca los builds en progreso",
+        "title": "Lab",
         "items": {
-          "mindGames": "Laboratorio de minijuegos",
-          "quests": "Extensiones builder",
-          "showcase": "Showcase de patrocinio",
-          "spray": "Dispersor Spray"
+          "labHome": "Perfil",
+          "taberna": "Espacio de mentores",
+          "spray": "Recompensas Spray",
+          "trustIdentity": "Confianza e Identidad"
         }
       },
-      "insights": {
-        "title": "Analítica y administración",
-        "description": "Monitorea resultados y mantiene la operación afinada",
+      "experiments": {
+        "title": "Experimentos",
+        "badge": "Pronto",
         "items": {
-          "stats": "Insights",
-          "leaderboard": "Leaderboard",
-          "settings": "Settings"
+          "checkin": "Check-in de evento",
+          "miniGames": "Laboratorio de minijuegos",
+          "sponsor": "Vitrina para sponsors",
+          "builderExtensions": "Extensiones para builders",
+          "insights": "Insights",
+          "leaderboard": "Leaderboard"
         }
+      },
+      "settings": {
+        "title": "Configuración"
       }
     },
     "footer": {
@@ -101,27 +101,23 @@
   },
   "MobileDenLayout": {
     "tabs": {
-      "main": "Inicio",
-      "menu": "Explorar",
-      "activity": "Pulso"
+      "profile": "Perfil",
+      "spray": "Spray",
+      "self": "Self"
     },
     "aria": {
       "navigation": "Navegación móvil de Wolf Den"
     }
   },
   "HowlBadge": {
-    "levels": {
-      "Cachorro": "HOWL • Cachorro",
-      "Lobo": "HOWL • Lobo",
-      "Alfa": "HOWL • Alfa"
-    }
+    "score": "HOLD SCORE: {value} pts"
   },
   "SelfBadge": {
     "statuses": {
-      "unverified": "Self: sin verificar",
-      "pending": "Self: pendiente",
-      "verified": "Self: verificado",
-      "error": "Self: error"
+      "unverified": "SELF: NO VERIFICADO",
+      "pending": "SELF: VERIFICANDO",
+      "verified": "SELF: VERIFICADO",
+      "error": "SELF: ERROR"
     }
   },
   "StatusPill": {
@@ -497,12 +493,12 @@
       "walletConnected": "Wallet conectada."
     },
     "profile": {
-      "title": "1. Crea tu perfil",
-      "copy": "Cuéntanos quién eres para personalizar tu experiencia en el lab.",
+      "title": "2. Reclama tu handle",
+      "copy": "Elige un handle único para desbloquear el lab. Es obligatorio antes de entrar.",
       "nameLabel": "Handle",
       "namePlaceholder": "ej: imbuilder",
-      "handleHint": "Usa 3–24 caracteres: letras, números, . _ -",
-      "handleInvalid": "El handle debe tener 3–24 letras, números, . _ - (sin espacios).",
+      "handleHint": "Usa 3–32 caracteres: letras, números, . _ -",
+      "handleInvalid": "El handle debe tener 3–32 letras, números, . _ - (sin espacios).",
       "roleLabel": "Rol",
       "rolePlaceholder": "Elige un rol",
       "roles": {
@@ -510,7 +506,7 @@
         "player": "Jugador",
         "sponsor": "Patrocinador"
       },
-      "saveCta": "Continuar",
+      "saveCta": "Guardar handle",
       "saving": "Guardando…"
     },
     "wallet": {
@@ -519,9 +515,9 @@
         "copy": "Opcional. Necesaria para payouts y rewards."
       },
       "required": {
-        "title": "2. Conecta tu wallet para continuar",
+        "title": "1. Conecta tu wallet para continuar",
         "copy": "Spray necesita una wallet para enviar rewards on-chain.",
-        "blocker": "Conecta una wallet para continuar hacia Spray."
+        "blocker": "Conecta una wallet para continuar."
       },
       "statusLabel": "Estado",
       "messages": {
@@ -545,7 +541,7 @@
       "skip": "Sin prisa — vuelve cuando quieras verificar."
     },
     "steps": {
-      "profile": "Crea tu perfil",
+      "profile": "Reclama tu handle",
       "walletOptional": "Conecta una wallet",
       "walletRequired": "Conecta una wallet para continuar",
       "self": "Refuerza tu score",
@@ -561,8 +557,8 @@
     },
     "continue": {
       "title": "Entrar al Lab",
-      "hintProfile": "Guarda tu perfil para entrar al lab.",
       "hintWallet": "Conecta una wallet para continuar a Spray.",
+      "hintHandle": "Reclama un handle para entrar al lab.",
       "hintReady": "Listo. Entra al lab.",
       "loading": "Cargando…",
       "cta": "Entrar al Lab"

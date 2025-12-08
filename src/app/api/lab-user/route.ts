@@ -6,7 +6,7 @@ import {
   type LabUserProfile,
   persistLabUserId,
   readJsonBody,
-  sanitizeName,
+  sanitizeHandle,
   sanitizeRole,
 } from "@/lib/userProfile";
 
@@ -42,11 +42,12 @@ export async function POST(request: NextRequest) {
       statusText: "Invalid payload",
     });
   }
-  const name = sanitizeName(payload.name);
-  if (!name) {
+  const handleInput = payload.handle ?? payload.name;
+  const handle = sanitizeHandle(handleInput);
+  if (!handle) {
     return responseWithUser(null, {
       status: 400,
-      statusText: "Name is required",
+      statusText: "Handle is required",
     });
   }
   const safeRole = sanitizeRole(payload.role);
@@ -55,7 +56,7 @@ export async function POST(request: NextRequest) {
     if (payload.id) {
       const { data, error } = await supabaseAdmin
         .from("lab_users")
-        .update({ name, role: safeRole })
+        .update({ handle, role: safeRole })
         .eq("id", payload.id)
         .select("*")
         .single();
@@ -70,7 +71,7 @@ export async function POST(request: NextRequest) {
 
     const { data, error } = await supabaseAdmin
       .from("lab_users")
-      .insert({ name, role: safeRole })
+      .insert({ handle, role: safeRole })
       .select("*")
       .single();
 
