@@ -11,7 +11,10 @@ type HowlBadgeProps = {
 const baseClasses =
   "inline-flex items-center gap-3 rounded-lg border px-3 py-1 text-[0.75rem] font-semibold uppercase tracking-[0.18em] transition";
 
-export default function HowlBadge({ score = null, className = "" }: HowlBadgeProps) {
+export default function HowlBadge({
+  score = null,
+  className = "",
+}: HowlBadgeProps) {
   const t = useTranslations("HowlBadge");
   const displayValue =
     typeof score === "number" && Number.isFinite(score) ? score : "—";

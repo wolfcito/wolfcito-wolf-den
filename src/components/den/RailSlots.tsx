@@ -35,14 +35,17 @@ export function DenRailSlotsProvider({ children }: PropsWithChildren) {
     right: false,
   });
 
-  const setTarget = useCallback((slot: RailSlotName, node: HTMLElement | null) => {
-    setTargets((prev) => {
-      if (prev[slot] === node) {
-        return prev;
-      }
-      return { ...prev, [slot]: node };
-    });
-  }, []);
+  const setTarget = useCallback(
+    (slot: RailSlotName, node: HTMLElement | null) => {
+      setTargets((prev) => {
+        if (prev[slot] === node) {
+          return prev;
+        }
+        return { ...prev, [slot]: node };
+      });
+    },
+    [],
+  );
 
   const setActive = useCallback((slot: RailSlotName, isActive: boolean) => {
     setActiveState((prev) => {

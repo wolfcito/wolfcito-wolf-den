@@ -41,8 +41,7 @@ export function MobileDenLayout({ main }: MobileDenLayoutProps) {
       return "profile";
     }
     const match = navigationItems.find(
-      (item) =>
-        pathname === item.href || pathname.startsWith(`${item.href}/`),
+      (item) => pathname === item.href || pathname.startsWith(`${item.href}/`),
     );
     return match?.key ?? "profile";
   }, [pathname]);

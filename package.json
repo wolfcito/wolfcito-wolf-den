@@ -13,6 +13,7 @@
     "bmad:validate": "bmad-method validate"
   },
   "dependencies": {
+    "@goodsdks/engagement-sdk": "^1.0.3",
     "@radix-ui/react-switch": "^1.2.6",
     "@reown/appkit": "^1.5.2",
     "@reown/appkit-adapter-ethers": "^1.5.2",
@@ -27,7 +28,8 @@
     "next-intl": "^3.17.0",
     "react": "19.1.2",
     "react-dom": "19.1.2",
-    "tailwind-merge": "^3.4.0"
+    "tailwind-merge": "^3.4.0",
+    "viem": "^2.41.2"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.0",

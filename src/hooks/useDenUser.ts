@@ -39,7 +39,10 @@ export function useDenUser(): DenUser {
         }
         setSession(data);
         setHoldScore(data.holdScore ?? 0);
-        setSelfVerified(data.isSelfVerified ?? false);
+        // Only update selfVerified from session if sessionStorage doesn't have a value
+        // This prioritizes the local verification state over the server state
+        const localVerification = getSelfVerification();
+        setSelfVerified(localVerification || data.isSelfVerified || false);
       })
       .catch(() => {
         if (!cancelled) {

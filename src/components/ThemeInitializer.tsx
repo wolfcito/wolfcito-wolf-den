@@ -16,7 +16,9 @@ export default function ThemeInitializer() {
     } catch (error) {
       console.warn("Theme storage unavailable", error);
     }
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches;
     root.dataset.theme = prefersDark ? "dark" : "dark";
   }, []);
 

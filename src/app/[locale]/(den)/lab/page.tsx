@@ -13,100 +13,100 @@ import {
   Store,
   Trophy,
   UserCircle,
-} from 'lucide-react'
-import Link from 'next/link'
-import type { ComponentType, ReactNode } from 'react'
-import { DenMain, DenRightRail } from '@/components/den/RailSlots'
-import { requireProfile } from '@/lib/accessGuards'
-import type { LabUserProfile } from '@/lib/userProfile'
+} from "lucide-react";
+import Link from "next/link";
+import type { ComponentType, ReactNode } from "react";
+import { DenMain, DenRightRail } from "@/components/den/RailSlots";
+import { requireProfile } from "@/lib/accessGuards";
+import type { LabUserProfile } from "@/lib/userProfile";
 
-const LAB_TABS = ['Overview', 'Activity', 'Rewards', 'Signals']
+const LAB_TABS = ["Overview", "Activity", "Rewards", "Signals"];
 
 type MiniApp = {
-  id: string
-  label: string
-  status: 'LIVE' | 'SOON'
-  href?: string
-  icon: ComponentType<{ className?: string }>
-  description: string
-}
+  id: string;
+  label: string;
+  status: "LIVE" | "SOON";
+  href?: string;
+  icon: ComponentType<{ className?: string }>;
+  description: string;
+};
 
 const MINI_APPS: MiniApp[] = [
   {
-    id: 'spray',
-    label: 'Spray Disperser',
-    status: 'LIVE',
-    href: '/spray',
+    id: "spray",
+    label: "Spray Disperser",
+    status: "LIVE",
+    href: "/spray",
     icon: Droplets,
-    description: 'Send rewards in bulk.',
+    description: "Send rewards in bulk.",
   },
   {
-    id: 'taberna',
-    label: 'Taberna Mentorship',
-    status: 'LIVE',
-    href: '/taberna',
+    id: "taberna",
+    label: "Taberna Mentorship",
+    status: "LIVE",
+    href: "/taberna",
     icon: Store,
-    description: 'Join live rooms.',
+    description: "Join live rooms.",
   },
   {
-    id: 'self',
-    label: 'Self.xyz Auth',
-    status: 'LIVE',
-    href: '/auth',
+    id: "self",
+    label: "Self.xyz Auth",
+    status: "LIVE",
+    href: "/auth",
     icon: ShieldCheck,
-    description: 'Verify your identity.',
+    description: "Verify your identity.",
   },
   {
-    id: 'mini-games',
-    label: 'Mini-Games Lab',
-    status: 'SOON',
+    id: "mini-games",
+    label: "Mini-Games Lab",
+    status: "SOON",
     icon: Gamepad2,
-    description: 'Play and earn inside runs.',
+    description: "Play and earn inside runs.",
   },
   {
-    id: 'sponsor',
-    label: 'Sponsor Showcase',
-    status: 'SOON',
+    id: "sponsor",
+    label: "Sponsor Showcase",
+    status: "SOON",
     icon: Award,
-    description: 'Highlights for partners.',
+    description: "Highlights for partners.",
   },
   {
-    id: 'extensions',
-    label: 'Builder Extensions',
-    status: 'SOON',
+    id: "extensions",
+    label: "Builder Extensions",
+    status: "SOON",
     icon: Puzzle,
-    description: 'Custom experiences.',
+    description: "Custom experiences.",
   },
   {
-    id: 'insights',
-    label: 'Insights',
-    status: 'SOON',
+    id: "insights",
+    label: "Insights",
+    status: "SOON",
     icon: BarChart3,
-    description: 'Metrics and KPIs.',
+    description: "Metrics and KPIs.",
   },
   {
-    id: 'leaderboard',
-    label: 'Leaderboard',
-    status: 'SOON',
+    id: "leaderboard",
+    label: "Leaderboard",
+    status: "SOON",
     icon: Trophy,
-    description: 'Top builders per run.',
+    description: "Top builders per run.",
   },
   {
-    id: 'coming-soon',
-    label: 'More coming soon',
-    status: 'SOON',
+    id: "coming-soon",
+    label: "More coming soon",
+    status: "SOON",
     icon: Lock,
-    description: 'Reserved slot.',
+    description: "Reserved slot.",
   },
-]
+];
 
 export default async function LabPage({
   params,
 }: {
-  params: Promise<{ locale: string }>
+  params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params
-  const profile = await requireProfile({ locale, nextPath: '/lab' })
+  const { locale } = await params;
+  const profile = await requireProfile({ locale, nextPath: "/lab" });
   return (
     <>
       <DenMain>
@@ -116,46 +116,46 @@ export default async function LabPage({
         <LabRightSidebar locale={locale} />
       </DenRightRail>
     </>
-  )
+  );
 }
 
 type LabMainProps = {
-  locale: string
-  profile: LabUserProfile
-}
+  locale: string;
+  profile: LabUserProfile;
+};
 
 function LabMain({ locale, profile }: LabMainProps) {
-  const localePrefix = `/${locale}`
-  const holdScore = Number(profile.hold_score ?? 0)
-  const holdMax = 120
+  const localePrefix = `/${locale}`;
+  const holdScore = Number(profile.hold_score ?? 0);
+  const holdMax = 120;
   const holdProgress = Math.min(
     100,
     Math.max(0, Math.round((holdScore / holdMax) * 100)),
-  )
+  );
   const stats = [
-    { label: 'HOWL score', value: holdScore.toString(), meta: 'Out of 120' },
-    { label: 'Sessions', value: '3', meta: 'This week' },
-    { label: 'Rewards', value: '2', meta: 'Claimed' },
-    { label: 'Streak', value: '5 days', meta: 'Check-ins' },
-  ]
+    { label: "HOWL score", value: holdScore.toString(), meta: "Out of 120" },
+    { label: "Sessions", value: "3", meta: "This week" },
+    { label: "Rewards", value: "2", meta: "Claimed" },
+    { label: "Streak", value: "5 days", meta: "Check-ins" },
+  ];
   const quests: QuestItem[] = [
     {
-      id: 'self',
-      title: 'Verify with Self (+10 HOLD)',
-      description: 'Boost trust and unlock gated quests.',
+      id: "self",
+      title: "Verify with Self (+10 HOLD)",
+      description: "Boost trust and unlock gated quests.",
       href: `${localePrefix}/auth`,
-      status: profile.self_verified ? 'done' : 'available',
-      actionLabel: profile.self_verified ? 'Done' : 'Start',
+      status: profile.self_verified ? "done" : "available",
+      actionLabel: profile.self_verified ? "Done" : "Start",
     },
-  ]
-  const handle = formatHandle(profile.handle ?? profile.wallet_address ?? null)
+  ];
+  const handle = formatHandle(profile.handle ?? profile.wallet_address ?? null);
   const displayName =
     profile.display_name ||
     formatWalletFallback(profile.wallet_address ?? null) ||
-    'Den Builder'
+    "Den Builder";
   const liveMiniApps = MINI_APPS.filter(
-    (app) => app.status === 'LIVE' && app.id !== 'self',
-  )
+    (app) => app.status === "LIVE" && app.id !== "self",
+  );
 
   return (
     <div className="space-y-6 text-wolf-foreground">
@@ -177,7 +177,7 @@ function LabMain({ locale, profile }: LabMainProps) {
             <StatusBadge
               icon={<UserCircle className="h-3.5 w-3.5" aria-hidden />}
               label={`ROLE: ${
-                profile.role === 'organizer' ? 'OPERATOR' : 'PLAYER'
+                profile.role === "organizer" ? "OPERATOR" : "PLAYER"
               }`}
             />
           </div>
@@ -189,7 +189,7 @@ function LabMain({ locale, profile }: LabMainProps) {
             key={tab}
             type="button"
             className={`relative px-4 py-3 text-sm font-semibold uppercase tracking-[0.2em] transition-colors ${
-              index === 0 ? 'text-white' : 'text-white/50 hover:text-white'
+              index === 0 ? "text-white" : "text-white/50 hover:text-white"
             }`}
           >
             {tab}
@@ -216,7 +216,7 @@ function LabMain({ locale, profile }: LabMainProps) {
           {liveMiniApps.map((app) => (
             <Link
               key={app.id}
-              href={`${localePrefix}${app.href ?? '#'}`}
+              href={`${localePrefix}${app.href ?? "#"}`}
               className="rounded-xl border border-wolf-border-soft bg-wolf-panel/70 p-3 text-center text-xs text-white transition hover:bg-wolf-panel focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#89e24a]"
             >
               <app.icon className="mx-auto mb-2 h-5 w-5 text-white/60" />
@@ -226,7 +226,7 @@ function LabMain({ locale, profile }: LabMainProps) {
         </div>
       </section>
     </div>
-  )
+  );
 }
 
 function StatusBadge({ icon, label }: { icon?: ReactNode; label: string }) {
@@ -235,14 +235,14 @@ function StatusBadge({ icon, label }: { icon?: ReactNode; label: string }) {
       {icon}
       {label}
     </span>
-  )
+  );
 }
 
 type LabStatsProps = {
-  holdProgress: number
-  holdScore: number
-  stats: Array<{ label: string; value: string; meta: string }>
-}
+  holdProgress: number;
+  holdScore: number;
+  stats: Array<{ label: string; value: string; meta: string }>;
+};
 
 function LabStats({ holdProgress, holdScore, stats }: LabStatsProps) {
   return (
@@ -279,19 +279,19 @@ function LabStats({ holdProgress, holdScore, stats }: LabStatsProps) {
         ))}
       </div>
     </section>
-  )
+  );
 }
 
-type QuestStatus = 'available' | 'locked' | 'done'
+type QuestStatus = "available" | "locked" | "done";
 
 type QuestItem = {
-  id: string
-  title: string
-  description: string
-  href: string
-  status: QuestStatus
-  actionLabel: string
-}
+  id: string;
+  title: string;
+  description: string;
+  href: string;
+  status: QuestStatus;
+  actionLabel: string;
+};
 
 function QuestList({ items }: { items: QuestItem[] }) {
   return (
@@ -314,23 +314,23 @@ function QuestList({ items }: { items: QuestItem[] }) {
         ))}
       </div>
     </section>
-  )
+  );
 }
 
 function QuestAction({ quest }: { quest: QuestItem }) {
-  if (quest.status === 'done') {
+  if (quest.status === "done") {
     return (
       <span className="inline-flex items-center rounded-full border border-[#56f0d5]/40 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.3em] text-[#56f0d5]">
         Done
       </span>
-    )
+    );
   }
-  if (quest.status === 'locked') {
+  if (quest.status === "locked") {
     return (
       <span className="inline-flex items-center rounded-full border border-white/15 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.3em] text-white/40">
         Locked
       </span>
-    )
+    );
   }
   return (
     <Link
@@ -339,14 +339,14 @@ function QuestAction({ quest }: { quest: QuestItem }) {
     >
       {quest.actionLabel}
     </Link>
-  )
+  );
 }
 
 function LabRightSidebar({ locale }: { locale: string }) {
-  const localePrefix = `/${locale}`
+  const localePrefix = `/${locale}`;
   const liveApps = MINI_APPS.filter(
-    (app) => app.status === 'LIVE' && app.id !== 'self',
-  )
+    (app) => app.status === "LIVE" && app.id !== "self",
+  );
   return (
     <aside className="hidden flex-col gap-6 lg:flex text-wolf-foreground">
       <div className="relative">
@@ -377,16 +377,16 @@ function LabRightSidebar({ locale }: { locale: string }) {
         </div>
         <div className="mt-4 grid grid-cols-3 gap-3">
           {liveApps.map((app) => {
-            const Icon = app.icon
-            const isLive = app.status === 'LIVE'
+            const Icon = app.icon;
+            const isLive = app.status === "LIVE";
             const href =
-              isLive && app.href ? `${localePrefix}${app.href}` : null
+              isLive && app.href ? `${localePrefix}${app.href}` : null;
             const content = (
               <div className="flex flex-col items-center gap-2 rounded-xl border border-wolf-border-soft bg-wolf-panel/60 p-3 text-center text-xs text-white transition hover:bg-wolf-panel">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-wolf-neutral-soft">
                   <Icon
                     className={`h-5 w-5 ${
-                      isLive ? 'text-[#89e24a]' : 'text-white/40'
+                      isLive ? "text-[#89e24a]" : "text-white/40"
                     }`}
                   />
                 </div>
@@ -394,26 +394,26 @@ function LabRightSidebar({ locale }: { locale: string }) {
                 <span
                   className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${
                     isLive
-                      ? 'bg-[#89e24a]/20 text-[#89e24a]'
-                      : 'bg-white/10 text-white/50'
+                      ? "bg-[#89e24a]/20 text-[#89e24a]"
+                      : "bg-white/10 text-white/50"
                   }`}
                 >
                   {app.status}
                 </span>
               </div>
-            )
+            );
             if (href) {
               return (
                 <Link key={app.id} href={href}>
                   {content}
                 </Link>
-              )
+              );
             }
             return (
               <div key={app.id} className="cursor-not-allowed opacity-70">
                 {content}
               </div>
-            )
+            );
           })}
         </div>
       </section>
@@ -431,23 +431,23 @@ function LabRightSidebar({ locale }: { locale: string }) {
         </Link>
       </div>
     </aside>
-  )
+  );
 }
 
 function formatHandle(value: string | null) {
   if (!value) {
-    return '@denbuilder'
+    return "@denbuilder";
   }
-  const sanitized = value.replace(/^@/, '').replace(/\s+/g, '').toLowerCase()
-  return `@${sanitized || 'denbuilder'}`
+  const sanitized = value.replace(/^@/, "").replace(/\s+/g, "").toLowerCase();
+  return `@${sanitized || "denbuilder"}`;
 }
 
 function formatWalletFallback(value: string | null) {
   if (!value) {
-    return null
+    return null;
   }
   if (value.length <= 10) {
-    return value
+    return value;
   }
-  return `${value.slice(0, 6)}…${value.slice(-4)}`
+  return `${value.slice(0, 6)}…${value.slice(-4)}`;
 }

@@ -66,7 +66,11 @@ export type NavItem = {
 const defaultNavItems: NavItem[] = [
   { id: "default-home", icon: <DefaultHomeIcon />, label: "Home" },
   { id: "default-explore", icon: <DefaultCompassIcon />, label: "Explore" },
-  { id: "default-notifications", icon: <DefaultBellIcon />, label: "Notifications" },
+  {
+    id: "default-notifications",
+    icon: <DefaultBellIcon />,
+    label: "Notifications",
+  },
 ];
 
 export type LimelightNavProps = {
@@ -97,7 +101,8 @@ export const LimelightNav = ({
   const [isReady, setIsReady] = useState(false);
   const navItemRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const limelightRef = useRef<HTMLDivElement | null>(null);
-  const currentIndex = typeof activeIndex === "number" ? activeIndex : internalIndex;
+  const currentIndex =
+    typeof activeIndex === "number" ? activeIndex : internalIndex;
 
   useLayoutEffect(() => {
     if (items.length === 0) return;
@@ -106,7 +111,9 @@ export const LimelightNav = ({
 
     if (limelight && activeItem) {
       const newLeft =
-        activeItem.offsetLeft + activeItem.offsetWidth / 2 - limelight.offsetWidth / 2;
+        activeItem.offsetLeft +
+        activeItem.offsetWidth / 2 -
+        limelight.offsetWidth / 2;
       limelight.style.left = `${newLeft}px`;
       if (!isReady) {
         setTimeout(() => setIsReady(true), 50);

@@ -406,6 +406,38 @@ export default function AccessGate({ nextPath }: AccessGateProps) {
             </div>
           ) : null}
 
+          {currentStep === 2 ? (
+            <div className="space-y-5">
+              <p className="text-sm text-white/60">{t("profile.copy")}</p>
+              <label className="block space-y-2">
+                <span className="text-xs font-semibold uppercase tracking-[0.35em] text-white/55">
+                  {t("profile.nameLabel")}
+                </span>
+                <input
+                  type="text"
+                  value={handleInput}
+                  maxLength={32}
+                  onChange={(event) => {
+                    const sanitized = event.target.value
+                      .replace(/\s+/g, "")
+                      .slice(0, 32);
+                    setHandleInput(sanitized);
+                    setHandleError(null);
+                  }}
+                  className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/35 focus:border-white/40 focus:outline-none"
+                  placeholder={t("profile.namePlaceholder")}
+                />
+                {handleError ? (
+                  <p className="text-xs text-red-300">{handleError}</p>
+                ) : (
+                  <p className="text-xs text-white/45">
+                    {t("profile.handleHint")}
+                  </p>
+                )}
+              </label>
+            </div>
+          ) : null}
+
           {currentStep === 3 ? (
             <div className="space-y-6">
               <div>

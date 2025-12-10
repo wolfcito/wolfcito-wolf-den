@@ -76,6 +76,7 @@
           "labHome": "Perfil",
           "taberna": "Espacio de mentores",
           "spray": "Recompensas Spray",
+          "gooddollar": "Recompensas GoodDollar",
           "trustIdentity": "Confianza e Identidad"
         }
       },
@@ -896,6 +897,52 @@
       "approvalFailed": "Falló la aprobación del token.",
       "transactionFailed": "Falló la transacción de dispersión.",
       "clipboardFailed": "No se pudo leer el portapapeles."
+    }
+  },
+  "gooddollar": {
+    "title": "Recompensas GoodDollar para builders verificados",
+    "subtitle": "Reclama una pequeña recompensa en G$ por usar DenLabs en Celo e invita a otros builders verificados a unirse.",
+    "states": {
+      "noWallet": "Conecta tu wallet en Celo para ver si eres elegible a recompensas GoodDollar.",
+      "noSelf": {
+        "description": "Necesitas completar la verificación con Self en DenLabs antes de reclamar recompensas GoodDollar. Esto mantiene las recompensas resistentes a ataques sybil y alineadas con personas reales."
+      },
+      "checking": "Verificando tu elegibilidad en GoodDollar…",
+      "ineligible": {
+        "description": "Por ahora no eres elegible para reclamar una recompensa GoodDollar desde esta app.",
+        "hint": "Normalmente esto significa que ya reclamaste en los últimos 180 días, alcanzaste el límite de apps elegibles o tu cuenta de GoodDollar aún no está completamente verificada."
+      },
+      "claiming": "Enviando tu reclamo en GoodDollar…",
+      "claimed": {
+        "success": "¡Tu recompensa GoodDollar se ha reclamado correctamente!",
+        "viewTx": "Ver transacción en Celo"
+      }
+    },
+    "appInfo": {
+      "distribution": "Distribución actual: {user}% para ti y {inviter}% para la persona que te invitó."
+    },
+    "actions": {
+      "claim": "Reclamar recompensa en G$",
+      "verifyWithSelf": "Verificar con Self",
+      "connectWallet": "Conectar wallet"
+    },
+    "invite": {
+      "title": "Comparte tu enlace de invitación",
+      "description": "Comparte este enlace con otros builders. Cuando reclamen usando tu link, una parte de la recompensa GoodDollar puede compartirse contigo.",
+      "linkPrefix": ""
+    },
+    "notes": {
+      "limits": "Importante: Un usuario solo puede reclamar una vez por aplicación cada 180 días y desde máximo 3 aplicaciones diferentes en ese mismo periodo, y debe estar en la lista blanca (whitelisted) de GoodDollar."
+    },
+    "faq": {
+      "title": "Cómo funcionan las recompensas GoodDollar en DenLabs",
+      "item1": "DenLabs utiliza la verificación Self como capa anti-sybil antes de llamar al contrato de Engagement Rewards de GoodDollar.",
+      "item2": "GoodDollar valida que tu cuenta esté verificada (whitelisted) y que estés dentro de los límites globales y por app antes de permitir el claim.",
+      "item3": "Cada reclamo exitoso envía una pequeña cantidad de G$ hacia ti y, opcionalmente, hacia la dirección de quien te invitó, capturada desde el enlace de invitación."
+    },
+    "errors": {
+      "generic": "Ocurrió un error al comprobar tu elegibilidad. Intenta de nuevo en unos momentos.",
+      "claimFailed": "No se pudo procesar tu reclamo. Asegúrate de que tu cuenta GoodDollar esté verificada, que no hayas reclamado recientemente y que estás conectado con la wallet correcta en Celo."
     }
   }
 }

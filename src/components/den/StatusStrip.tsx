@@ -1,64 +1,64 @@
-'use client'
+"use client";
 
 import {
   useAppKitNetwork,
   useAppKitProvider,
   useAppKitState,
-} from '@reown/appkit/react'
-import { Wallet } from 'lucide-react'
-import { BrowserProvider, JsonRpcProvider, type Eip1193Provider } from 'ethers'
-import { useTranslations } from 'next-intl'
-import { useEffect, useRef, useState, type ReactNode } from 'react'
-import ConnectWalletButton from '@/components/ui/ConnectWalletButton'
-import HowlBadge from '@/components/ui/HowlBadge'
-import SelfBadge from '@/components/ui/SelfBadge'
-import { useDenUser } from '@/hooks/useDenUser'
+} from "@reown/appkit/react";
+import { Wallet } from "lucide-react";
+import { BrowserProvider, JsonRpcProvider, type Eip1193Provider } from "ethers";
+import { useTranslations } from "next-intl";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import ConnectWalletButton from "@/components/ui/ConnectWalletButton";
+import HowlBadge from "@/components/ui/HowlBadge";
+import SelfBadge from "@/components/ui/SelfBadge";
+import { useDenUser } from "@/hooks/useDenUser";
 
 type StatusStripProps = {
-  className?: string
-}
+  className?: string;
+};
 
 type WalletBroadcastDetail = {
-  address: string | null
-  isConnecting: boolean
-  chainId: number | null
-  provider: BrowserProvider | null
-}
+  address: string | null;
+  isConnecting: boolean;
+  chainId: number | null;
+  provider: BrowserProvider | null;
+};
 
 const broadcastWalletState = (detail: WalletBroadcastDetail) => {
-  if (typeof window === 'undefined') {
-    return
+  if (typeof window === "undefined") {
+    return;
   }
   const dispatch = () => {
     window.dispatchEvent(
-      new CustomEvent<WalletBroadcastDetail>('wolf-wallet-state', { detail }),
-    )
+      new CustomEvent<WalletBroadcastDetail>("wolf-wallet-state", { detail }),
+    );
+  };
+  if (typeof queueMicrotask === "function") {
+    queueMicrotask(dispatch);
+    return;
   }
-  if (typeof queueMicrotask === 'function') {
-    queueMicrotask(dispatch)
-    return
-  }
-  window.setTimeout(dispatch, 0)
-}
+  window.setTimeout(dispatch, 0);
+};
 
-export function StatusStrip({ className = '' }: StatusStripProps) {
-  const tSpray = useTranslations('SprayDisperser')
-  const [provider, setProvider] = useState<BrowserProvider | null>(null)
-  const [ensName, setEnsName] = useState<string | null>(null)
-  const ensProviderRef = useRef<JsonRpcProvider | null>(null)
-  const { caipNetwork, chainId } = useAppKitNetwork()
-  const { walletProvider } = useAppKitProvider<Eip1193Provider>('eip155')
-  const { loading } = useAppKitState()
-  const user = useDenUser()
-  const walletAddress = user.walletAddress
-  const isSelfVerified = user.selfVerified
-  const isConnected = user.isBuilder
-  const holdScore = user.holdScore
+export function StatusStrip({ className = "" }: StatusStripProps) {
+  const tSpray = useTranslations("SprayDisperser");
+  const [provider, setProvider] = useState<BrowserProvider | null>(null);
+  const [ensName, setEnsName] = useState<string | null>(null);
+  const ensProviderRef = useRef<JsonRpcProvider | null>(null);
+  const { caipNetwork, chainId } = useAppKitNetwork();
+  const { walletProvider } = useAppKitProvider<Eip1193Provider>("eip155");
+  const { loading } = useAppKitState();
+  const user = useDenUser();
+  const walletAddress = user.walletAddress;
+  const isSelfVerified = user.selfVerified;
+  const isConnected = user.isBuilder;
+  const holdScore = user.holdScore;
 
   const socialLinks = [
     {
-      href: 'https://github.com/wolfcito/wolf-den',
-      label: 'GitHub',
+      href: "https://github.com/wolfcito/wolf-den",
+      label: "GitHub",
       icon: (
         <svg
           className="h-4 w-4"
@@ -74,8 +74,8 @@ export function StatusStrip({ className = '' }: StatusStripProps) {
       ),
     },
     {
-      href: 'https://x.com/AKAwolfcito',
-      label: 'X',
+      href: "https://x.com/AKAwolfcito",
+      label: "X",
       icon: (
         <svg
           className="h-4 w-4"
@@ -90,7 +90,7 @@ export function StatusStrip({ className = '' }: StatusStripProps) {
         </svg>
       ),
     },
-  ]
+  ];
 
   const translateSpray = (
     key: string,
@@ -98,49 +98,49 @@ export function StatusStrip({ className = '' }: StatusStripProps) {
     values?: Record<string, string | number>,
   ) => {
     try {
-      return values ? tSpray(key, values) : tSpray(key)
+      return values ? tSpray(key, values) : tSpray(key);
     } catch {
-      return fallback
+      return fallback;
     }
-  }
+  };
 
   const formatAddress = (address: string) =>
     address.length <= 10
       ? address
-      : `${address.slice(0, 6)}...${address.slice(-4)}`
+      : `${address.slice(0, 6)}...${address.slice(-4)}`;
 
   const normalizeChainId = (
     value: number | string | undefined,
   ): number | null => {
-    if (typeof value === 'number') {
-      return Number.isFinite(value) ? value : null
+    if (typeof value === "number") {
+      return Number.isFinite(value) ? value : null;
     }
-    if (typeof value === 'string' && value.length > 0) {
-      if (value.startsWith('eip155:')) {
-        const [, raw] = value.split(':')
-        const parsed = Number.parseInt(raw ?? '', 10)
-        return Number.isNaN(parsed) ? null : parsed
+    if (typeof value === "string" && value.length > 0) {
+      if (value.startsWith("eip155:")) {
+        const [, raw] = value.split(":");
+        const parsed = Number.parseInt(raw ?? "", 10);
+        return Number.isNaN(parsed) ? null : parsed;
       }
-      if (value.startsWith('0x')) {
-        const parsed = Number.parseInt(value, 16)
-        return Number.isNaN(parsed) ? null : parsed
+      if (value.startsWith("0x")) {
+        const parsed = Number.parseInt(value, 16);
+        return Number.isNaN(parsed) ? null : parsed;
       }
-      const parsed = Number.parseInt(value, 10)
-      return Number.isNaN(parsed) ? null : parsed
+      const parsed = Number.parseInt(value, 10);
+      return Number.isNaN(parsed) ? null : parsed;
     }
-    return null
-  }
+    return null;
+  };
 
-  const normalizedChainId = normalizeChainId(chainId)
+  const normalizedChainId = normalizeChainId(chainId);
 
   useEffect(() => {
     if (!walletProvider || !isConnected) {
-      setProvider(null)
-      return
+      setProvider(null);
+      return;
     }
-    const nextProvider = new BrowserProvider(walletProvider)
-    setProvider(nextProvider)
-  }, [walletProvider, isConnected])
+    const nextProvider = new BrowserProvider(walletProvider);
+    setProvider(nextProvider);
+  }, [walletProvider, isConnected]);
 
   useEffect(() => {
     broadcastWalletState({
@@ -148,37 +148,37 @@ export function StatusStrip({ className = '' }: StatusStripProps) {
       isConnecting: loading,
       chainId: normalizedChainId,
       provider,
-    })
-  }, [walletAddress, loading, normalizedChainId, provider])
+    });
+  }, [walletAddress, loading, normalizedChainId, provider]);
 
   useEffect(() => {
     if (!walletAddress) {
-      setEnsName(null)
-      return
+      setEnsName(null);
+      return;
     }
     const rpcUrl =
       process.env.NEXT_PUBLIC_MAINNET_RPC ??
-      'https://eth-mainnet.g.alchemy.com/v2/UJxU4hYOPrrKdoCaO6f6p'
+      "https://eth-mainnet.g.alchemy.com/v2/UJxU4hYOPrrKdoCaO6f6p";
     if (!ensProviderRef.current) {
-      ensProviderRef.current = new JsonRpcProvider(rpcUrl)
+      ensProviderRef.current = new JsonRpcProvider(rpcUrl);
     }
-    let cancelled = false
+    let cancelled = false;
     ensProviderRef.current
       .lookupAddress(walletAddress)
       .then((name) => {
         if (!cancelled) {
-          setEnsName(name ?? null)
+          setEnsName(name ?? null);
         }
       })
       .catch(() => {
         if (!cancelled) {
-          setEnsName(null)
+          setEnsName(null);
         }
-      })
+      });
     return () => {
-      cancelled = true
-    }
-  }, [walletAddress])
+      cancelled = true;
+    };
+  }, [walletAddress]);
 
   useEffect(() => {
     return () => {
@@ -187,20 +187,20 @@ export function StatusStrip({ className = '' }: StatusStripProps) {
         isConnecting: false,
         chainId: null,
         provider: null,
-      })
-    }
-  }, [])
+      });
+    };
+  }, []);
 
   const walletButtonLabel: ReactNode = loading
-    ? 'Connecting...'
-    : translateSpray('actions.connect', 'Connect Wallet')
+    ? "Connecting..."
+    : translateSpray("actions.connect", "Connect Wallet");
 
-  const connectedChainName = caipNetwork?.name ?? 'Wallet'
+  const connectedChainName = caipNetwork?.name ?? "Wallet";
   const walletIcon = (
     <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-white/15 bg-white/10">
       <Wallet className="h-3.5 w-3.5 text-white/80" aria-hidden />
     </span>
-  )
+  );
 
   const connectedWalletButtonLabel: ReactNode =
     walletAddress != null ? (
@@ -209,11 +209,11 @@ export function StatusStrip({ className = '' }: StatusStripProps) {
         <span>{ensName ?? formatAddress(walletAddress)}</span>
       </span>
     ) : (
-      translateSpray('actions.connected', 'Wallet Connected', {
-        address: walletAddress != null ? formatAddress(walletAddress) : '—',
+      translateSpray("actions.connected", "Wallet Connected", {
+        address: walletAddress != null ? formatAddress(walletAddress) : "—",
         network: connectedChainName,
       })
-    )
+    );
 
   return (
     <div
@@ -229,7 +229,7 @@ export function StatusStrip({ className = '' }: StatusStripProps) {
       </div>
       <div className="order-2 sm:order-1 flex items-center gap-3">
         <HowlBadge score={holdScore} />
-        <SelfBadge status={isSelfVerified ? 'verified' : 'unverified'} />
+        <SelfBadge status={isSelfVerified ? "verified" : "unverified"} />
       </div>
       <div className="order-3 flex items-center gap-2">
         {socialLinks.map((link) => (
@@ -248,7 +248,7 @@ export function StatusStrip({ className = '' }: StatusStripProps) {
         ))}
       </div>
     </div>
-  )
+  );
 }
 
-export default StatusStrip
+export default StatusStrip;

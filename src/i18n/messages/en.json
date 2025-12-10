@@ -76,6 +76,7 @@
           "labHome": "Profile",
           "taberna": "Mentors Space",
           "spray": "Spray Rewards",
+          "gooddollar": "GoodDollar Rewards",
           "trustIdentity": "Trust & Identity"
         }
       },
@@ -897,6 +898,52 @@
       "approvalFailed": "Token approval failed.",
       "transactionFailed": "Dispersion transaction failed.",
       "clipboardFailed": "Unable to read clipboard."
+    }
+  },
+  "gooddollar": {
+    "title": "GoodDollar Rewards for Verified Builders",
+    "subtitle": "Claim a small G$ reward for using DenLabs on Celo, and invite other verified builders to join.",
+    "states": {
+      "noWallet": "Connect your wallet on Celo to see if you are eligible for GoodDollar rewards.",
+      "noSelf": {
+        "description": "You need to complete Self verification in DenLabs before you can claim GoodDollar rewards. This keeps rewards sybil-resistant and aligned with real humans."
+      },
+      "checking": "Checking your GoodDollar eligibility…",
+      "ineligible": {
+        "description": "You are currently not eligible to claim a GoodDollar reward from this app.",
+        "hint": "This usually means you already claimed in the last 180 days, you reached the limit of eligible apps, or your GoodDollar account is not fully verified yet."
+      },
+      "claiming": "Submitting your GoodDollar claim…",
+      "claimed": {
+        "success": "Your GoodDollar reward has been claimed successfully!",
+        "viewTx": "View transaction on Celo"
+      }
+    },
+    "appInfo": {
+      "distribution": "Current distribution: {user}% to you and {inviter}% to the inviter."
+    },
+    "actions": {
+      "claim": "Claim G$ reward now",
+      "verifyWithSelf": "Verify with Self",
+      "connectWallet": "Connect wallet"
+    },
+    "invite": {
+      "title": "Share your invite link",
+      "description": "Share this link with other builders. When they claim using your link, part of the GoodDollar reward can be shared with you.",
+      "linkPrefix": ""
+    },
+    "notes": {
+      "limits": "Note: A user can only claim once per app every 180 days and from at most 3 different apps in any 180-day period, and must be whitelisted in GoodDollar."
+    },
+    "faq": {
+      "title": "How GoodDollar Rewards work in DenLabs",
+      "item1": "DenLabs uses Self verification to keep rewards sybil-resistant before calling the GoodDollar Engagement Rewards contract.",
+      "item2": "GoodDollar checks if your account is whitelisted and if you are within the global and per-app limits before allowing the claim.",
+      "item3": "Each successful claim sends a small amount of G$ to you, and optionally to the inviter address captured from the invite link."
+    },
+    "errors": {
+      "generic": "Something went wrong while checking your eligibility. Please try again or come back later.",
+      "claimFailed": "Your claim could not be processed. Make sure your GoodDollar account is verified, you haven't claimed recently, and that you are connected to the correct wallet on Celo."
     }
   }
 }

@@ -76,9 +76,7 @@ export function SidebarProvider({
   );
 
   return (
-    <SidebarContext.Provider value={value}>
-      {children}
-    </SidebarContext.Provider>
+    <SidebarContext.Provider value={value}>{children}</SidebarContext.Provider>
   );
 }
 
@@ -162,10 +160,7 @@ Sidebar.displayName = "Sidebar";
 
 type SidebarSectionProps = React.HTMLAttributes<HTMLDivElement>;
 
-export function SidebarHeader({
-  className,
-  ...props
-}: SidebarSectionProps) {
+export function SidebarHeader({ className, ...props }: SidebarSectionProps) {
   return (
     <div
       className={cn(
@@ -177,25 +172,16 @@ export function SidebarHeader({
   );
 }
 
-export function SidebarContent({
-  className,
-  ...props
-}: SidebarSectionProps) {
+export function SidebarContent({ className, ...props }: SidebarSectionProps) {
   return (
     <div
-      className={cn(
-        "mt-4 flex-1 space-y-6 overflow-y-auto pr-1",
-        className,
-      )}
+      className={cn("mt-4 flex-1 space-y-6 overflow-y-auto pr-1", className)}
       {...props}
     />
   );
 }
 
-export function SidebarFooter({
-  className,
-  ...props
-}: SidebarSectionProps) {
+export function SidebarFooter({ className, ...props }: SidebarSectionProps) {
   return (
     <div
       className={cn(
@@ -207,13 +193,8 @@ export function SidebarFooter({
   );
 }
 
-export function SidebarGroup({
-  className,
-  ...props
-}: SidebarSectionProps) {
-  return (
-    <div className={cn(className)} {...props} />
-  );
+export function SidebarGroup({ className, ...props }: SidebarSectionProps) {
+  return <div className={cn(className)} {...props} />;
 }
 
 export function SidebarGroupLabel({
@@ -241,9 +222,7 @@ export function SidebarGroupContent({
 type SidebarMenuProps = React.HTMLAttributes<HTMLUListElement>;
 
 export function SidebarMenu({ className, ...props }: SidebarMenuProps) {
-  return (
-    <ul className={cn("space-y-1.5", className)} {...props} />
-  );
+  return <ul className={cn("space-y-1.5", className)} {...props} />;
 }
 
 export function SidebarMenuItem({
