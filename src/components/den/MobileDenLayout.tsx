@@ -1,12 +1,12 @@
 "use client";
 
-import { ShieldCheck, SprayCan, UserCircle } from "lucide-react";
+import { Coins, SprayCan, UserCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { type ReactNode, useMemo } from "react";
 import LimelightNav from "@/components/ui/LimelightNav";
 import { usePathname, useRouter } from "@/i18n/routing";
 
-type NavigationItemKey = "profile" | "spray" | "self";
+type NavigationItemKey = "profile" | "spray" | "gooddollar";
 
 type NavigationItemConfig = {
   key: NavigationItemKey;
@@ -16,9 +16,14 @@ type NavigationItemConfig = {
 };
 
 const navigationItems: NavigationItemConfig[] = [
-  { key: "profile", icon: UserCircle, labelKey: "tabs.profile", href: "/lab" },
+  {
+    key: "gooddollar",
+    icon: Coins,
+    labelKey: "tabs.gooddollar",
+    href: "/gooddollar",
+  },
   { key: "spray", icon: SprayCan, labelKey: "tabs.spray", href: "/spray" },
-  { key: "self", icon: ShieldCheck, labelKey: "tabs.self", href: "/auth" },
+  { key: "profile", icon: UserCircle, labelKey: "tabs.profile", href: "/lab" },
 ];
 
 type MobileDenLayoutProps = {

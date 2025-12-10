@@ -66,6 +66,11 @@ export default function SidebarNav() {
   const t = useTranslations("SidebarNav");
   const pathname = usePathname();
   const { open, isMobile } = useSidebar();
+
+  if (isMobile) {
+    return null;
+  }
+
   const collapsed = !open && !isMobile;
   const footerCopy = t("footer.copy").replace(". ", ".\n");
   const SettingsIcon = settingsNavItem.icon;
