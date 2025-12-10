@@ -250,7 +250,7 @@ export function SidebarMenuButton({
     "flex w-full items-center gap-3 rounded-xl px-3 py-2 text-[0.68rem] font-semibold uppercase tracking-[0.24em] transition",
     collapsed ? "justify-center px-2" : "justify-start",
     isActive
-      ? "bg-[linear-gradient(140deg,#c8ff64,#5ae048)] text-[#0b1407] shadow-[0_15px_30px_rgba(122,255,118,0.25)]"
+      ? "border border-[#89e24a]/40 bg-[#89e24a]/15 text-[#c8ff64]"
       : "text-white/70 hover:bg-white/5 hover:text-white",
     className,
   );
