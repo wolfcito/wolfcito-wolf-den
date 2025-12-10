@@ -47,7 +47,6 @@
   );
   --den-font-sans: var(
     --font-den-sans,
-    "DM Sans",
     "Inter",
     system-ui,
     sans-serif
