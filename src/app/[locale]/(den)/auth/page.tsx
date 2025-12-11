@@ -1,4 +1,4 @@
-import { Coins, Droplets, Grid3X3, Search } from "lucide-react";
+import { BadgeDollarSign, Droplets, Grid3X3, Search } from "lucide-react";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { DenMain, DenRightRail } from "@/components/den/RailSlots";
@@ -53,7 +53,7 @@ const SHORTCUT_APPS: ShortcutApp[] = [
     id: "gooddollar",
     label: "GoodDollar Rewards",
     href: "/gooddollar",
-    icon: Coins,
+    icon: BadgeDollarSign,
   },
   {
     id: "spray",

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Geist_Mono, Inter } from "next/font/google";
+import { Geist_Mono, Quicksand } from "next/font/google";
 import ThemeInitializer from "@/components/ThemeInitializer";
 import AppKitProvider from "@/providers/AppKitProvider";
 
@@ -9,9 +9,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const inter = Inter({
+const quicksand = Quicksand({
   variable: "--font-den-sans",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -26,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-theme="dark" suppressHydrationWarning>
-      <body className={`${inter.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${quicksand.variable} ${geistMono.variable} antialiased`}>
         <ThemeInitializer />
         <AppKitProvider>{children}</AppKitProvider>
       </body>

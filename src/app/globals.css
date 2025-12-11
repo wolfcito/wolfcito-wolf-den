@@ -47,7 +47,7 @@
   );
   --den-font-sans: var(
     --font-den-sans,
-    "Inter",
+    "Quicksand",
     system-ui,
     sans-serif
   );

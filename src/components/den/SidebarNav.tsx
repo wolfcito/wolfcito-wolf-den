@@ -1,18 +1,17 @@
 "use client";
 
 import {
+  BadgeDollarSign,
   BarChart3,
   ChevronLeft,
   ChevronRight,
-  Coins,
+  Droplets,
   FlaskConical,
   Gamepad2,
   Lock,
   Puzzle,
   ScanQrCode,
-  Settings,
   ShieldCheck,
-  SprayCan,
   SquareStack,
   Trophy,
   UsersRound,
@@ -39,8 +38,8 @@ import { cn } from "@/lib/utils";
 const labNavigation = [
   { key: "labHome", href: "/lab", icon: FlaskConical },
   { key: "trustIdentity", href: "/auth", icon: ShieldCheck },
-  { key: "spray", href: "/spray", icon: SprayCan },
-  { key: "gooddollar", href: "/gooddollar", icon: Coins },
+  { key: "spray", href: "/spray", icon: Droplets },
+  { key: "gooddollar", href: "/gooddollar", icon: BadgeDollarSign },
   { key: "taberna", href: "/taberna", icon: UsersRound },
 ] as const;
 
@@ -52,12 +51,6 @@ const experimentsNavigation = [
   { key: "insights", icon: BarChart3 },
   { key: "leaderboard", icon: Trophy },
 ] as const;
-
-const settingsNavItem = {
-  key: "settings",
-  href: "/settings",
-  icon: Settings,
-} as const;
 
 // Temporary flag to hide experiments navigation until the module is ready.
 const SHOW_EXPERIMENTS = false;
@@ -73,7 +66,6 @@ export default function SidebarNav() {
 
   const collapsed = !open && !isMobile;
   const footerCopy = t("footer.copy").replace(". ", ".\n");
-  const SettingsIcon = settingsNavItem.icon;
   const matchesPath = (href: string) => {
     if (href === "/auth") {
       return pathname?.startsWith("/auth");
@@ -192,39 +184,6 @@ export default function SidebarNav() {
             </SidebarGroupContent>
           </SidebarGroup>
         ) : null}
-        <SidebarGroup className="border-t border-white/5 pt-4">
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  asChild
-                  isActive={matchesPath(settingsNavItem.href)}
-                >
-                  <Link
-                    href={settingsNavItem.href}
-                    aria-current={
-                      matchesPath(settingsNavItem.href) ? "page" : undefined
-                    }
-                    className="flex w-full items-center gap-3"
-                  >
-                    <SettingsIcon
-                      className="h-4 w-4 text-[#8bea4e]"
-                      aria-hidden
-                    />
-                    <span
-                      className={cn(
-                        "truncate text-[0.72rem]",
-                        collapsed ? "hidden" : "inline",
-                      )}
-                    >
-                      {t("sections.settings.title")}
-                    </span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="flex items-center gap-3">
         {collapsed ? null : (

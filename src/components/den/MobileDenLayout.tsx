@@ -1,6 +1,6 @@
 "use client";
 
-import { Coins, SprayCan, UserCircle } from "lucide-react";
+import { BadgeDollarSign, Droplets, UserCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { type ReactNode, useMemo } from "react";
 import LimelightNav from "@/components/ui/LimelightNav";
@@ -18,11 +18,11 @@ type NavigationItemConfig = {
 const navigationItems: NavigationItemConfig[] = [
   {
     key: "gooddollar",
-    icon: Coins,
+    icon: BadgeDollarSign,
     labelKey: "tabs.gooddollar",
     href: "/gooddollar",
   },
-  { key: "spray", icon: SprayCan, labelKey: "tabs.spray", href: "/spray" },
+  { key: "spray", icon: Droplets, labelKey: "tabs.spray", href: "/spray" },
   { key: "profile", icon: UserCircle, labelKey: "tabs.profile", href: "/lab" },
 ];
 
