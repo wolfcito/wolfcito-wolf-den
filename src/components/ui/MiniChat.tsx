@@ -18,7 +18,7 @@ export function MiniChat() {
     <div className="space-y-3 text-wolf-foreground">
       <div className="flex items-center justify-between">
         <p className="text-sm font-medium text-white">{t("title")}</p>
-        <span className="text-xs uppercase tracking-[0.3em] text-wolf-text-subtle">
+        <span className="text-xs uppercase text-wolf-text-subtle">
           {t("label")}
         </span>
       </div>

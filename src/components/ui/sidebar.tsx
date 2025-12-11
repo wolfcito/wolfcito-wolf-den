@@ -185,7 +185,7 @@ export function SidebarFooter({ className, ...props }: SidebarSectionProps) {
   return (
     <div
       className={cn(
-        "border-t border-white/5 pt-4 text-[0.7rem] uppercase tracking-[0.3em] text-white/50",
+        "border-t border-white/5 pt-4 text-[0.7rem] uppercase text-white/50",
         className,
       )}
       {...props}
@@ -204,7 +204,7 @@ export function SidebarGroupLabel({
   return (
     <div
       className={cn(
-        "mb-3 flex items-center gap-2 text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-white/60",
+        "mb-3 flex items-center gap-2 text-[0.65rem] font-semibold uppercase text-white/60",
         className,
       )}
       {...props}
@@ -247,7 +247,7 @@ export function SidebarMenuButton({
   const { open, isMobile } = useSidebar();
   const collapsed = !open && !isMobile;
   const baseClasses = cn(
-    "flex w-full items-center gap-3 rounded-xl px-3 py-2 text-[0.68rem] font-semibold uppercase tracking-[0.24em] transition",
+    "flex w-full items-center gap-3 rounded-xl px-3 py-2 text-[0.68rem] font-semibold uppercase transition",
     collapsed ? "justify-center px-2" : "justify-start",
     isActive
       ? "border border-[#89e24a]/40 bg-[#89e24a]/15 text-[#c8ff64]"
@@ -312,7 +312,7 @@ export function SidebarMenuSubButton({
   const { open, isMobile } = useSidebar();
   const collapsed = !open && !isMobile;
   const baseClasses = cn(
-    "flex w-full items-center gap-3 rounded-xl px-2 py-2 text-[0.7rem] font-medium tracking-[0.08em] transition",
+    "flex w-full items-center gap-3 rounded-xl px-2 py-2 text-[0.7rem] font-medium transition",
     collapsed ? "justify-center" : "justify-start",
     isActive
       ? "bg-white/10 text-white"
@@ -372,7 +372,7 @@ export function SidebarTrigger({
       type="button"
       onClick={() => (isMobile ? toggleMobile() : toggleOpen())}
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.24em] transition",
+        "inline-flex items-center justify-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-[0.65rem] font-semibold uppercase transition",
         styles,
         className,
       )}

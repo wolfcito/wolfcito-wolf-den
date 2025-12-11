@@ -100,10 +100,10 @@ export default function SidebarNav() {
               collapsed ? "hidden" : "flex",
             )}
           >
-            <p className="text-[0.62rem] font-semibold uppercase tracking-[0.32em] text-white/65">
+            <p className="text-[0.62rem] font-semibold uppercase text-white/65">
               {t("branding.subtitle")}
             </p>
-            <h1 className="text-[0.95rem] font-semibold uppercase tracking-[0.2em] text-white">
+            <h1 className="text-[0.95rem] font-semibold uppercase text-white">
               {t("branding.title")}
             </h1>
           </div>
@@ -151,7 +151,7 @@ export default function SidebarNav() {
               className={cn("justify-between", collapsed ? "hidden" : "flex")}
             >
               <span>{t("sections.experiments.title")}</span>
-              <span className="rounded-full border border-white/15 px-2 py-0.5 text-[0.6rem] tracking-[0.3em] text-white/70">
+              <span className="rounded-full border border-white/15 px-2 py-0.5 text-[0.6rem] text-white/70">
                 {t("sections.experiments.badge")}
               </span>
             </SidebarGroupLabel>
@@ -187,7 +187,7 @@ export default function SidebarNav() {
       </SidebarContent>
       <SidebarFooter className="flex items-center gap-3">
         {collapsed ? null : (
-          <span className="whitespace-pre-line text-[0.62rem] uppercase tracking-[0.28em]">
+          <span className="whitespace-pre-line text-[0.62rem] uppercase">
             {footerCopy}
           </span>
         )}

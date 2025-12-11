@@ -188,7 +188,7 @@ function LabMain({ locale, profile }: LabMainProps) {
           <button
             key={tab}
             type="button"
-            className={`relative px-4 py-3 text-sm font-semibold uppercase tracking-[0.2em] transition-colors ${
+            className={`relative px-4 py-3 text-sm font-semibold uppercase transition-colors ${
               index === 0 ? "text-white" : "text-white/50 hover:text-white"
             }`}
           >
@@ -231,7 +231,7 @@ function LabMain({ locale, profile }: LabMainProps) {
 
 function StatusBadge({ icon, label }: { icon?: ReactNode; label: string }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full border border-wolf-border-soft bg-wolf-neutral-soft px-3 py-1 text-[11px] font-semibold tracking-[0.25em] text-white">
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-wolf-border-soft bg-wolf-neutral-soft px-3 py-1 text-[11px] font-semibold text-white">
       {icon}
       {label}
     </span>
@@ -247,7 +247,7 @@ type LabStatsProps = {
 function LabStats({ holdProgress, holdScore, stats }: LabStatsProps) {
   return (
     <section className="wolf-card--muted rounded-2xl border border-wolf-border-mid p-5 text-white">
-      <h2 className="text-xs font-semibold uppercase tracking-[0.32em] text-wolf-text-subtle">
+      <h2 className="text-xs font-semibold uppercase text-wolf-text-subtle">
         Stats
       </h2>
       <div className="mt-4">
@@ -268,7 +268,7 @@ function LabStats({ holdProgress, holdScore, stats }: LabStatsProps) {
             key={stat.label}
             className="rounded-xl border border-wolf-border-soft bg-wolf-panel/70 p-4"
           >
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/55">
+            <p className="text-xs font-semibold uppercase text-white/55">
               {stat.label}
             </p>
             <p className="mt-2 text-2xl font-semibold text-white">
@@ -296,7 +296,7 @@ type QuestItem = {
 function QuestList({ items }: { items: QuestItem[] }) {
   return (
     <section className="wolf-card--muted rounded-2xl border border-wolf-border-mid p-5 text-white">
-      <h2 className="text-xs font-semibold uppercase tracking-[0.32em] text-wolf-text-subtle">
+      <h2 className="text-xs font-semibold uppercase text-wolf-text-subtle">
         Next steps / quests
       </h2>
       <div className="mt-4 space-y-3">
@@ -320,14 +320,14 @@ function QuestList({ items }: { items: QuestItem[] }) {
 function QuestAction({ quest }: { quest: QuestItem }) {
   if (quest.status === "done") {
     return (
-      <span className="inline-flex items-center rounded-full border border-[#56f0d5]/40 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.3em] text-[#56f0d5]">
+      <span className="inline-flex items-center rounded-full border border-[#56f0d5]/40 px-4 py-1.5 text-xs font-semibold uppercase text-[#56f0d5]">
         Done
       </span>
     );
   }
   if (quest.status === "locked") {
     return (
-      <span className="inline-flex items-center rounded-full border border-white/15 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.3em] text-white/40">
+      <span className="inline-flex items-center rounded-full border border-white/15 px-4 py-1.5 text-xs font-semibold uppercase text-white/40">
         Locked
       </span>
     );
@@ -335,7 +335,7 @@ function QuestAction({ quest }: { quest: QuestItem }) {
   return (
     <Link
       href={quest.href}
-      className="inline-flex items-center rounded-full border border-[#89e24a] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.3em] text-[#89e24a] transition hover:bg-[#89e24a] hover:text-[#05090f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#89e24a]"
+      className="inline-flex items-center rounded-full border border-[#89e24a] px-4 py-1.5 text-xs font-semibold uppercase text-[#89e24a] transition hover:bg-[#89e24a] hover:text-[#05090f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#89e24a]"
     >
       {quest.actionLabel}
     </Link>

@@ -38,7 +38,7 @@ export function QuestsGrid() {
               <Target className="h-4 w-4" aria-hidden />
             </span>
             <div>
-              <p className="text-xs uppercase tracking-[0.32em] text-wolf-text-subtle">
+              <p className="text-xs uppercase text-wolf-text-subtle">
                 {t("tag")}
               </p>
               <h3 className="mt-2 text-lg font-semibold text-white/90">
@@ -47,12 +47,12 @@ export function QuestsGrid() {
             </div>
           </div>
           <div className="mt-6 flex items-center justify-between text-sm">
-            <span className="wolf-pill border border-wolf-border-mid bg-wolf-emerald-soft text-xs uppercase tracking-[0.25em] text-wolf-emerald">
+            <span className="wolf-pill border border-wolf-border-mid bg-wolf-emerald-soft text-xs uppercase text-wolf-emerald">
               {t("points", { count: quest.points })}
             </span>
             <button
               type="button"
-              className={`rounded-lg px-4 py-2 text-sm font-medium uppercase tracking-[0.2em] transition ${
+              className={`rounded-lg px-4 py-2 text-sm font-medium uppercase transition ${
                 quest.status === "locked"
                   ? "cursor-not-allowed bg-wolf-emerald-faint text-wolf-text-subtle"
                   : quest.status === "submitted"

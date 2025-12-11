@@ -18,7 +18,7 @@ export function MentorBooking() {
           <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-wolf-emerald-mid text-wolf-emerald">
             <CalendarClock className="h-5 w-5" aria-hidden />
           </span>
-          <h3 className="text-lg font-semibold uppercase tracking-[0.18em] text-white/90">
+          <h3 className="text-lg font-semibold uppercase text-white/90">
             {t("title")}
           </h3>
         </div>
@@ -34,15 +34,15 @@ export function MentorBooking() {
               }`}
             >
               <p className="text-sm font-medium text-white/90">{slot.mentor}</p>
-              <p className="text-xs uppercase tracking-[0.32em] text-wolf-text-subtle">
+              <p className="text-xs uppercase text-wolf-text-subtle">
                 {slot.time}
               </p>
               {slot.available ? (
-                <span className="wolf-pill mt-2 bg-wolf-emerald-soft text-xs uppercase tracking-[0.24em] text-wolf-emerald">
+                <span className="wolf-pill mt-2 bg-wolf-emerald-soft text-xs uppercase text-wolf-emerald">
                   Available
                 </span>
               ) : (
-                <span className="wolf-pill mt-2 border border-white/10 bg-transparent text-xs uppercase tracking-[0.24em] text-wolf-text-subtle">
+                <span className="wolf-pill mt-2 border border-white/10 bg-transparent text-xs uppercase text-wolf-text-subtle">
                   Filled
                 </span>
               )}
@@ -55,7 +55,7 @@ export function MentorBooking() {
           <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-wolf-emerald-mid text-wolf-emerald">
             <NotebookPen className="h-5 w-5" aria-hidden />
           </span>
-          <h4 className="text-base font-semibold uppercase tracking-[0.2em] text-white/90">
+          <h4 className="text-base font-semibold uppercase text-white/90">
             {t("preparation.title")}
           </h4>
         </div>
@@ -66,7 +66,7 @@ export function MentorBooking() {
         </div>
         <button
           type="button"
-          className="den-button-primary mt-6 px-6 py-3 text-sm tracking-[0.2em]"
+          className="den-button-primary mt-6 px-6 py-3 text-sm"
         >
           {t("preparation.cta")}
         </button>

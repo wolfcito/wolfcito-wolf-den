@@ -348,7 +348,7 @@ export default function SelfAuth({ onSuccess, onError }: SelfAuthProps) {
                 type="button"
                 onClick={handleOpenSelfApp}
                 disabled={!universalLink}
-                className="den-button-primary w-full text-sm tracking-[0.22em] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
+                className="den-button-primary w-full text-sm disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
               >
                 {t("intro.mobileCta")}
               </button>
@@ -358,7 +358,7 @@ export default function SelfAuth({ onSuccess, onError }: SelfAuthProps) {
                   : t("intro.mobileUnavailable")}
               </p>
               <fieldset className="space-y-2 px-4 py-3 text-left">
-                <legend className="text-xs font-semibold uppercase tracking-[0.28em] text-white/60">
+                <legend className="text-xs font-semibold uppercase text-white/60">
                   {t("intro.mobileQrLabel")}
                 </legend>
                 <div className="flex flex-col gap-2 text-sm text-white/80 sm:flex-row">

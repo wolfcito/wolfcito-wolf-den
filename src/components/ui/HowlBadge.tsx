@@ -9,7 +9,7 @@ type HowlBadgeProps = {
 };
 
 const baseClasses =
-  "inline-flex items-center gap-3 rounded-lg border px-3 py-1 text-[0.75rem] font-semibold uppercase tracking-[0.18em] transition";
+  "inline-flex items-center gap-3 rounded-lg border px-3 py-1 text-[0.75rem] font-semibold uppercase transition";
 
 export default function HowlBadge({
   score = null,

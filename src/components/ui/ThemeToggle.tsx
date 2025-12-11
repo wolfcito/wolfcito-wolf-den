@@ -41,7 +41,7 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      className="relative flex items-center gap-1 rounded-lg border border-wolf-border-soft/80 bg-wolf-panel/80 px-1.5 py-1 text-xs font-semibold uppercase tracking-[0.26em] text-wolf-text-subtle shadow-[0_0_20px_rgba(160,83,255,0.12)] backdrop-blur-md transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent focus-visible:ring-[rgba(160,83,255,0.6)]"
+      className="relative flex items-center gap-1 rounded-lg border border-wolf-border-soft/80 bg-wolf-panel/80 px-1.5 py-1 text-xs font-semibold uppercase text-wolf-text-subtle shadow-[0_0_20px_rgba(160,83,255,0.12)] backdrop-blur-md transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent focus-visible:ring-[rgba(160,83,255,0.6)]"
       aria-pressed={mode === "dark"}
       aria-label="Toggle theme"
     >

@@ -221,7 +221,7 @@ export function StatusStrip({ className = "" }: StatusStripProps) {
     >
       <div className="order-1 flex w-full items-center gap-2 sm:order-2 sm:w-auto">
         <ConnectWalletButton
-          className="inline-flex w-full items-center justify-center gap-3 rounded-md border px-3 py-1 text-[0.75rem] font-semibold uppercase tracking-[0.18em] transition cursor-pointer disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
+          className="inline-flex w-full items-center justify-center gap-3 rounded-md border px-3 py-1 text-[0.75rem] font-semibold uppercase transition cursor-pointer disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
           connectLabel={walletButtonLabel}
           connectedLabel={connectedWalletButtonLabel}
           disabled={loading}

@@ -26,7 +26,7 @@ export function NotificationItem({
       {description ? (
         <p className="text-xs text-wolf-text-subtle">{description}</p>
       ) : null}
-      <p className="mt-1 text-[11px] uppercase tracking-[0.3em] text-wolf-text-subtle">
+      <p className="mt-1 text-[11px] uppercase text-wolf-text-subtle">
         {timestamp}
       </p>
     </div>

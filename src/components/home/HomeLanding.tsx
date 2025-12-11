@@ -67,7 +67,7 @@ function Modal({
       <div className="relative w-full max-w-md rounded-2xl border border-white/10 bg-[#0d1012] p-8 text-white shadow-[0_24px_60px_rgba(5,8,10,0.7)]">
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 rounded-full border border-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-white/60 transition hover:border-white/30 hover:text-white"
+          className="absolute right-4 top-4 rounded-full border border-white/10 px-3 py-1 text-xs font-semibold uppercase text-white/60 transition hover:border-white/30 hover:text-white"
           type="button"
         >
           Close
@@ -120,7 +120,7 @@ export default function HomeLanding() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(160,83,255,0.32),transparent_55%),radial-gradient(circle_at_80%_10%,rgba(60,196,134,0.28),transparent_52%)]" />
         <main className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col justify-center gap-16 px-6 py-16 text-balance sm:px-10">
           <section className="flex flex-col items-center gap-8 text-center">
-            {/* <p className="wolf-pill bg-white/8 text-xs font-semibold uppercase tracking-[0.32em] text-white/70">
+            {/* <p className="wolf-pill bg-white/8 text-xs font-semibold uppercase text-white/70">
               Events toolkit
             </p> */}
             {/* <h1 className="max-w-[22ch] text-4xl font-semibold leading-tight sm:text-5xl">
@@ -137,13 +137,13 @@ export default function HomeLanding() {
               className="mx-auto h-48 w-48 sm:h-60 sm:w-60"
               priority
             />
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/80">
+            <p className="text-sm font-semibold uppercase text-white/80">
               Ship fast, play smart
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <Link
                 href={enterLabHref}
-                className="inline-flex items-center gap-3 rounded-xl border border-[#4ca22a] bg-[#89e24a] px-6 py-3 text-[0.85rem] font-semibold uppercase tracking-[0.22em] text-[#09140a] shadow-[0_0_20px_rgba(186,255,92,0.35)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_40px_rgba(186,255,92,0.45)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#baff5c]"
+                className="inline-flex items-center gap-3 rounded-xl border border-[#4ca22a] bg-[#89e24a] px-6 py-3 text-[0.85rem] font-semibold uppercase text-[#09140a] shadow-[0_0_20px_rgba(186,255,92,0.35)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_40px_rgba(186,255,92,0.45)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#baff5c]"
               >
                 <FlaskConical
                   className="h-4 w-4 text-[#0b1b09]"
@@ -221,7 +221,7 @@ export default function HomeLanding() {
           >
             {HOW_IT_WORKS_STEPS.map((step) => (
               <div key={step.title} className="space-y-2">
-                <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/70">
+                <p className="text-sm font-semibold uppercase text-white/70">
                   {step.title}
                 </p>
                 <p className="text-sm text-white/80">{step.description}</p>
@@ -239,9 +239,9 @@ export default function HomeLanding() {
                 className="flex h-full flex-col justify-between rounded-xl border border-white/8 bg-black/30 p-6"
               >
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.26em] text-white/60">
+                  <div className="flex items-center justify-between text-xs font-semibold uppercase text-white/60">
                     <span>{game.title}</span>
-                    <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[0.65rem] normal-case tracking-normal text-white/70">
+                    <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[0.65rem] normal-case text-white/70">
                       {game.chip}
                     </span>
                   </div>
@@ -249,7 +249,7 @@ export default function HomeLanding() {
                 </div>
                 <button
                   type="button"
-                  className="mt-6 inline-flex w-fit items-center gap-2 text-sm font-semibold uppercase tracking-[0.22em] text-wolf-emerald transition hover:text-white"
+                  className="mt-6 inline-flex w-fit items-center gap-2 text-sm font-semibold uppercase text-wolf-emerald transition hover:text-white"
                 >
                   {game.ctaLabel}
                 </button>
@@ -262,14 +262,14 @@ export default function HomeLanding() {
             className="rounded-2xl border border-white/10 bg-white/[0.03] p-8"
           >
             <div className="flex flex-wrap items-center justify-between gap-4">
-              <h2 className="text-lg font-semibold uppercase tracking-[0.28em] text-white/80">
+              <h2 className="text-lg font-semibold uppercase text-white/80">
                 Proof & KPIs
               </h2>
               <div className="relative">
                 <button
                   type="button"
                   onClick={() => setShowMethodology((prev) => !prev)}
-                  className="text-sm font-semibold uppercase tracking-[0.22em] text-white/70 underline underline-offset-4 transition hover:text-white"
+                  className="text-sm font-semibold uppercase text-white/70 underline underline-offset-4 transition hover:text-white"
                 >
                   Methodology
                 </button>
@@ -293,7 +293,7 @@ export default function HomeLanding() {
                   <span className="text-2xl font-semibold text-white">
                     {badge.value}
                   </span>
-                  <span className="text-xs font-semibold uppercase tracking-[0.22em] text-white/60">
+                  <span className="text-xs font-semibold uppercase text-white/60">
                     {badge.label}
                   </span>
                 </div>

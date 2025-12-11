@@ -45,7 +45,7 @@ export default async function TabernaPage({
                 className="aspect-[16/10] w-full rounded-lg border border-wolf-border bg-wolf-charcoal-75 sm:min-h-[420px]"
               />
               <div className="flex flex-wrap items-center gap-3 text-sm">
-                <span className="wolf-pill bg-wolf-emerald-soft text-xs uppercase tracking-[0.28em] text-wolf-emerald">
+                <span className="wolf-pill bg-wolf-emerald-soft text-xs uppercase text-wolf-emerald">
                   Live Mission Stream
                 </span>
               </div>

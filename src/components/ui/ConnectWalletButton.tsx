@@ -37,7 +37,7 @@ export default function ConnectWalletButton({
       onClick={handleClick}
       disabled={disabled}
       className={clsx(
-        "inline-flex items-center justify-center rounded border border-white/30 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-white/80 transition hover:border-white/60 hover:text-white disabled:cursor-not-allowed disabled:opacity-60",
+        "inline-flex items-center justify-center rounded border border-white/30 px-4 py-2 text-xs font-semibold uppercase text-white/80 transition hover:border-white/60 hover:text-white disabled:cursor-not-allowed disabled:opacity-60",
         className,
       )}
     >

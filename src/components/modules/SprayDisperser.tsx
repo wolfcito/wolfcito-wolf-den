@@ -1131,7 +1131,7 @@ export default function SprayDisperser() {
   };
   const activityPanel = (
     <div className="wolf-card--muted border border-wolf-border px-5 py-5">
-      <p className="text-xs uppercase tracking-[0.32em] text-wolf-text-subtle">
+      <p className="text-xs uppercase text-wolf-text-subtle">
         {t("activity.title")}
       </p>
       {history.length === 0 ? (
@@ -1166,7 +1166,7 @@ export default function SprayDisperser() {
                       )}`}
                     </p>
                     <span
-                      className={`wolf-pill text-[10px] uppercase tracking-[0.26em] ${statusPillClass}`}
+                      className={`wolf-pill text-[10px] uppercase ${statusPillClass}`}
                     >
                       {t(`activity.status.${entry.status}`)}
                     </span>
@@ -1193,7 +1193,7 @@ export default function SprayDisperser() {
                     ) : null}
                   </div>
                   {entry.errorMessage ? (
-                    <p className="mt-2 text-[11px] uppercase tracking-[0.22em] text-rose-300">
+                    <p className="mt-2 text-[11px] uppercase text-rose-300">
                       {entry.errorMessage}
                     </p>
                   ) : null}
@@ -1223,7 +1223,7 @@ export default function SprayDisperser() {
               <div className="flex flex-col items-start gap-2 text-sm text-white/80">
                 {signerAddress ? null : (
                   <>
-                    <span className="text-xs uppercase tracking-[0.3em] text-wolf-text-subtle">
+                    <span className="text-xs uppercase text-wolf-text-subtle">
                       {translate(
                         "network.prompt",
                         "Connect a wallet to load Spray.",
@@ -1252,7 +1252,7 @@ export default function SprayDisperser() {
                         handleSelectCustomToken();
                       }
                     }}
-                    className="relative flex items-center gap-1 rounded-lg border border-wolf-border-soft/80 bg-wolf-panel/80 px-1.5 py-1 text-xs font-semibold uppercase tracking-[0.26em] text-wolf-text-subtle shadow-[0_0_20px_rgba(160,83,255,0.12)] backdrop-blur-md transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent focus-visible:ring-[rgba(160,83,255,0.6)]"
+                    className="relative flex items-center gap-1 rounded-lg border border-wolf-border-soft/80 bg-wolf-panel/80 px-1.5 py-1 text-xs font-semibold uppercase text-wolf-text-subtle shadow-[0_0_20px_rgba(160,83,255,0.12)] backdrop-blur-md transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent focus-visible:ring-[rgba(160,83,255,0.6)]"
                     aria-label="Toggle native or custom token"
                     aria-pressed={mode === "token"}
                   >
@@ -1297,7 +1297,7 @@ export default function SprayDisperser() {
                       />
                     </div>
                     <div className="flex-1 text-left leading-tight">
-                      <p className="text-[10px] uppercase tracking-[0.28em] text-white/50">
+                      <p className="text-[10px] uppercase text-white/50">
                         {networkSelectorLabel}
                       </p>
                       <p className="text-base font-semibold text-white">
@@ -1355,7 +1355,7 @@ export default function SprayDisperser() {
                                   <span className="text-sm font-semibold">
                                     {network.name}
                                   </span>
-                                  <span className="text-[10px] uppercase tracking-[0.28em] text-white/50">
+                                  <span className="text-[10px] uppercase text-white/50">
                                     {network.nativeCurrency.symbol}
                                   </span>
                                 </div>
@@ -1394,7 +1394,7 @@ export default function SprayDisperser() {
                           />
                         </div>
                         <div className="text-left leading-tight w-full">
-                          <p className="text-[11px] uppercase tracking-[0.26em] text-white/60">
+                          <p className="text-[11px] uppercase text-white/60">
                             {tokenPayWithLabel}
                           </p>
                           {isCustomTokenSelected ? (
@@ -1576,7 +1576,7 @@ export default function SprayDisperser() {
                     </div>
                   </div>
 
-                  <div className="text-xs uppercase tracking-[0.28em] text-wolf-emerald">
+                  <div className="text-xs uppercase text-wolf-emerald">
                     <span>
                       {t("summary.recipients", { count: rows.length })}
                     </span>
@@ -1698,7 +1698,7 @@ export default function SprayDisperser() {
                   <button
                     type="button"
                     onClick={addRow}
-                    className="rounded-md border border-wolf-border px-5 py-2 text-xs font-semibold tracking-[0.28em] text-white/80 transition hover:border-wolf-border-strong hover:text-white"
+                    className="rounded-md border border-wolf-border px-5 py-2 text-xs font-semibold text-white/80 transition hover:border-wolf-border-strong hover:text-white"
                   >
                     {t("actions.addRecipient")}
                   </button>
@@ -1707,7 +1707,7 @@ export default function SprayDisperser() {
                       type="button"
                       onClick={handleApprove}
                       disabled={ctaDisabled || isApproving}
-                      className="rounded-md border border-wolf-border-soft px-5 py-2 text-xs font-semibold tracking-[0.28em] text-wolf-emerald transition hover:border-wolf-border-strong hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
+                      className="rounded-md border border-wolf-border-soft px-5 py-2 text-xs font-semibold text-wolf-emerald transition hover:border-wolf-border-strong hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
                     >
                       {isApproving
                         ? t("actions.approving")
@@ -1718,7 +1718,7 @@ export default function SprayDisperser() {
                     type="button"
                     onClick={handleSubmit}
                     disabled={ctaDisabled}
-                    className="ml-auto inline-flex items-center gap-3 rounded-xl border border-[#4ca22a] bg-[#89e24a] px-6 py-3 text-[0.75rem] font-semibold uppercase tracking-[0.22em] text-[#09140a] shadow-[0_0_20px_rgba(186,255,92,0.35)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_40px_rgba(186,255,92,0.45)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#baff5c] disabled:translate-y-0 disabled:border-wolf-border disabled:bg-wolf-border disabled:text-white/40 disabled:shadow-none"
+                    className="ml-auto inline-flex items-center gap-3 rounded-xl border border-[#4ca22a] bg-[#89e24a] px-6 py-3 text-[0.75rem] font-semibold uppercase text-[#09140a] shadow-[0_0_20px_rgba(186,255,92,0.35)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_40px_rgba(186,255,92,0.45)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#baff5c] disabled:translate-y-0 disabled:border-wolf-border disabled:bg-wolf-border disabled:text-white/40 disabled:shadow-none"
                   >
                     <span>
                       {isSubmitting
@@ -1729,12 +1729,12 @@ export default function SprayDisperser() {
                 </div>
 
                 {feedback ? (
-                  <p className="mt-4 text-xs uppercase tracking-[0.32em] text-wolf-emerald">
+                  <p className="mt-4 text-xs uppercase text-wolf-emerald">
                     {feedback}
                   </p>
                 ) : null}
                 {error ? (
-                  <p className="mt-2 text-xs uppercase tracking-[0.32em] text-rose-300">
+                  <p className="mt-2 text-xs uppercase text-rose-300">
                     {error}
                   </p>
                 ) : null}

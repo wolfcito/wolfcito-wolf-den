@@ -38,7 +38,7 @@ export default function MissionsPage() {
   return (
     <div className="space-y-8 text-wolf-foreground">
       <header className="space-y-3">
-        <p className="text-xs uppercase tracking-[0.32em] text-wolf-text-subtle">
+        <p className="text-xs uppercase text-wolf-text-subtle">
           Builder Home
         </p>
         <div>
@@ -85,18 +85,18 @@ export default function MissionsPage() {
               className="flex h-full flex-col justify-between rounded-lg border border-wolf-border-strong bg-[#14181f]/70 p-5 shadow-[0_30px_90px_-65px_rgba(5,8,10,0.85)]"
             >
               <div className="space-y-2">
-                <span className="wolf-pill bg-wolf-emerald-soft text-[0.65rem] uppercase tracking-[0.3em] text-wolf-emerald">
+                <span className="wolf-pill bg-wolf-emerald-soft text-[0.65rem] uppercase text-wolf-emerald">
                   {TYPE_LABEL[mission.type]}
                 </span>
                 <h2 className="text-lg font-semibold text-white/90">
                   {mission.title}
                 </h2>
                 <p className="text-sm text-white/70">{mission.description}</p>
-                <p className="text-xs uppercase tracking-[0.3em] text-white/60">
+                <p className="text-xs uppercase text-white/60">
                   Base reward: {mission.baseHowl ?? "TBD"} HOWL
                 </p>
                 {isCompleted ? (
-                  <span className="wolf-pill border border-wolf-emerald/50 bg-wolf-emerald-soft px-2 py-1 text-[0.55rem] font-semibold uppercase tracking-[0.3em] text-wolf-emerald">
+                  <span className="wolf-pill border border-wolf-emerald/50 bg-wolf-emerald-soft px-2 py-1 text-[0.55rem] font-semibold uppercase text-wolf-emerald">
                     Completed
                   </span>
                 ) : null}
@@ -105,14 +105,14 @@ export default function MissionsPage() {
                 ) : null}
               </div>
               <div className="mt-4 flex items-center justify-between text-xs">
-                <span className="wolf-pill border border-wolf-border-mid px-3 py-1 uppercase tracking-[0.28em] text-white/70">
+                <span className="wolf-pill border border-wolf-border-mid px-3 py-1 uppercase text-white/70">
                   {badgeLabel}
                 </span>
                 {missionLocked ? (
                   <button
                     type="button"
                     disabled={!walletConnected}
-                    className="rounded-lg bg-[linear-gradient(180deg,#c8ff64_0%,#8bea4e_55%,#3b572a_100%)] px-4 py-2 text-[0.75rem] font-semibold uppercase tracking-[0.24em] text-[#0b1407] shadow-[0_0_24px_rgba(186,255,92,0.45)] transition enabled:hover:shadow-[0_0_30px_rgba(186,255,92,0.6)] disabled:opacity-40 disabled:shadow-none"
+                    className="rounded-lg bg-[linear-gradient(180deg,#c8ff64_0%,#8bea4e_55%,#3b572a_100%)] px-4 py-2 text-[0.75rem] font-semibold uppercase text-[#0b1407] shadow-[0_0_24px_rgba(186,255,92,0.45)] transition enabled:hover:shadow-[0_0_30px_rgba(186,255,92,0.6)] disabled:opacity-40 disabled:shadow-none"
                   >
                     {buttonLabel}
                   </button>
@@ -121,7 +121,7 @@ export default function MissionsPage() {
                     type="button"
                     onClick={() => setStatus(mission.id, "completed")}
                     disabled={isCompleted}
-                    className="rounded-lg bg-[linear-gradient(180deg,#c8ff64_0%,#8bea4e_55%,#3b572a_100%)] px-4 py-2 text-[0.75rem] font-semibold uppercase tracking-[0.24em] text-[#0b1407] shadow-[0_0_24px_rgba(186,255,92,0.45)] transition enabled:hover:shadow-[0_0_30px_rgba(186,255,92,0.6)] disabled:opacity-40 disabled:shadow-none"
+                    className="rounded-lg bg-[linear-gradient(180deg,#c8ff64_0%,#8bea4e_55%,#3b572a_100%)] px-4 py-2 text-[0.75rem] font-semibold uppercase text-[#0b1407] shadow-[0_0_24px_rgba(186,255,92,0.45)] transition enabled:hover:shadow-[0_0_30px_rgba(186,255,92,0.6)] disabled:opacity-40 disabled:shadow-none"
                   >
                     {isCompleted ? "Completed" : "Mark as completed"}
                   </button>

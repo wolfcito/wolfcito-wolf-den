@@ -27,7 +27,7 @@ export default function ActivityBottomSheet() {
               aria-label={isOpen ? collapseLabel : expandLabel}
               className="flex flex-1 items-center justify-between gap-3"
             >
-              <span className="text-xs font-semibold uppercase tracking-[0.28em] text-white/70">
+              <span className="text-xs font-semibold uppercase text-white/70">
                 {sheetTitle}
               </span>
               <svg

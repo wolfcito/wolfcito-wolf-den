@@ -48,7 +48,7 @@ function DesktopLayout({ children }: { children: ReactNode }) {
   const attachRight = useRailSlotTarget("right");
   const rightActive = useRailSlotActive("right");
   const rightPlaceholder = (
-    <div className="hidden rounded-2xl border border-dashed border-border/60 bg-muted/30 px-4 py-6 text-center text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground lg:flex lg:flex-col lg:items-center lg:justify-center">
+    <div className="hidden rounded-2xl border border-dashed border-border/60 bg-muted/30 px-4 py-6 text-center text-xs font-semibold uppercase text-muted-foreground lg:flex lg:flex-col lg:items-center lg:justify-center">
       Right rail
     </div>
   );

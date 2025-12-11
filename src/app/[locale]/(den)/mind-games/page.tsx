@@ -52,7 +52,7 @@ export default function MindGamesPage() {
         <section className="wolf-card flex-1 space-y-6 rounded-lg border border-wolf-border-strong p-6 shadow-[0_45px_120px_-80px_rgba(0,0,0,0.75)]">
           <div className="flex items-center justify-between rounded-lg border border-wolf-border-strong bg-wolf-charcoal-60 px-4 py-4">
             <div>
-              <p className="text-xs uppercase tracking-[0.3em] text-wolf-text-subtle">
+              <p className="text-xs uppercase text-wolf-text-subtle">
                 {t("summary.balance")}
               </p>
               <p className="text-2xl font-semibold text-white">
@@ -60,7 +60,7 @@ export default function MindGamesPage() {
               </p>
             </div>
             <div className="text-right">
-              <p className="text-xs uppercase tracking-[0.3em] text-wolf-text-subtle">
+              <p className="text-xs uppercase text-wolf-text-subtle">
                 {t("summary.profit")}
               </p>
               <p className="text-lg font-semibold text-wolf-emerald">
@@ -105,7 +105,7 @@ export default function MindGamesPage() {
           <div className="space-y-2">
             <label
               htmlFor={mineSelectId}
-              className="text-xs uppercase tracking-[0.3em] text-wolf-text-subtle"
+              className="text-xs uppercase text-wolf-text-subtle"
             >
               {t("controls.mines")}
             </label>
@@ -126,7 +126,7 @@ export default function MindGamesPage() {
           <div className="space-y-2">
             <label
               htmlFor={betInputId}
-              className="text-xs uppercase tracking-[0.3em] text-wolf-text-subtle"
+              className="text-xs uppercase text-wolf-text-subtle"
             >
               {t("controls.bet")}
             </label>
@@ -143,7 +143,7 @@ export default function MindGamesPage() {
             <button
               type="button"
               onClick={startGame}
-              className="flex-1 rounded-lg bg-[linear-gradient(180deg,#c8ff64_0%,#8bea4e_55%,#3b572a_100%)] px-4 py-2 font-semibold uppercase tracking-[0.2em] text-[#0b1407] shadow-[0_0_24px_rgba(186,255,92,0.45)] transition hover:shadow-[0_0_30px_rgba(186,255,92,0.55)]"
+              className="flex-1 rounded-lg bg-[linear-gradient(180deg,#c8ff64_0%,#8bea4e_55%,#3b572a_100%)] px-4 py-2 font-semibold uppercase text-[#0b1407] shadow-[0_0_24px_rgba(186,255,92,0.45)] transition hover:shadow-[0_0_30px_rgba(186,255,92,0.55)]"
             >
               {t("controls.start")}
             </button>
@@ -151,7 +151,7 @@ export default function MindGamesPage() {
               type="button"
               onClick={cashout}
               disabled={!isGameActive}
-              className={`flex-1 rounded-lg px-4 py-2 font-semibold uppercase tracking-[0.2em] transition ${
+              className={`flex-1 rounded-lg px-4 py-2 font-semibold uppercase transition ${
                 isGameActive
                   ? "bg-wolf-emerald-tint text-wolf-emerald hover:bg-wolf-emerald-strong"
                   : "cursor-not-allowed bg-wolf-neutral-haze text-wolf-text-subtle"

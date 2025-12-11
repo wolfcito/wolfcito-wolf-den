@@ -22,7 +22,7 @@ export function ActivityRail() {
           <p className="text-sm font-semibold text-white">
             {t("sections.activity.title")}
           </p>
-          <span className="text-[11px] uppercase tracking-[0.3em] text-wolf-text-subtle">
+          <span className="text-[11px] uppercase text-wolf-text-subtle">
             {t("sections.activity.label")}
           </span>
         </div>
@@ -38,7 +38,7 @@ export function ActivityRail() {
           <p className="text-sm font-semibold text-white">
             {t("sections.recent.title")}
           </p>
-          <span className="text-[11px] uppercase tracking-[0.3em] text-wolf-text-subtle">
+          <span className="text-[11px] uppercase text-wolf-text-subtle">
             {t("sections.recent.label")}
           </span>
         </div>

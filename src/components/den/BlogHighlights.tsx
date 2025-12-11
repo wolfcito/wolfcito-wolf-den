@@ -12,7 +12,7 @@ export function BlogHighlights() {
     <section className="wolf-card den-noise-surface rounded-lg border border-wolf-border-strong/60 p-10">
       <div className="flex flex-wrap items-center justify-between gap-6">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-wolf-text-subtle">
+          <p className="text-xs font-semibold uppercase text-wolf-text-subtle">
             {t("label")}
           </p>
           <h2 className="mt-2 text-3xl font-semibold text-white">
@@ -21,7 +21,7 @@ export function BlogHighlights() {
         </div>
         <Link
           href={t("cta.href")}
-          className="inline-flex items-center gap-2 rounded-lg border border-transparent px-4 py-2 text-sm font-semibold uppercase tracking-[0.22em] text-wolf-emerald transition hover:border-wolf-border-xstrong hover:text-white"
+          className="inline-flex items-center gap-2 rounded-lg border border-transparent px-4 py-2 text-sm font-semibold uppercase text-wolf-emerald transition hover:border-wolf-border-xstrong hover:text-white"
         >
           {t("cta.label")}
         </Link>

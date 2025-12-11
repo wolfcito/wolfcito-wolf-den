@@ -15,10 +15,10 @@ export function VotingList() {
   return (
     <div className="space-y-6 text-wolf-foreground">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h3 className="text-lg font-semibold uppercase tracking-[0.2em] text-white/90">
+        <h3 className="text-lg font-semibold uppercase text-white/90">
           {t("title")}
         </h3>
-        <span className="wolf-pill bg-wolf-emerald-soft text-xs uppercase tracking-[0.26em] text-wolf-emerald">
+        <span className="wolf-pill bg-wolf-emerald-soft text-xs uppercase text-wolf-emerald">
           Demo Day
         </span>
       </div>
@@ -31,7 +31,7 @@ export function VotingList() {
               className="wolf-card flex flex-wrap items-center justify-between gap-4 rounded-lg border border-wolf-border-strong px-5 py-4"
             >
               <div>
-                <p className="flex items-center gap-2 text-sm uppercase tracking-[0.3em] text-wolf-text-subtle">
+                <p className="flex items-center gap-2 text-sm uppercase text-wolf-text-subtle">
                   <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-wolf-emerald-tint text-wolf-emerald">
                     <Icon className="h-4 w-4" aria-hidden />
                   </span>

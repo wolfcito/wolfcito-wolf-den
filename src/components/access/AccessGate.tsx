@@ -296,7 +296,7 @@ export default function AccessGate({ nextPath }: AccessGateProps) {
               />
             </div>
             <div>
-              <h1 className="text-3xl font-semibold tracking-tight text-white">
+              <h1 className="text-3xl font-semibold text-white">
                 {t("title")}
               </h1>
               <p className="text-sm text-white/60">{t("subtitle")}</p>
@@ -334,7 +334,7 @@ export default function AccessGate({ nextPath }: AccessGateProps) {
                     <Icon className="h-5 w-5" aria-hidden />
                   </div>
                   <div>
-                    <p className="text-[0.75rem] font-semibold uppercase tracking-[0.28em] text-white/50">
+                    <p className="text-[0.75rem] font-semibold uppercase text-white/50">
                       {t("steps.stepLabel", { step: step.id })}
                     </p>
                     <p className="text-sm text-white/80">{step.label}</p>
@@ -356,12 +356,12 @@ export default function AccessGate({ nextPath }: AccessGateProps) {
               </div>
               <ConnectWalletButton
                 disabled={isSyncingWallet}
-                className="inline-flex h-12 w-full justify-center rounded-full border border-white/20 bg-transparent text-sm font-semibold uppercase tracking-[0.28em] text-white transition hover:border-white/50"
+                className="inline-flex h-12 w-full justify-center rounded-full border border-white/20 bg-transparent text-sm font-semibold uppercase text-white transition hover:border-white/50"
                 connectLabel={t("wallet.connectCta")}
                 connectedLabel={t("wallet.changeCta")}
               />
               <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-sm text-white/70">
-                <p className="text-xs uppercase tracking-[0.32em] text-white/45">
+                <p className="text-xs uppercase text-white/45">
                   {t("wallet.statusLabel")}
                 </p>
                 <p className="mt-1 font-mono text-white">{walletStatus}</p>
@@ -378,7 +378,7 @@ export default function AccessGate({ nextPath }: AccessGateProps) {
             <div className="space-y-5">
               <p className="text-sm text-white/60">{t("profile.copy")}</p>
               <label className="block space-y-2">
-                <span className="text-xs font-semibold uppercase tracking-[0.35em] text-white/55">
+                <span className="text-xs font-semibold uppercase text-white/55">
                   {t("profile.nameLabel")}
                 </span>
                 <input
@@ -410,7 +410,7 @@ export default function AccessGate({ nextPath }: AccessGateProps) {
             <div className="space-y-5">
               <p className="text-sm text-white/60">{t("profile.copy")}</p>
               <label className="block space-y-2">
-                <span className="text-xs font-semibold uppercase tracking-[0.35em] text-white/55">
+                <span className="text-xs font-semibold uppercase text-white/55">
                   {t("profile.nameLabel")}
                 </span>
                 <input
@@ -455,7 +455,7 @@ export default function AccessGate({ nextPath }: AccessGateProps) {
                 <div className="space-y-3">
                   <button
                     type="button"
-                    className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-white/90 text-sm font-semibold uppercase tracking-[0.28em] text-[#05090f] transition hover:bg-white"
+                    className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-white/90 text-sm font-semibold uppercase text-[#05090f] transition hover:bg-white"
                     onClick={() => router.push("/auth")}
                   >
                     <Sparkles className="h-4 w-4" aria-hidden />
@@ -463,7 +463,7 @@ export default function AccessGate({ nextPath }: AccessGateProps) {
                   </button>
                   <button
                     type="button"
-                    className="text-xs font-semibold uppercase tracking-[0.3em] text-white/55 underline-offset-4 hover:text-white"
+                    className="text-xs font-semibold uppercase text-white/55 underline-offset-4 hover:text-white"
                     onClick={() => setStatusMessage(t("self.skip"))}
                   >
                     {t("self.skipCta")}
@@ -480,7 +480,7 @@ export default function AccessGate({ nextPath }: AccessGateProps) {
               <button
                 type="button"
                 onClick={handleBack}
-                className="inline-flex h-12 flex-1 items-center justify-center rounded-full border border-white/20 text-sm font-semibold uppercase tracking-[0.28em] text-white transition hover:border-white/40"
+                className="inline-flex h-12 flex-1 items-center justify-center rounded-full border border-white/20 text-sm font-semibold uppercase text-white transition hover:border-white/40"
               >
                 {t("navigation.back")}
               </button>
@@ -490,7 +490,7 @@ export default function AccessGate({ nextPath }: AccessGateProps) {
               onClick={handlePrimaryAction}
               disabled={!canAdvance}
               className={cn(
-                "inline-flex h-12 flex-1 items-center justify-center rounded-full text-sm font-semibold uppercase tracking-[0.3em] transition",
+                "inline-flex h-12 flex-1 items-center justify-center rounded-full text-sm font-semibold uppercase transition",
                 canAdvance
                   ? "bg-white text-[#05090f] hover:bg-white/90"
                   : "bg-white/30 text-white/50",
@@ -505,7 +505,7 @@ export default function AccessGate({ nextPath }: AccessGateProps) {
             <button
               type="button"
               onClick={handleSkip}
-              className="w-full text-center text-xs font-semibold uppercase tracking-[0.32em] text-white/60 underline-offset-4 hover:text-white disabled:text-white/30"
+              className="w-full text-center text-xs font-semibold uppercase text-white/60 underline-offset-4 hover:text-white disabled:text-white/30"
               disabled={continueDisabled}
             >
               {t("navigation.skipAndEnter")}

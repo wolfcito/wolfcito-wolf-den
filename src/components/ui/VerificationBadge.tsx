@@ -9,7 +9,7 @@ export function VerificationBadge({ className }: VerificationBadgeProps) {
   return (
     <div
       className={clsx(
-        "inline-flex items-center gap-2 rounded-lg border border-[#2a2f36] bg-[rgba(20,24,29,0.72)] px-3.5 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#e9eef2]",
+        "inline-flex items-center gap-2 rounded-lg border border-[#2a2f36] bg-[rgba(20,24,29,0.72)] px-3.5 py-1.5 text-[0.68rem] font-semibold uppercase text-[#e9eef2]",
         className,
       )}
     >

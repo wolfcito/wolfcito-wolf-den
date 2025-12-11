@@ -120,7 +120,7 @@ export function CheckInPanel() {
         <div className="pointer-events-none absolute inset-x-6 top-4 h-28 rounded-lg" />
         <div className="relative z-10 flex flex-col">
           <div className="flex items-center justify-between">
-            <span className="text-xs uppercase tracking-[0.3em] text-wolf-emerald">
+            <span className="text-xs uppercase text-wolf-emerald">
               HOWL Sync
             </span>
           </div>
@@ -139,7 +139,7 @@ export function CheckInPanel() {
         <div className="bg-[#14181f]/70 rounded-lg border border-wolf-border px-7 py-6 text-white/80">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs uppercase tracking-[0.32em] text-wolf-text-subtle">
+              <p className="text-xs uppercase text-wolf-text-subtle">
                 {translate("wallet.title", "Wallet access")}
               </p>
               <p className="mt-2 text-sm text-white/75">
@@ -149,7 +149,7 @@ export function CheckInPanel() {
                 )}
               </p>
             </div>
-            <span className="border border-wolf-border-mid text-xs uppercase tracking-[0.28em] text-wolf-text-subtle">
+            <span className="border border-wolf-border-mid text-xs uppercase text-wolf-text-subtle">
               {walletAddress
                 ? translate("wallet.connectedLabel", "Wallet linked")
                 : translate("wallet.connectLabel", "Wallet needed")}
@@ -165,7 +165,7 @@ export function CheckInPanel() {
         <div className="rounded-lg border border-wolf-border-strong py-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h3 className="text-lg font-semibold uppercase tracking-[0.2em] text-white/90">
+              <h3 className="text-lg font-semibold uppercase text-white/90">
                 {translate("events.title", "Event roster")}
               </h3>
               <p className="mt-1 text-sm text-white/75">
@@ -210,7 +210,7 @@ export function CheckInPanel() {
                   >
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <div>
-                        <p className="text-xs uppercase tracking-[0.28em] text-wolf-text-subtle">
+                        <p className="text-xs uppercase text-wolf-text-subtle">
                           {event.location}
                         </p>
                         <h4 className="mt-1 text-lg font-semibold text-white/90">
@@ -219,7 +219,7 @@ export function CheckInPanel() {
                         <p className="text-sm text-white/70">{event.date}</p>
                       </div>
                       <span
-                        className={`wolf-pill text-xs uppercase tracking-[0.28em] ${statusBadgeTone(
+                        className={`wolf-pill text-xs uppercase ${statusBadgeTone(
                           event.status,
                         )}`}
                       >
@@ -236,7 +236,7 @@ export function CheckInPanel() {
                     <div className="mt-5 flex flex-wrap items-center gap-3">
                       <button
                         type="button"
-                        className={`rounded-lg px-5 py-2 text-xs font-semibold uppercase tracking-[0.22em] transition ${registerClass}`}
+                        className={`rounded-lg px-5 py-2 text-xs font-semibold uppercase transition ${registerClass}`}
                         onClick={() => handleRegister(event.id)}
                         disabled={!hasIdentity || isRegistered || isClosed}
                       >
@@ -246,7 +246,7 @@ export function CheckInPanel() {
                       </button>
                       <button
                         type="button"
-                        className={`rounded-lg px-5 py-2 text-xs font-semibold uppercase tracking-[0.22em] transition ${checkInClass}`}
+                        className={`rounded-lg px-5 py-2 text-xs font-semibold uppercase transition ${checkInClass}`}
                         onClick={() => handleCheckIn(event.id)}
                         disabled={!hasIdentity || !isRegistered || !isLive}
                       >

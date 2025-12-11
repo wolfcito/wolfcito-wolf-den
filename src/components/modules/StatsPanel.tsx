@@ -12,10 +12,10 @@ export function StatsPanel() {
     <div className="space-y-5 text-wolf-foreground">
       <div className="wolf-card rounded-lg border border-wolf-border-strong p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h3 className="text-lg font-semibold uppercase tracking-[0.2em] text-white/90">
+          <h3 className="text-lg font-semibold uppercase text-white/90">
             {t("metrics.title")}
           </h3>
-          <span className="wolf-pill bg-wolf-emerald-soft text-xs uppercase tracking-[0.3em] text-wolf-emerald">
+          <span className="wolf-pill bg-wolf-emerald-soft text-xs uppercase text-wolf-emerald">
             HOWL Pulse
           </span>
         </div>
@@ -28,7 +28,7 @@ export function StatsPanel() {
               key={item.label}
               className="wolf-card--muted rounded-lg border border-wolf-border p-4 text-center shadow-[0_25px_70px_-60px_rgba(0,0,0,0.55)]"
             >
-              <p className="text-xs uppercase tracking-[0.3em] text-wolf-text-subtle">
+              <p className="text-xs uppercase text-wolf-text-subtle">
                 {item.label}
               </p>
               <p className="mt-2 text-2xl font-semibold text-white/90">
