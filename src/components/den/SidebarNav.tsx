@@ -10,11 +10,14 @@ import {
   Gamepad2,
   Lock,
   Puzzle,
+  Scan,
   ScanQrCode,
   ShieldCheck,
+  Sparkles,
   SquareStack,
   Trophy,
   UsersRound,
+  Workflow,
 } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
@@ -41,6 +44,12 @@ const labNavigation = [
   { key: "spray", href: "/spray", icon: Droplets },
   { key: "gooddollar", href: "/gooddollar", icon: BadgeDollarSign },
   { key: "taberna", href: "/taberna", icon: UsersRound },
+] as const;
+
+const feedbackExperimentsNavigation = [
+  { key: "scan8004", href: "/scan-8004", icon: Scan },
+  { key: "x402", href: "/x402", icon: Sparkles },
+  { key: "a2a", href: "/a2a", icon: Workflow },
 ] as const;
 
 const experimentsNavigation = [
@@ -136,6 +145,41 @@ export default function SidebarNav() {
                           )}
                         >
                           {t(`sections.lab.items.${item.key}`)}
+                        </span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>{t("sections.feedbackExperiments.title")}</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {feedbackExperimentsNavigation.map((item) => {
+                const ItemIcon = item.icon;
+                const isActive = matchesPath(item.href);
+                return (
+                  <SidebarMenuItem key={item.key}>
+                    <SidebarMenuButton asChild isActive={isActive}>
+                      <Link
+                        href={item.href}
+                        aria-current={isActive ? "page" : undefined}
+                        className="flex w-full items-center gap-3"
+                      >
+                        <ItemIcon
+                          className="h-4 w-4 text-[#8bea4e]"
+                          aria-hidden
+                        />
+                        <span
+                          className={cn(
+                            "truncate text-[0.72rem]",
+                            collapsed ? "hidden" : "inline",
+                          )}
+                        >
+                          {t(`sections.feedbackExperiments.items.${item.key}`)}
                         </span>
                       </Link>
                     </SidebarMenuButton>

@@ -80,6 +80,14 @@
           "trustIdentity": "Trust & Identity"
         }
       },
+      "feedbackExperiments": {
+        "title": "Experiments",
+        "items": {
+          "scan8004": "8004 Scan",
+          "x402": "x402 Premium",
+          "a2a": "A2A"
+        }
+      },
       "experiments": {
         "title": "Experiments",
         "badge": "Soon",
