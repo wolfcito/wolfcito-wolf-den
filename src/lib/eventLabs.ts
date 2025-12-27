@@ -79,7 +79,7 @@ export type CreateFeedbackPayload = {
 export type UpdateFeedbackPayload = {
   status?: FeedbackStatus;
   tags?: string[];
-  priority?: FeedbackPriority;
+  priority?: FeedbackPriority | null;
 };
 
 // =====================================================
