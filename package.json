@@ -12,7 +12,9 @@
     "test:routes": "playwright test tests/routes.spec.ts",
     "bmad:refresh": "bmad-method install -f -i codex",
     "bmad:list": "bmad-method list:agents",
-    "bmad:validate": "bmad-method validate"
+    "bmad:validate": "bmad-method validate",
+    "doc:delta": "node scripts/check-doc-delta.cjs",
+    "doc:snapshot": "node scripts/create-snapshot.cjs"
   },
   "dependencies": {
     "@goodsdks/engagement-sdk": "^1.0.3",
