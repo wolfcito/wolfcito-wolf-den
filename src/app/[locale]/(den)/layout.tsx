@@ -13,6 +13,7 @@ import SidebarNav from "@/components/den/SidebarNav";
 import StatusStrip from "@/components/den/StatusStrip";
 import TopBar from "@/components/den/TopBar";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { FloatingFeedbackButton } from "@/components/modules/labs/FloatingFeedbackButton";
 import { EventLabInstrumentationProvider } from "@/providers/EventLabInstrumentationProvider";
 
 export default function DenLayout({ children }: { children: ReactNode }) {
@@ -41,6 +42,8 @@ export default function DenLayout({ children }: { children: ReactNode }) {
               </div>
             </div>
           </div>
+          {/* Floating Feedback Button (only visible when Lab Mode is active) */}
+          <FloatingFeedbackButton />
         </DenRailSlotsProvider>
       </SidebarProvider>
     </EventLabInstrumentationProvider>
