@@ -639,10 +639,10 @@
       "description": "Ejecuta experimentos con usuarios reales y datos onchain.",
       "items": [
         {
-          "id": "8004-scan",
+          "id": "scan-8004",
           "title": "Escaneo 8004",
           "description": "Verifica puntuaciones de confianza antes de colaborar",
-          "href": "/8004-scan"
+          "href": "/scan-8004"
         },
         {
           "id": "x402",
@@ -964,6 +964,35 @@
     "errors": {
       "generic": "Ocurrió un error al comprobar tu elegibilidad. Intenta de nuevo en unos momentos.",
       "claimFailed": "No se pudo procesar tu reclamo. Asegúrate de que tu cuenta GoodDollar esté verificada, que no hayas reclamado recientemente y que estás conectado con la wallet correcta en Celo."
+    }
+  },
+  "Scan8004": {
+    "title": "Escaneo 8004",
+    "description": "Escáner de verificación de confianza para direcciones e identificadores. Verifica puntuaciones de reputación, credenciales y confiabilidad antes de colaborar.",
+    "form": {
+      "label": "Dirección o Identificador",
+      "placeholder": "Ingresa dirección de wallet, ENS o identificador",
+      "hint": "Proporciona una dirección blockchain, nombre ENS o cualquier identificador para escanear",
+      "scan": "Escanear Ahora",
+      "scanning": "Escaneando..."
+    },
+    "statuses": {
+      "success": "Escaneo Completo",
+      "error": "Escaneo Fallido",
+      "not_implemented": "Etapa MVP",
+      "idle": "Listo"
+    },
+    "results": {
+      "scanned": "Entrada Escaneada",
+      "data": "Datos del Escaneo"
+    },
+    "errors": {
+      "emptyInput": "Por favor ingresa una dirección o identificador para escanear",
+      "network": "Error de red. Por favor verifica tu conexión e intenta de nuevo."
+    },
+    "info": {
+      "title": "Acerca del Escaneo 8004",
+      "description": "El escaneo 8004 te ayuda a verificar puntuaciones de confianza y reputación antes de interactuar con direcciones o entidades. Esta versión MVP proporciona la base para la verificación de confianza onchain."
     }
   }
 }

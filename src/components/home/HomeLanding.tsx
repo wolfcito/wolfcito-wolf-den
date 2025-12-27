@@ -35,7 +35,7 @@ export default function HomeLanding() {
   }>;
 
   const experimentIcons: Record<string, typeof Scan> = {
-    "8004-scan": Scan,
+    "scan-8004": Scan,
     x402: Sparkles,
     a2a: Workflow,
   };

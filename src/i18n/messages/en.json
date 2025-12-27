@@ -639,10 +639,10 @@
       "description": "Run experiments with real users and onchain data.",
       "items": [
         {
-          "id": "8004-scan",
+          "id": "scan-8004",
           "title": "8004 Scan",
           "description": "Verify trust scores before collaborating",
-          "href": "/8004-scan"
+          "href": "/scan-8004"
         },
         {
           "id": "x402",
@@ -965,6 +965,35 @@
     "errors": {
       "generic": "Something went wrong while checking your eligibility. Please try again or come back later.",
       "claimFailed": "Your claim could not be processed. Make sure your GoodDollar account is verified, you haven't claimed recently, and that you are connected to the correct wallet on Celo."
+    }
+  },
+  "Scan8004": {
+    "title": "8004 Scan",
+    "description": "Trust verification scanner for addresses and identifiers. Check reputation scores, verify credentials, and assess trustworthiness before collaborating.",
+    "form": {
+      "label": "Address or Identifier",
+      "placeholder": "Enter wallet address, ENS, or identifier",
+      "hint": "Provide a blockchain address, ENS name, or any identifier to scan",
+      "scan": "Scan Now",
+      "scanning": "Scanning..."
+    },
+    "statuses": {
+      "success": "Scan Complete",
+      "error": "Scan Failed",
+      "not_implemented": "MVP Stage",
+      "idle": "Ready"
+    },
+    "results": {
+      "scanned": "Scanned Input",
+      "data": "Scan Data"
+    },
+    "errors": {
+      "emptyInput": "Please enter an address or identifier to scan",
+      "network": "Network error. Please check your connection and try again."
+    },
+    "info": {
+      "title": "About 8004 Scan",
+      "description": "8004 scan helps you verify trust scores and reputation before engaging with addresses or entities. This MVP version provides the foundation for onchain trust verification."
     }
   }
 }
