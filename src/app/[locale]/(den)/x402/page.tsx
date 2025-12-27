@@ -57,7 +57,10 @@ export default function X402Page() {
       <div className="space-y-4">
         <div className="flex items-center gap-3">
           <div className="inline-flex h-12 w-12 items-center justify-center rounded-lg border border-white/10 bg-white/5">
-            <Sparkles className="h-6 w-6 text-wolf-emerald" aria-hidden="true" />
+            <Sparkles
+              className="h-6 w-6 text-wolf-emerald"
+              aria-hidden="true"
+            />
           </div>
           <h1 className="text-3xl font-semibold text-white">{t("title")}</h1>
         </div>
@@ -66,7 +69,9 @@ export default function X402Page() {
 
       {/* Concept Explanation */}
       <div className="space-y-4 rounded-2xl border border-white/10 bg-white/[0.03] p-6">
-        <h2 className="text-xl font-semibold text-white">{t("concept.title")}</h2>
+        <h2 className="text-xl font-semibold text-white">
+          {t("concept.title")}
+        </h2>
         <p className="text-sm text-white/70">{t("concept.description")}</p>
         <ul className="space-y-2 text-sm text-white/70">
           <li className="flex items-start gap-2">
@@ -126,10 +131,14 @@ export default function X402Page() {
                       className="rounded-lg border border-white/10 bg-black/20 p-3"
                     >
                       <p className="font-mono text-xs text-white">
-                        <span className="text-wolf-emerald">{endpoint.method}</span>{" "}
+                        <span className="text-wolf-emerald">
+                          {endpoint.method}
+                        </span>{" "}
                         {endpoint.url}
                       </p>
-                      <p className="mt-1 text-xs text-white/60">{endpoint.name}</p>
+                      <p className="mt-1 text-xs text-white/60">
+                        {endpoint.name}
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -141,7 +150,9 @@ export default function X402Page() {
 
       {/* Code Example */}
       <div className="space-y-4 rounded-2xl border border-white/10 bg-white/[0.03] p-6">
-        <h2 className="text-xl font-semibold text-white">{t("example.title")}</h2>
+        <h2 className="text-xl font-semibold text-white">
+          {t("example.title")}
+        </h2>
         <p className="text-sm text-white/70">{t("example.description")}</p>
         <pre className="overflow-x-auto rounded-lg border border-white/10 bg-black/30 p-4 text-xs text-white/80">
           {t("example.code")}

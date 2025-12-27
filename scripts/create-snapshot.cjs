@@ -183,7 +183,10 @@ function main() {
 
   log("\n❌ ERROR: Este script debe correrse en el repo denlabs-docs", "red");
   log("━".repeat(60), "red");
-  log("\nLa documentación ahora vive en el repo privado denlabs-docs.", "yellow");
+  log(
+    "\nLa documentación ahora vive en el repo privado denlabs-docs.",
+    "yellow",
+  );
   log("CHANGELOG.md, STATUS.md y otros docs están allí.\n", "yellow");
 
   log("📝 PASOS PARA CREAR SNAPSHOT:", "bold");
@@ -192,7 +195,10 @@ function main() {
   log("   2. Corre este mismo script desde ese repo", "blue");
   log("   3. El snapshot se creará en denlabs-docs/docs/CHANGELOG.md", "blue");
 
-  log("\n💡 TIP: El snapshot referencia commits del repo denlabs (código)\n", "blue");
+  log(
+    "\n💡 TIP: El snapshot referencia commits del repo denlabs (código)\n",
+    "blue",
+  );
   process.exit(1);
 
   const currentHead = getCurrentHead();

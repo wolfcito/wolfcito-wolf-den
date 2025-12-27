@@ -18,7 +18,9 @@ interface A2ACapabilities {
 
 export default function A2APage() {
   const t = useTranslations("A2A");
-  const [capabilities, setCapabilities] = useState<A2ACapabilities | null>(null);
+  const [capabilities, setCapabilities] = useState<A2ACapabilities | null>(
+    null,
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleTestCapabilities() {
@@ -47,7 +49,10 @@ export default function A2APage() {
       <div className="space-y-4">
         <div className="flex items-center gap-3">
           <div className="inline-flex h-12 w-12 items-center justify-center rounded-lg border border-white/10 bg-white/5">
-            <Workflow className="h-6 w-6 text-wolf-emerald" aria-hidden="true" />
+            <Workflow
+              className="h-6 w-6 text-wolf-emerald"
+              aria-hidden="true"
+            />
           </div>
           <h1 className="text-3xl font-semibold text-white">{t("title")}</h1>
         </div>
@@ -56,7 +61,9 @@ export default function A2APage() {
 
       {/* Concept Explanation */}
       <div className="space-y-4 rounded-2xl border border-white/10 bg-white/[0.03] p-6">
-        <h2 className="text-xl font-semibold text-white">{t("concept.title")}</h2>
+        <h2 className="text-xl font-semibold text-white">
+          {t("concept.title")}
+        </h2>
         <p className="text-sm text-white/70">{t("concept.description")}</p>
         <ul className="space-y-2 text-sm text-white/70">
           <li className="flex items-start gap-2">
@@ -107,24 +114,25 @@ export default function A2APage() {
               </p>
             </div>
 
-            {capabilities.capabilities && capabilities.capabilities.length > 0 && (
-              <div className="space-y-2">
-                <p className="text-sm font-semibold uppercase text-white/60">
-                  {t("capabilities.available")}
-                </p>
-                <ul className="space-y-1">
-                  {capabilities.capabilities.map((capability, index) => (
-                    <li
-                      key={index}
-                      className="flex items-start gap-2 text-sm text-white/80"
-                    >
-                      <span className="text-wolf-emerald">✓</span>
-                      <span>{capability}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+            {capabilities.capabilities &&
+              capabilities.capabilities.length > 0 && (
+                <div className="space-y-2">
+                  <p className="text-sm font-semibold uppercase text-white/60">
+                    {t("capabilities.available")}
+                  </p>
+                  <ul className="space-y-1">
+                    {capabilities.capabilities.map((capability, index) => (
+                      <li
+                        key={index}
+                        className="flex items-start gap-2 text-sm text-white/80"
+                      >
+                        <span className="text-wolf-emerald">✓</span>
+                        <span>{capability}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
             {capabilities.endpoints && capabilities.endpoints.length > 0 && (
               <div className="space-y-2">
@@ -137,10 +145,14 @@ export default function A2APage() {
                     className="rounded-lg border border-white/10 bg-black/30 p-3"
                   >
                     <p className="font-mono text-xs text-white">
-                      <span className="text-wolf-emerald">{endpoint.method}</span>{" "}
+                      <span className="text-wolf-emerald">
+                        {endpoint.method}
+                      </span>{" "}
                       {endpoint.url}
                     </p>
-                    <p className="mt-1 text-xs text-white/60">{endpoint.name}</p>
+                    <p className="mt-1 text-xs text-white/60">
+                      {endpoint.name}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -151,22 +163,30 @@ export default function A2APage() {
 
       {/* Use Cases */}
       <div className="space-y-4 rounded-2xl border border-white/10 bg-white/[0.03] p-6">
-        <h2 className="text-xl font-semibold text-white">{t("useCases.title")}</h2>
+        <h2 className="text-xl font-semibold text-white">
+          {t("useCases.title")}
+        </h2>
         <div className="space-y-3">
           <div className="rounded-lg border border-white/10 bg-black/20 p-4">
-            <p className="font-semibold text-white">{t("useCases.case1Title")}</p>
+            <p className="font-semibold text-white">
+              {t("useCases.case1Title")}
+            </p>
             <p className="mt-1 text-sm text-white/70">
               {t("useCases.case1Description")}
             </p>
           </div>
           <div className="rounded-lg border border-white/10 bg-black/20 p-4">
-            <p className="font-semibold text-white">{t("useCases.case2Title")}</p>
+            <p className="font-semibold text-white">
+              {t("useCases.case2Title")}
+            </p>
             <p className="mt-1 text-sm text-white/70">
               {t("useCases.case2Description")}
             </p>
           </div>
           <div className="rounded-lg border border-white/10 bg-black/20 p-4">
-            <p className="font-semibold text-white">{t("useCases.case3Title")}</p>
+            <p className="font-semibold text-white">
+              {t("useCases.case3Title")}
+            </p>
             <p className="mt-1 text-sm text-white/70">
               {t("useCases.case3Description")}
             </p>

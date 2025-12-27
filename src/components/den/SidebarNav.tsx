@@ -155,7 +155,9 @@ export default function SidebarNav() {
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
-          <SidebarGroupLabel>{t("sections.feedbackExperiments.title")}</SidebarGroupLabel>
+          <SidebarGroupLabel>
+            {t("sections.feedbackExperiments.title")}
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {feedbackExperimentsNavigation.map((item) => {
