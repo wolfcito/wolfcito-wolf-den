@@ -11,6 +11,7 @@ import {
 import Link from "next/link";
 import { use, useEffect, useState } from "react";
 import { FeedbackList } from "@/components/modules/labs/FeedbackList";
+import { LabModeControl } from "@/components/modules/labs/LabModeControl";
 import { Button } from "@/components/ui/button";
 import type { EventLab } from "@/lib/eventLabs";
 import { getEventLab } from "@/lib/eventLabsClient";
@@ -198,6 +199,9 @@ export default function LabDetailPage({
           </div>
         </div>
       </div>
+
+      {/* Lab Mode Control */}
+      <LabModeControl labSlug={slug} surfaces={lab.surfaces_to_observe} />
 
       {/* Surfaces */}
       {lab.surfaces_to_observe && lab.surfaces_to_observe.length > 0 && (
