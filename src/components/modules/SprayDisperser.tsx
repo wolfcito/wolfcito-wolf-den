@@ -95,7 +95,7 @@ function createRow(): RecipientRow {
   };
 }
 
-function formatAddress(address: string) {
+function _formatAddress(address: string) {
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
 }
 
@@ -315,7 +315,7 @@ export default function SprayDisperser() {
     : walletBalanceConnectHint;
   const readOnlyProvider = useMemo(
     () => createReadOnlyProvider(selectedNetwork),
-    [selectedNetworkKey],
+    [selectedNetwork],
   );
 
   useEffect(() => {
@@ -547,7 +547,6 @@ export default function SprayDisperser() {
     readOnlyProvider,
     signerAddress,
     selectedNetwork.nativeCurrency.decimals,
-    selectedNetworkKey,
   ]);
 
   // When the user selects a trusted token, keep the address input in sync
@@ -1319,11 +1318,7 @@ export default function SprayDisperser() {
                   </button>
                   {isNetworkDropdownOpen ? (
                     <div className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-20 rounded-2xl border border-wolf-border-soft bg-wolf-panel p-2 shadow-2xl">
-                      <ul
-                        id="network-selector-options"
-                        role="listbox"
-                        className="space-y-1"
-                      >
+                      <ul id="network-selector-options" className="space-y-1">
                         {SUPPORTED_SPRAY_NETWORKS.map((network) => {
                           const isActive = network.key === selectedNetworkKey;
                           const iconSrc =
