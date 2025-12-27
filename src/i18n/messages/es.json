@@ -1030,5 +1030,44 @@
       "title": "Acerca de x402",
       "description": "x402 es una característica experimental que explora micropagos para acceso premium. Este MVP demuestra el concepto sin procesamiento real de pagos."
     }
+  },
+  "A2A": {
+    "title": "A2A - Agente-a-Agente",
+    "description": "Descubre y expone capacidades de agentes para interoperabilidad. Permite que agentes de IA encuentren e interactúen con servicios de DenLabs programáticamente.",
+    "concept": {
+      "title": "¿Qué es A2A?",
+      "description": "Agente-a-Agente (A2A) permite que diferentes agentes de IA y sistemas automatizados descubran las capacidades de cada uno e interactúen sin problemas.",
+      "item1": "Descubrimiento de Capacidades: Los agentes pueden consultar qué servicios están disponibles",
+      "item2": "Interfaces Estandarizadas: Protocolos comunes para comunicación entre agentes",
+      "item3": "Interoperabilidad: Diferentes agentes pueden trabajar juntos efectivamente"
+    },
+    "test": {
+      "title": "Probar Capacidades",
+      "description": "Consulta las capacidades del agente DenLabs y endpoints disponibles.",
+      "testCapabilities": "Probar Capacidades",
+      "testing": "Probando..."
+    },
+    "capabilities": {
+      "agent": "Agente",
+      "version": "Versión",
+      "available": "Capacidades Disponibles",
+      "endpoints": "Endpoints de API"
+    },
+    "useCases": {
+      "title": "Casos de Uso",
+      "case1Title": "Verificaciones Automáticas de Confianza",
+      "case1Description": "Los agentes pueden verificar automáticamente puntuaciones de confianza antes de iniciar colaboraciones",
+      "case2Title": "Integración entre Plataformas",
+      "case2Description": "Diferentes plataformas pueden descubrir y usar servicios de DenLabs programáticamente",
+      "case3Title": "Orquestación de Agentes",
+      "case3Description": "Múltiples agentes pueden coordinar flujos de trabajo usando las capacidades de DenLabs"
+    },
+    "errors": {
+      "network": "Error de red. Por favor intenta de nuevo."
+    },
+    "info": {
+      "title": "Acerca de A2A",
+      "description": "A2A es una característica experimental para interoperabilidad de agentes. Este MVP proporciona descubrimiento estático de capacidades como base para coordinación dinámica de agentes."
+    }
   }
 }

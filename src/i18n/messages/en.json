@@ -1031,5 +1031,44 @@
       "title": "About x402",
       "description": "x402 is an experimental feature exploring micropayments for premium access. This MVP demonstrates the concept without real payment processing."
     }
+  },
+  "A2A": {
+    "title": "A2A - Agent-to-Agent",
+    "description": "Discover and expose agent capabilities for interoperability. Enable AI agents to find and interact with DenLabs services programmatically.",
+    "concept": {
+      "title": "What is A2A?",
+      "description": "Agent-to-Agent (A2A) enables different AI agents and automated systems to discover each other's capabilities and interact seamlessly.",
+      "item1": "Capability Discovery: Agents can query what services are available",
+      "item2": "Standardized Interfaces: Common protocols for agent communication",
+      "item3": "Interoperability: Different agents can work together effectively"
+    },
+    "test": {
+      "title": "Test Capabilities",
+      "description": "Query DenLabs agent capabilities and available endpoints.",
+      "testCapabilities": "Test Capabilities",
+      "testing": "Testing..."
+    },
+    "capabilities": {
+      "agent": "Agent",
+      "version": "Version",
+      "available": "Available Capabilities",
+      "endpoints": "API Endpoints"
+    },
+    "useCases": {
+      "title": "Use Cases",
+      "case1Title": "Automated Trust Checks",
+      "case1Description": "Agents can automatically verify trust scores before initiating collaborations",
+      "case2Title": "Cross-Platform Integration",
+      "case2Description": "Different platforms can discover and use DenLabs services programmatically",
+      "case3Title": "Agent Orchestration",
+      "case3Description": "Multiple agents can coordinate workflows using DenLabs capabilities"
+    },
+    "errors": {
+      "network": "Network error. Please try again."
+    },
+    "info": {
+      "title": "About A2A",
+      "description": "A2A is an experimental feature for agent interoperability. This MVP provides static capability discovery as a foundation for dynamic agent coordination."
+    }
   }
 }
