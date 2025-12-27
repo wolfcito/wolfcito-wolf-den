@@ -1,7 +1,7 @@
 "use client";
 
 import { Filter, Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -32,7 +32,7 @@ export function FeedbackList({
     priority: "all",
   });
 
-  const fetchFeedback = async () => {
+  const fetchFeedback = useCallback(async () => {
     setIsLoading(true);
     setError(null);
 
@@ -53,7 +53,7 @@ export function FeedbackList({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [labSlug, filters.status, filters.priority]);
 
   useEffect(() => {
     fetchFeedback();
