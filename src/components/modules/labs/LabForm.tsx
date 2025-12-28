@@ -1,6 +1,13 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
+import {
+	CheckCircle2,
+	FlaskConical,
+	Loader2,
+	ShieldCheck,
+	Sparkles,
+	UserCheck,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -9,6 +16,50 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import type { CreateEventLabPayload, EventLabStatus } from "@/lib/eventLabs";
 import { createEventLab, updateEventLab } from "@/lib/eventLabsClient";
+
+interface LabTemplate {
+	id: string;
+	name: string;
+	description: string;
+	icon: typeof FlaskConical;
+	objective: string;
+	surfaces: string;
+}
+
+const LAB_TEMPLATES: LabTemplate[] = [
+	{
+		id: "onboarding",
+		name: "Onboarding Audit",
+		description: "Test user onboarding flow and identify friction points",
+		icon: UserCheck,
+		objective: "Test user onboarding flow and identify friction points",
+		surfaces: "/onboarding, /welcome, /profile-setup",
+	},
+	{
+		id: "wallet-connect",
+		name: "Wallet Connect Audit",
+		description: "Audit wallet connection and trust verification flow",
+		icon: ShieldCheck,
+		objective: "Audit wallet connection experience and trust verification flow",
+		surfaces: "/access, /auth, /profile",
+	},
+	{
+		id: "spray-flow",
+		name: "Spray Flow Audit",
+		description: "Test bulk reward distribution and transaction flow",
+		icon: Sparkles,
+		objective: "Test bulk reward distribution and transaction flow",
+		surfaces: "/spray, /transactions, /confirmation",
+	},
+	{
+		id: "general-event",
+		name: "General Event Lab",
+		description: "Collect general feedback from event participants",
+		icon: FlaskConical,
+		objective: "Collect general feedback from event participants",
+		surfaces: "",
+	},
+];
 
 interface LabFormProps {
   mode: "create" | "edit";
@@ -34,6 +85,7 @@ export function LabForm({
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     name: initialData?.name || "",
@@ -44,6 +96,18 @@ export function LabForm({
     slug: initialData?.slug || "",
     status: initialData?.status || "active",
   });
+
+  const handleTemplateSelect = (templateId: string) => {
+    const template = LAB_TEMPLATES.find((t) => t.id === templateId);
+    if (template) {
+      setSelectedTemplate(templateId);
+      setFormData((prev) => ({
+        ...prev,
+        objective: template.objective,
+        surfaces: template.surfaces,
+      }));
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,6 +161,91 @@ export function LabForm({
       {error && (
         <div className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
           {error}
+        </div>
+      )}
+
+      {/* Template Selector (only in create mode) */}
+      {mode === "create" && (
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <Label className="text-white text-sm font-semibold">
+              Start with a Template <span className="text-white/40 font-normal">(Optional)</span>
+            </Label>
+            {selectedTemplate && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedTemplate(null);
+                  setFormData((prev) => ({
+                    ...prev,
+                    objective: "",
+                    surfaces: "",
+                  }));
+                }}
+                className="text-xs text-wolf-emerald hover:text-wolf-emerald/80"
+              >
+                Clear template
+              </button>
+            )}
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {LAB_TEMPLATES.map((template) => {
+              const Icon = template.icon;
+              const isSelected = selectedTemplate === template.id;
+              return (
+                <button
+                  key={template.id}
+                  type="button"
+                  onClick={() => handleTemplateSelect(template.id)}
+                  className={`group relative rounded-lg border p-4 text-left transition ${
+                    isSelected
+                      ? "border-wolf-emerald/50 bg-wolf-emerald/10"
+                      : "border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.06]"
+                  }`}
+                >
+                  <div className="flex items-start gap-3">
+                    <div
+                      className={`flex h-10 w-10 items-center justify-center rounded-lg border ${
+                        isSelected
+                          ? "border-wolf-emerald/30 bg-wolf-emerald/20"
+                          : "border-white/10 bg-white/5"
+                      }`}
+                    >
+                      <Icon
+                        className={`h-5 w-5 ${
+                          isSelected ? "text-wolf-emerald" : "text-white/60"
+                        }`}
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <h3
+                          className={`text-sm font-semibold ${
+                            isSelected ? "text-wolf-emerald" : "text-white"
+                          }`}
+                        >
+                          {template.name}
+                        </h3>
+                        {isSelected && (
+                          <CheckCircle2
+                            className="h-4 w-4 flex-shrink-0 text-wolf-emerald"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </div>
+                      <p className="mt-1 text-xs text-white/60 line-clamp-2">
+                        {template.description}
+                      </p>
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+          <p className="text-xs text-white/50">
+            Templates pre-fill the objective and surfaces. You can edit them after selecting.
+          </p>
         </div>
       )}
 
