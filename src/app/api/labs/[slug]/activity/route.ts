@@ -1,9 +1,11 @@
 /**
  * Activity API - Single endpoint for Activity Rail
  * GET /api/labs/:slug/activity?window=24h&limit=30
+ * FREE: 24h window, JSON response (UI)
+ * PREMIUM: Extended windows (7d: $2, 30d: $3, 90d: $5), JSON export ($2)
  */
 
-import { NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import {
   type ActivityFeedItem,
   type ActivityResponse,
@@ -14,6 +16,7 @@ import {
   truncateMessage,
 } from "@/lib/activity";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { PRICING, build402Response, shouldGate, verifyPayment } from "@/lib/x402";
 
 interface RouteParams {
   params: Promise<{
@@ -25,13 +28,55 @@ interface RouteParams {
  * GET /api/labs/:slug/activity
  * Returns summary metrics + activity feed
  */
-export async function GET(request: Request, { params }: RouteParams) {
+export async function GET(request: NextRequest, { params }: RouteParams) {
   const { slug } = await params;
   const { searchParams } = new URL(request.url);
 
   // Parse query params
   const window_hours = clampWindow(searchParams.get("window") || undefined);
   const limit = clampLimit(searchParams.get("limit") || undefined);
+  const exportFormat = searchParams.get("export");
+
+  // Check if premium gating required
+  const requiresPayment = window_hours > 24 || exportFormat === "json";
+
+  if (shouldGate(request, requiresPayment)) {
+    // Determine pricing based on window or export type
+    let price: number = PRICING.ACTIVITY_JSON; // Default for export
+    let description = "Export activity data as JSON";
+
+    if (window_hours > 24) {
+      if (window_hours <= 168) {
+        // 7 days
+        price = PRICING.ACTIVITY_7D;
+        description = "Access 7-day activity window";
+      } else if (window_hours <= 720) {
+        // 30 days
+        price = PRICING.ACTIVITY_30D;
+        description = "Access 30-day activity window";
+      } else {
+        // 90 days
+        price = PRICING.ACTIVITY_90D;
+        description = "Access 90-day activity window";
+      }
+    }
+
+    const verification = await verifyPayment(request, {
+      price,
+      endpoint: `/api/labs/${slug}/activity`,
+      method: "GET",
+      description,
+    });
+
+    if (!verification.valid) {
+      return build402Response({
+        price,
+        endpoint: `/api/labs/${slug}/activity?window=${window_hours}h${exportFormat ? `&export=${exportFormat}` : ""}`,
+        method: "GET",
+        description,
+      });
+    }
+  }
 
   // Verify lab exists
   const { data: lab, error: labError } = await supabaseAdmin
@@ -95,6 +140,19 @@ export async function GET(request: Request, { params }: RouteParams) {
 
   const response: ActivityResponse = { summary, feed };
 
+  // Handle JSON export (PREMIUM)
+  if (exportFormat === "json") {
+    const jsonString = JSON.stringify(response, null, 2);
+    return new NextResponse(jsonString, {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+        "Content-Disposition": `attachment; filename="activity-${slug}-${Date.now()}.json"`,
+      },
+    });
+  }
+
+  // Default: JSON response for UI (FREE)
   return NextResponse.json(response);
 }
 
