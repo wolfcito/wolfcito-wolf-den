@@ -23,18 +23,18 @@
  * ✅ Basic retro pack (JSON)
  *
  * PREMIUM TIER (Value-add, Non-blocking Exports & Extended Data):
- * 💎 Retro markdown export ($3) - sponsor-ready format
+ * 💎 Retro markdown export ($0.03) - sponsor-ready format
  * 💎 Extended activity windows:
- *    - 7 days: $2
- *    - 30 days: $3
- *    - 90 days: $5
- * 💎 Feedback CSV export ($2) - bulk analysis
- * 💎 Activity JSON export ($2) - programmatic access
+ *    - 7 days: $0.02
+ *    - 30 days: $0.03
+ *    - 90 days: $0.05
+ * 💎 Feedback CSV export ($0.02) - bulk analysis
+ * 💎 Activity JSON export ($0.02) - programmatic access
  *
  * FUTURE PREMIUM (Not yet implemented):
- * 🚧 AI insights ($8) - LLM-powered triage and recommendations
- * 🚧 Bulk exports ($10) - multi-lab exports
- * 🚧 Custom integrations ($5) - webhooks, Slack, GitHub
+ * 🚧 AI insights ($0.08) - LLM-powered triage and recommendations
+ * 🚧 Bulk exports ($0.10) - multi-lab exports
+ * 🚧 Custom integrations ($0.05) - webhooks, Slack, GitHub
  *
  * PRINCIPLE: Premium features are NON-BLOCKING add-ons.
  * Core event operations remain free to maximize adoption.
@@ -321,16 +321,17 @@ export function shouldGate(_req: NextRequest, condition: boolean): boolean {
 
 /**
  * Get pricing for an endpoint (for UI display)
+ * Prices in USD (will be converted to token amounts by facilitator)
  */
 export const PRICING = {
-  RETRO_MARKDOWN: 3,
-  ACTIVITY_7D: 2,
-  ACTIVITY_30D: 3,
-  ACTIVITY_90D: 5,
-  FEEDBACK_CSV: 2,
-  ACTIVITY_JSON: 2,
-  INSIGHTS_AI: 8,
-  BULK_EXPORT: 10,
+  RETRO_MARKDOWN: 0.03,      // $0.03 (3 cents)
+  ACTIVITY_7D: 0.02,          // $0.02 (2 cents)
+  ACTIVITY_30D: 0.03,         // $0.03 (3 cents)
+  ACTIVITY_90D: 0.05,         // $0.05 (5 cents)
+  FEEDBACK_CSV: 0.02,         // $0.02 (2 cents)
+  ACTIVITY_JSON: 0.02,        // $0.02 (2 cents)
+  INSIGHTS_AI: 0.08,          // $0.08 (8 cents)
+  BULK_EXPORT: 0.10,          // $0.10 (10 cents)
 } as const;
 
 /**

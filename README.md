@@ -200,10 +200,10 @@ DenLabs implements **x402 Premium Access** with HTTP 402 Payment Required for va
 - ✅ JSON preview (UI display)
 
 **PREMIUM Tier** (Value-add Exports):
-- 💎 Retro markdown export: **$3**
-- 💎 Extended activity windows: **$2-$5** (7d/30d/90d)
-- 💎 Feedback CSV export: **$2**
-- 💎 Activity JSON export: **$2**
+- 💎 Retro markdown export: **$0.03** (3¢)
+- 💎 Extended activity windows: **$0.02-$0.05** (7d/30d/90d)
+- 💎 Feedback CSV export: **$0.02** (2¢)
+- 💎 Activity JSON export: **$0.02** (2¢)
 
 ### Facilitator Health Check
 
