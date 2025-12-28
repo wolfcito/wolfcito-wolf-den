@@ -20,7 +20,12 @@ if (shouldEnableAppKit) {
     themeMode: "dark",
     features: {
       analytics: false,
+      email: false,
+      socials: [],
     },
+    // Enable EIP-6963 for Core wallet auto-detection
+    enableEIP6963: true,
+    allowUnsupportedChain: false,
   });
 } else {
   console.warn(
