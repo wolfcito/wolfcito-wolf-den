@@ -5,10 +5,7 @@ import {
   celo,
   optimism,
 } from "@reown/appkit/networks";
-import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
-import { cookieStorage, createStorage } from "wagmi";
-import { avalanche as avalancheChain, base as baseChain, celo as celoChain, optimism as optimismChain } from "wagmi/chains";
-import { injected, walletConnect } from "@wagmi/connectors";
+import { EthersAdapter } from "@reown/appkit-adapter-ethers";
 
 export const appKitProjectId =
   process.env.NEXT_PUBLIC_REOWN_PROJECT_ID ??
@@ -28,28 +25,4 @@ export const appKitMetadata = {
   icons: ["https://wolfden.xyz/android-chrome-512x512.png"],
 };
 
-export const wagmiConfig = {
-  chains: [celoChain, optimismChain, baseChain, avalancheChain] as const,
-  projectId: appKitProjectId,
-  metadata: appKitMetadata,
-  networks: appKitNetworks,
-  ssr: true,
-  storage: createStorage({
-    storage: cookieStorage,
-  }),
-  connectors: [
-    // Injected connector for browser wallets (MetaMask, Core, etc.)
-    injected({
-      shimDisconnect: true,
-    }),
-    // WalletConnect connector for mobile wallets
-    walletConnect({
-      projectId: appKitProjectId,
-      metadata: appKitMetadata,
-      showQrModal: false, // AppKit handles QR modal
-    }),
-  ],
-  multiInjectedProviderDiscovery: true, // Enable EIP-6963 for Core wallet
-};
-
-export const appKitAdapter = new WagmiAdapter(wagmiConfig);
+export const appKitAdapter = new EthersAdapter();
