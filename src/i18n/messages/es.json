@@ -655,7 +655,7 @@
       },
       "secondaryCta": {
         "label": "Ejecutar Demo Lab",
-        "href": "/lab/demo-event"
+        "href": "/labs/demo"
       }
     },
     "howItWorks": {
