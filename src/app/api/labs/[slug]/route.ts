@@ -20,14 +20,25 @@ export async function GET(
   const { slug } = await params;
 
   try {
+    console.log(`[GET /api/labs/${slug}] Fetching lab from Supabase...`);
+    const startTime = Date.now();
+
     const { data, error } = await supabaseAdmin
       .from("event_labs")
       .select("*")
       .eq("slug", slug)
       .maybeSingle();
 
+    const duration = Date.now() - startTime;
+    console.log(`[GET /api/labs/${slug}] Supabase query took ${duration}ms`);
+
     if (error) {
-      console.error("Failed to fetch lab", error);
+      console.error(`[GET /api/labs/${slug}] Supabase error:`, {
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        code: error.code,
+      });
       return NextResponse.json(
         { error: "Failed to fetch lab" },
         { status: 500 },
@@ -35,12 +46,14 @@ export async function GET(
     }
 
     if (!data) {
+      console.log(`[GET /api/labs/${slug}] Lab not found`);
       return NextResponse.json({ error: "Lab not found" }, { status: 404 });
     }
 
+    console.log(`[GET /api/labs/${slug}] Success - returning lab data`);
     return NextResponse.json({ lab: data as EventLab });
   } catch (error) {
-    console.error("Unexpected error fetching lab", error);
+    console.error(`[GET /api/labs/${slug}] Unexpected error:`, error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 },

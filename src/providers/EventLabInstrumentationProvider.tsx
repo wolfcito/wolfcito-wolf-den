@@ -73,14 +73,33 @@ export function EventLabInstrumentationProvider({
     // Fetch lab details to get surfaces_to_observe
     async function fetchLabSurfaces() {
       try {
-        const response = await fetch(`/api/labs/${activeLabSlug}`);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout
+
+        const response = await fetch(`/api/labs/${activeLabSlug}`, {
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+
         if (response.ok) {
           const data = await response.json();
           setSurfaces(data.lab?.surfaces_to_observe || []);
+        } else {
+          console.warn(
+            `Failed to fetch lab surfaces: ${response.status} ${response.statusText}`,
+          );
+          setSurfaces([]); // Default to empty (track all routes)
         }
       } catch (error) {
-        console.warn("Failed to fetch lab surfaces", error);
-        setSurfaces([]);
+        if (error instanceof Error && error.name === "AbortError") {
+          console.warn(
+            "Lab surfaces fetch timed out - defaulting to track all routes",
+          );
+        } else {
+          console.warn("Failed to fetch lab surfaces", error);
+        }
+        setSurfaces([]); // Default to empty array = track all routes
       }
     }
 
