@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { use, useEffect, useState } from "react";
+import { DenRightRail } from "@/components/den/RailSlots";
+import { ActivityRail } from "@/components/modules/labs/ActivityRail";
 import { FeedbackList } from "@/components/modules/labs/FeedbackList";
 import { LabModeControl } from "@/components/modules/labs/LabModeControl";
 import { TelemetryDashboard } from "@/components/modules/labs/TelemetryDashboard";
@@ -229,6 +231,19 @@ export default function LabDetailPage({
         <h2 className="text-xl font-semibold text-white">Feedback</h2>
         <FeedbackList labSlug={slug} isCreator={true} />
       </div>
+
+      {/* Activity Rail */}
+      <DenRightRail>
+        <ActivityRail
+          labSlug={slug}
+          surfacesCount={lab.surfaces_to_observe?.length || 0}
+          observing={
+            !lab.surfaces_to_observe || lab.surfaces_to_observe.length === 0
+              ? "all"
+              : "subset"
+          }
+        />
+      </DenRightRail>
     </div>
   );
 }

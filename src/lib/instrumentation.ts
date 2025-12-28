@@ -1,8 +1,5 @@
 import type { EventType } from "./eventLabs";
-import {
-  getSurfaceLabel,
-  isObservedSurface,
-} from "./labMode";
+import { getSurfaceLabel, isObservedSurface } from "./labMode";
 
 // =====================================================
 // CLIENT-SIDE EVENT INSTRUMENTATION
@@ -29,7 +26,10 @@ export class EventLabInstrumentation {
   private batchInterval: ReturnType<typeof setInterval> | null = null;
   private readonly BATCH_INTERVAL_MS = 30000; // 30 seconds
   private readonly MAX_QUEUE_SIZE = 50;
+  private readonly DEDUPE_WINDOW_MS = 10000; // 10 seconds
   private isShuttingDown = false;
+  // Track last sent timestamp per route for dedupe
+  private lastPageViewSent: Map<string, number> = new Map();
 
   constructor(labSlug: string, surfaces: string[] = []) {
     this.labSlug = labSlug;
@@ -50,6 +50,25 @@ export class EventLabInstrumentation {
     // Extract locale from pathname (e.g., /en/labs -> "en")
     const localeMatch = route.match(/^\/([a-z]{2})\//);
     const locale = localeMatch?.[1];
+
+    // DEDUPE: Skip page_view if sent recently for this route
+    if (event.event_type === "page_view") {
+      const lastSent = this.lastPageViewSent.get(route);
+      const now = Date.now();
+      if (lastSent && now - lastSent < this.DEDUPE_WINDOW_MS) {
+        return; // Skip duplicate page view
+      }
+      this.lastPageViewSent.set(route, now);
+    }
+
+    // SURFACE GATING: Only track page_view/action_click for observed surfaces
+    // Always track error_flag regardless of surface
+    if (this.surfaces.length > 0 && event.event_type !== "error_flag") {
+      const isObserved = isObservedSurface(route, this.surfaces);
+      if (!isObserved) {
+        return; // Skip non-observed surface for page_view/action_click
+      }
+    }
 
     // Enrich event with Lab Mode context
     const enrichedEvent: EnrichedEventPayload = {

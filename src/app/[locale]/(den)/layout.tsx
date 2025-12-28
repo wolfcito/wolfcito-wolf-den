@@ -12,8 +12,8 @@ import {
 import SidebarNav from "@/components/den/SidebarNav";
 import StatusStrip from "@/components/den/StatusStrip";
 import TopBar from "@/components/den/TopBar";
-import { SidebarProvider } from "@/components/ui/sidebar";
 import { FloatingFeedbackButton } from "@/components/modules/labs/FloatingFeedbackButton";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { EventLabInstrumentationProvider } from "@/providers/EventLabInstrumentationProvider";
 
 export default function DenLayout({ children }: { children: ReactNode }) {

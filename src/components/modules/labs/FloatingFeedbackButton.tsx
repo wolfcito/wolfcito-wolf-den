@@ -115,9 +115,7 @@ export function FloatingFeedbackButton() {
                 className="w-full rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/40 focus:border-wolf-emerald/50 focus:outline-none focus:ring-2 focus:ring-wolf-emerald/20 resize-none"
                 disabled={isSubmitting}
               />
-              <p className="mt-1.5 text-xs text-white/50">
-                Route: {pathname}
-              </p>
+              <p className="mt-1.5 text-xs text-white/50">Route: {pathname}</p>
             </div>
 
             {submitStatus === "success" && (

@@ -30,7 +30,9 @@ export function TelemetryDashboard({ labSlug }: TelemetryDashboardProps) {
         const data = await getTelemetry(labSlug);
         setTelemetry(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to fetch telemetry");
+        setError(
+          err instanceof Error ? err.message : "Failed to fetch telemetry",
+        );
       } finally {
         setIsLoading(false);
       }
@@ -161,7 +163,9 @@ export function TelemetryDashboard({ labSlug }: TelemetryDashboardProps) {
           </div>
           <div className="space-y-3">
             <div>
-              <span className="text-sm text-white/70 mb-2 block">Top Routes</span>
+              <span className="text-sm text-white/70 mb-2 block">
+                Top Routes
+              </span>
               <div className="space-y-1.5">
                 {telemetry.funnels.top_routes.slice(0, 3).map((route) => (
                   <div
