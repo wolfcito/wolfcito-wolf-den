@@ -187,6 +187,125 @@ NEXT_PUBLIC_SITE_URL=https://denlabs.vercel.app
 
 ---
 
+## x402 Verification & Testing
+
+DenLabs implements **x402 Premium Access** with HTTP 402 Payment Required for value-add exports and extended data windows. The implementation follows best practices for stateless payment verification via UVDAO facilitator.
+
+### Premium Policy
+
+**FREE Tier** (Adoption & Real-time Operations):
+- ✅ Create unlimited labs
+- ✅ Submit unlimited feedback
+- ✅ 24h activity window
+- ✅ JSON preview (UI display)
+
+**PREMIUM Tier** (Value-add Exports):
+- 💎 Retro markdown export: **$3**
+- 💎 Extended activity windows: **$2-$5** (7d/30d/90d)
+- 💎 Feedback CSV export: **$2**
+- 💎 Activity JSON export: **$2**
+
+### Facilitator Health Check
+
+Verify UVDAO facilitator is operational:
+
+```bash
+# Run smoke test (checks /health, /supported, /verify endpoints)
+pnpm x402:smoke
+
+# Expected output:
+# ✅ Facilitator healthy
+# ✅ Supported networks count: X
+# ✅ Verify endpoint present
+```
+
+The facilitator health is checked **before** returning 402 responses. If the facilitator is down, endpoints return **503 Service Unavailable** instead of 402 (since payment cannot be processed).
+
+### Conformance Testing
+
+Verify premium endpoints correctly implement 402 flow:
+
+```bash
+# Test conformance (dev/staging only)
+curl http://localhost:3000/api/x402/conformance
+
+# Or test specific endpoint:
+curl "http://localhost:3000/api/x402/conformance?endpoint=/api/labs/demo/retro?format=markdown"
+```
+
+**Expected conformance report:**
+```json
+{
+  "ok": true,
+  "status": 402,
+  "hasPaymentRequiredHeader": true,
+  "paymentRequiredContent": {
+    "price": 3,
+    "currency": "USD",
+    "token": "usdc",
+    "recipient": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb",
+    "endpoint": "/api/labs/demo/retro",
+    "method": "GET",
+    "description": "Export retro pack as sponsor-ready markdown",
+    "facilitator": "https://facilitator.ultravioletadao.xyz",
+    "instructions": "Include PAYMENT-SIGNATURE header..."
+  },
+  "notes": [
+    "✅ Correct 402 status code",
+    "✅ PAYMENT-REQUIRED header present",
+    "✅ All required fields present",
+    "✅ Conformance test PASSED"
+  ]
+}
+```
+
+### Manual Testing
+
+Test premium endpoints without payment headers:
+
+```bash
+# Test retro markdown export (should return 402)
+curl -i http://localhost:3000/api/labs/demo/retro?format=markdown
+
+# Expected: HTTP/1.1 402 Payment Required
+# Expected header: PAYMENT-REQUIRED: {"price":3,"currency":"USD",...}
+
+# Test extended activity window (should return 402)
+curl -i "http://localhost:3000/api/labs/demo/activity?window=168"
+
+# Expected: HTTP/1.1 402 Payment Required
+
+# Test feedback CSV export (should return 402)
+curl -i "http://localhost:3000/api/labs/demo/feedback?export=csv"
+
+# Expected: HTTP/1.1 402 Payment Required
+```
+
+### Environment Variables
+
+Control x402 behavior with these env vars (see `.env.example`):
+
+```bash
+X402_FACILITATOR_URL=https://facilitator.ultravioletadao.xyz  # UVDAO facilitator
+X402_DEV_BYPASS=true                   # Skip payment checks in dev (default: false)
+X402_ENABLE_HEALTHCHECK=true           # Check facilitator before 402 (default: true)
+X402_HEALTHCHECK_TIMEOUT=2000          # Health check timeout ms (default: 2000)
+X402_DEV_DIAGNOSTICS=false             # Enable /api/x402/conformance in prod
+```
+
+**Important:** Set `X402_DEV_BYPASS=false` in production to enforce payment verification.
+
+### Response Codes
+
+| Code | Meaning | When |
+|------|---------|------|
+| **200** | OK | Valid PAYMENT-SIGNATURE provided |
+| **402** | Payment Required | No payment header, facilitator is healthy |
+| **403** | Forbidden | Only creators can export CSV (non-creator attempted) |
+| **503** | Service Unavailable | Facilitator is down (cannot process payment) |
+
+---
+
 ## Project Structure
 
 ```
