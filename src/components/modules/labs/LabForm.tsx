@@ -13,9 +13,42 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { TagInput } from "@/components/ui/tag-input";
 import { Textarea } from "@/components/ui/textarea";
 import type { CreateEventLabPayload, EventLabStatus } from "@/lib/eventLabs";
 import { createEventLab, updateEventLab } from "@/lib/eventLabsClient";
+
+// Observable routes in DenLabs
+const OBSERVABLE_ROUTES = [
+	"/access",
+	"/auth",
+	"/profile",
+	"/onboarding",
+	"/welcome",
+	"/profile-setup",
+	"/spray",
+	"/transactions",
+	"/confirmation",
+	"/checkout",
+	"/dashboard",
+	"/labs",
+	"/labs/create",
+	"/scan-8004",
+	"/x402",
+	"/a2a",
+	"/gooddollar",
+	"/taberna",
+	"/mentorship",
+	"/checkin",
+	"/voting",
+	"/showcase",
+	"/mind-games",
+	"/missions",
+	"/quests",
+	"/leaderboard",
+	"/stats",
+	"/settings",
+];
 
 interface LabTemplate {
 	id: string;
@@ -23,7 +56,7 @@ interface LabTemplate {
 	description: string;
 	icon: typeof FlaskConical;
 	objective: string;
-	surfaces: string;
+	surfaces: string[];
 }
 
 const LAB_TEMPLATES: LabTemplate[] = [
@@ -33,7 +66,7 @@ const LAB_TEMPLATES: LabTemplate[] = [
 		description: "Test user onboarding flow and identify friction points",
 		icon: UserCheck,
 		objective: "Test user onboarding flow and identify friction points",
-		surfaces: "/onboarding, /welcome, /profile-setup",
+		surfaces: ["/onboarding", "/welcome", "/profile-setup"],
 	},
 	{
 		id: "wallet-connect",
@@ -41,7 +74,7 @@ const LAB_TEMPLATES: LabTemplate[] = [
 		description: "Audit wallet connection and trust verification flow",
 		icon: ShieldCheck,
 		objective: "Audit wallet connection experience and trust verification flow",
-		surfaces: "/access, /auth, /profile",
+		surfaces: ["/access", "/auth", "/profile"],
 	},
 	{
 		id: "spray-flow",
@@ -49,7 +82,7 @@ const LAB_TEMPLATES: LabTemplate[] = [
 		description: "Test bulk reward distribution and transaction flow",
 		icon: Sparkles,
 		objective: "Test bulk reward distribution and transaction flow",
-		surfaces: "/spray, /transactions, /confirmation",
+		surfaces: ["/spray", "/transactions", "/confirmation"],
 	},
 	{
 		id: "general-event",
@@ -57,7 +90,7 @@ const LAB_TEMPLATES: LabTemplate[] = [
 		description: "Collect general feedback from event participants",
 		icon: FlaskConical,
 		objective: "Collect general feedback from event participants",
-		surfaces: "",
+		surfaces: [],
 	},
 ];
 
@@ -87,11 +120,17 @@ export function LabForm({
   const [error, setError] = useState<string | null>(null);
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
 
+  // Get today's date in YYYY-MM-DD format
+  const getTodayDate = () => {
+    const today = new Date();
+    return today.toISOString().split("T")[0];
+  };
+
   const [formData, setFormData] = useState({
     name: initialData?.name || "",
     objective: initialData?.objective || "",
-    surfaces: initialData?.surfaces_to_observe?.join(", ") || "",
-    startDate: initialData?.start_date?.split("T")[0] || "",
+    surfaces: initialData?.surfaces_to_observe || [],
+    startDate: initialData?.start_date?.split("T")[0] || getTodayDate(),
     endDate: initialData?.end_date?.split("T")[0] || "",
     slug: initialData?.slug || "",
     status: initialData?.status || "active",
@@ -118,12 +157,8 @@ export function LabForm({
       const payload: CreateEventLabPayload = {
         name: formData.name.trim(),
         objective: formData.objective.trim() || undefined,
-        surfaces_to_observe: formData.surfaces
-          ? formData.surfaces
-              .split(",")
-              .map((s) => s.trim())
-              .filter(Boolean)
-          : undefined,
+        surfaces_to_observe:
+          formData.surfaces.length > 0 ? formData.surfaces : undefined,
         start_date: new Date(formData.startDate).toISOString(),
         end_date: formData.endDate
           ? new Date(formData.endDate).toISOString()
@@ -179,7 +214,7 @@ export function LabForm({
                   setFormData((prev) => ({
                     ...prev,
                     objective: "",
-                    surfaces: "",
+                    surfaces: [],
                   }));
                 }}
                 className="text-xs text-wolf-emerald hover:text-wolf-emerald/80"
@@ -310,17 +345,14 @@ export function LabForm({
         <Label htmlFor="surfaces" className="text-white">
           Surfaces to Observe <span className="text-white/40">(Optional)</span>
         </Label>
-        <Input
-          id="surfaces"
+        <TagInput
           value={formData.surfaces}
-          onChange={(e) =>
-            setFormData({ ...formData, surfaces: e.target.value })
-          }
-          placeholder="e.g., /onboarding, /checkout, /dashboard"
-          className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
+          onChange={(surfaces) => setFormData({ ...formData, surfaces })}
+          suggestions={OBSERVABLE_ROUTES}
+          placeholder="Type route and press Enter, or select from suggestions"
         />
         <p className="text-xs text-white/60">
-          Comma-separated list of routes or features to track
+          Add routes to track. Start typing to see suggestions from existing DenLabs routes.
         </p>
       </div>
 
