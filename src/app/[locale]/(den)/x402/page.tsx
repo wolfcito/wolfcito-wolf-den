@@ -155,7 +155,21 @@ export default function X402Page() {
         </h2>
         <p className="text-sm text-white/70">{t("example.description")}</p>
         <pre className="overflow-x-auto rounded-lg border border-white/10 bg-black/30 p-4 text-xs text-white/80">
-          {t("example.code")}
+          {`// Request premium feature with x402
+const response = await fetch('/api/x402/analytics', {
+  headers: {
+    'X-Payment-Token': 'your-payment-token',
+    'X-Payment-Amount': '0.001' // cost in currency
+  }
+});
+
+if (response.status === 402) {
+  // Payment required - show payment UI
+  console.log('Premium feature requires payment');
+} else if (response.ok) {
+  // Payment accepted, feature unlocked
+  const data = await response.json();
+}`}
         </pre>
       </div>
 
