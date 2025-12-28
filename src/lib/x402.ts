@@ -9,6 +9,36 @@
  * 3b. If no payment → return 402 with PAYMENT-REQUIRED instructions
  *
  * Stateless: No DB writes, verification via facilitator
+ *
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * PREMIUM POLICY (What's FREE vs PREMIUM)
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ *
+ * FREE TIER (Adoption & Real-time Event Operations):
+ * ✅ Create unlimited labs
+ * ✅ Submit unlimited feedback
+ * ✅ 24h activity window (real-time ops)
+ * ✅ JSON preview (UI display)
+ * ✅ Event tracking
+ * ✅ Basic retro pack (JSON)
+ *
+ * PREMIUM TIER (Value-add, Non-blocking Exports & Extended Data):
+ * 💎 Retro markdown export ($3) - sponsor-ready format
+ * 💎 Extended activity windows:
+ *    - 7 days: $2
+ *    - 30 days: $3
+ *    - 90 days: $5
+ * 💎 Feedback CSV export ($2) - bulk analysis
+ * 💎 Activity JSON export ($2) - programmatic access
+ *
+ * FUTURE PREMIUM (Not yet implemented):
+ * 🚧 AI insights ($8) - LLM-powered triage and recommendations
+ * 🚧 Bulk exports ($10) - multi-lab exports
+ * 🚧 Custom integrations ($5) - webhooks, Slack, GitHub
+ *
+ * PRINCIPLE: Premium features are NON-BLOCKING add-ons.
+ * Core event operations remain free to maximize adoption.
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  */
 
 import { type NextRequest, NextResponse } from "next/server";
@@ -17,12 +47,22 @@ import { type NextRequest, NextResponse } from "next/server";
 const X402_CONFIG = {
 	facilitatorUrl:
 		process.env.X402_FACILITATOR_URL ||
-		"https://facilitator.x402.example.com",
+		"https://facilitator.ultravioletadao.xyz",
 	recipient: process.env.X402_RECIPIENT || "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb",
 	maxPrice: Number.parseInt(process.env.X402_MAX_PRICE || "10", 10),
 	token: process.env.X402_TOKEN || "usdc",
 	devBypass: process.env.X402_DEV_BYPASS === "true",
+	enableHealthcheck: process.env.X402_ENABLE_HEALTHCHECK !== "false", // Default true
+	healthcheckTimeout: Number.parseInt(
+		process.env.X402_HEALTHCHECK_TIMEOUT || "2000",
+		10,
+	),
 } as const;
+
+// Cache facilitator health status (TTL: 30 seconds)
+let facilitatorHealthCache: { healthy: boolean; timestamp: number } | null =
+	null;
+const HEALTH_CACHE_TTL = 30000; // 30 seconds
 
 export interface PaymentRequirement {
 	price: number; // USD
@@ -35,6 +75,60 @@ export interface PaymentVerificationResult {
 	valid: boolean;
 	error?: string;
 	paidAmount?: number;
+}
+
+/**
+ * Check facilitator health with caching
+ * Returns true if healthy, false if down
+ */
+async function checkFacilitatorHealth(): Promise<boolean> {
+	// Skip health check if disabled
+	if (!X402_CONFIG.enableHealthcheck) {
+		return true;
+	}
+
+	// Check cache first
+	if (facilitatorHealthCache) {
+		const age = Date.now() - facilitatorHealthCache.timestamp;
+		if (age < HEALTH_CACHE_TTL) {
+			return facilitatorHealthCache.healthy;
+		}
+	}
+
+	// Perform health check with timeout
+	try {
+		const controller = new AbortController();
+		const timeoutId = setTimeout(
+			() => controller.abort(),
+			X402_CONFIG.healthcheckTimeout,
+		);
+
+		const response = await fetch(`${X402_CONFIG.facilitatorUrl}/health`, {
+			signal: controller.signal,
+		});
+
+		clearTimeout(timeoutId);
+
+		const healthy = response.status === 200;
+
+		// Update cache
+		facilitatorHealthCache = {
+			healthy,
+			timestamp: Date.now(),
+		};
+
+		return healthy;
+	} catch (error) {
+		console.error("[x402] Facilitator health check failed:", error);
+
+		// Cache as unhealthy
+		facilitatorHealthCache = {
+			healthy: false,
+			timestamp: Date.now(),
+		};
+
+		return false;
+	}
 }
 
 /**
@@ -112,8 +206,40 @@ export async function verifyPayment(
 /**
  * Build 402 Payment Required response
  * Includes PAYMENT-REQUIRED header with payment instructions
+ *
+ * IMPORTANT: Check facilitator health first. If down, return 503 instead of 402
+ * because payment cannot be processed.
  */
-export function build402Response(requirement: PaymentRequirement): NextResponse {
+export async function build402Response(
+	requirement: PaymentRequirement,
+): Promise<NextResponse> {
+	// Check facilitator health before requiring payment
+	const facilitatorHealthy = await checkFacilitatorHealth();
+
+	if (!facilitatorHealthy) {
+		// Facilitator is down - return 503 Service Unavailable
+		console.warn(
+			"[x402] Facilitator unavailable, returning 503 instead of 402",
+		);
+
+		return NextResponse.json(
+			{
+				error: "Service Unavailable",
+				message:
+					"Payment facilitator is currently unavailable. Please retry in a few moments.",
+				retryAfter: 30, // Suggest retry after 30 seconds
+				facilitator: X402_CONFIG.facilitatorUrl,
+			},
+			{
+				status: 503,
+				headers: {
+					"Retry-After": "30",
+				},
+			},
+		);
+	}
+
+	// Facilitator is healthy - proceed with 402 response
 	const paymentInstructions = {
 		price: requirement.price,
 		currency: "USD",
