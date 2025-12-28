@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { X, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
+import { useAppKitProvider, useAppKitAccount } from "@reown/appkit/react";
+import { BrowserProvider, type Eip1193Provider } from "ethers";
+import { X402Client } from "uvd-x402-sdk";
 import type { PaymentInstructions } from "@/lib/x402Client";
 
 interface PaymentModalProps {
@@ -17,6 +20,8 @@ export function PaymentModal({
   paymentInstructions,
   onPaymentComplete,
 }: PaymentModalProps) {
+  const { walletProvider } = useAppKitProvider<Eip1193Provider>("eip155");
+  const { address, isConnected } = useAppKitAccount();
   const [status, setStatus] = useState<
     "confirming" | "processing" | "success" | "error"
   >("confirming");
@@ -34,40 +39,46 @@ export function PaymentModal({
     setErrorMessage(null);
 
     try {
-      // Call facilitator to create payment
-      const response = await fetch(
-        `${paymentInstructions.facilitator}/create`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            amount: paymentInstructions.price,
-            token: paymentInstructions.token,
-            recipient: paymentInstructions.recipient,
-            endpoint: paymentInstructions.endpoint,
-            method: paymentInstructions.method,
-            description: paymentInstructions.description,
-          }),
-        },
-      );
-
-      if (!response.ok) {
-        throw new Error(`Payment creation failed: ${response.statusText}`);
+      // Check if wallet is connected
+      if (!isConnected || !walletProvider) {
+        throw new Error(
+          "Wallet not connected. Please connect your wallet first.",
+        );
       }
 
-      const result = await response.json();
+      // Initialize X402Client
+      const client = new X402Client({
+        facilitatorUrl: paymentInstructions.facilitator,
+      });
 
-      if (!result.signature) {
-        throw new Error("Payment response missing signature");
+      // Connect wallet to client
+      await client.connect();
+
+      // Create payment authorization
+      const paymentResult = await client.createPayment({
+        recipient: paymentInstructions.recipient,
+        amount: paymentInstructions.price.toString(),
+        token: paymentInstructions.token,
+      });
+
+      if (!paymentResult.success) {
+        throw new Error("Payment creation failed");
+      }
+
+      // Get the PAYMENT-SIGNATURE header (x402 v2)
+      const paymentSignature =
+        paymentResult.headers?.["PAYMENT-SIGNATURE"] ||
+        paymentResult.paymentHeader;
+
+      if (!paymentSignature) {
+        throw new Error("Payment signature not generated");
       }
 
       setStatus("success");
 
       // Wait a moment to show success state
       setTimeout(() => {
-        onPaymentComplete(result.signature);
+        onPaymentComplete(paymentSignature);
       }, 1000);
     } catch (error) {
       setStatus("error");

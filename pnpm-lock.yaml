@@ -56,6 +56,9 @@ importers:
       tailwind-merge:
         specifier: ^3.4.0
         version: 3.4.0
+      uvd-x402-sdk:
+        specifier: ^2.15.2
+        version: 2.15.2(@solana/web3.js@1.98.4(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10))(bufferutil@4.0.9)(react@19.1.2)(utf-8-validate@5.0.10)
       viem:
         specifier: ^2.41.2
         version: 2.41.2(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76)
@@ -3381,6 +3384,45 @@ packages:
   uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
     hasBin: true
+
+  uvd-x402-sdk@2.15.2:
+    resolution: {integrity: sha512-mIpfzmZYvmKvDpq8UQK7HC11oQk5zEyV3obXZZhaor4uUkjL6z+3LMYzwBw3oOKv/7B6NPCMWQMrEFizBPZcgw==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@near-wallet-selector/core': ^8.0.0 || ^9.0.0 || ^10.0.0
+      '@near-wallet-selector/my-near-wallet': ^8.0.0 || ^9.0.0 || ^10.0.0
+      '@perawallet/connect': ^1.0.0
+      '@solana/spl-token': ^0.4.0
+      '@solana/web3.js': ^1.87.0
+      '@stellar/freighter-api': ^3.0.0 || ^6.0.0
+      '@stellar/stellar-sdk': ^12.0.0 || ^13.0.0 || ^14.0.0
+      '@walletconnect/ethereum-provider': ^2.17.0
+      algosdk: ^2.0.0 || ^3.0.0
+      lute-connect: ^1.0.0
+      react: ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@near-wallet-selector/core':
+        optional: true
+      '@near-wallet-selector/my-near-wallet':
+        optional: true
+      '@perawallet/connect':
+        optional: true
+      '@solana/spl-token':
+        optional: true
+      '@solana/web3.js':
+        optional: true
+      '@stellar/freighter-api':
+        optional: true
+      '@stellar/stellar-sdk':
+        optional: true
+      '@walletconnect/ethereum-provider':
+        optional: true
+      algosdk:
+        optional: true
+      lute-connect:
+        optional: true
+      react:
+        optional: true
 
   valtio@2.1.7:
     resolution: {integrity: sha512-DwJhCDpujuQuKdJ2H84VbTjEJJteaSmqsuUltsfbfdbotVfNeTE4K/qc/Wi57I9x8/2ed4JNdjEna7O6PfavRg==}
@@ -7701,6 +7743,16 @@ snapshots:
 
   uuid@8.3.2:
     optional: true
+
+  uvd-x402-sdk@2.15.2(@solana/web3.js@1.98.4(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10))(bufferutil@4.0.9)(react@19.1.2)(utf-8-validate@5.0.10):
+    dependencies:
+      ethers: 6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+    optionalDependencies:
+      '@solana/web3.js': 1.98.4(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)
+      react: 19.1.2
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
 
   valtio@2.1.7(@types/react@19.1.15)(react@19.1.2):
     dependencies:
