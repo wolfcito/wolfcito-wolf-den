@@ -78,6 +78,14 @@ export default function PublicLabPage({
         <div className="container mx-auto max-w-4xl space-y-8">
           {/* Header */}
           <div className="space-y-4">
+            {/* Context Banner */}
+            <div className="rounded-lg border border-wolf-emerald/20 bg-wolf-emerald/5 px-4 py-2 text-sm">
+              <p className="text-wolf-emerald/90">
+                <span className="font-semibold">You're submitting feedback for:</span>{" "}
+                <span className="text-white">{lab.name}</span>
+              </p>
+            </div>
+
             <div className="flex items-center gap-3">
               <div className="inline-flex h-14 w-14 items-center justify-center rounded-lg border border-white/10 bg-white/5">
                 <FlaskConical
