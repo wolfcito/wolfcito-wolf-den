@@ -10,9 +10,12 @@ import {
 } from "@/lib/eventLabs";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { calculateTrustScore } from "@/lib/trustScoring";
+import { PRICING, build402Response, shouldGate, verifyPayment } from "@/lib/x402";
 
 // =====================================================
 // GET /api/labs/:slug/feedback - List feedback (hybrid visibility)
+// FREE: JSON response (UI)
+// PREMIUM: CSV export - $2 (creator-only)
 // =====================================================
 
 export async function GET(
@@ -21,6 +24,7 @@ export async function GET(
 ) {
   const { slug } = await params;
   const { searchParams } = new URL(request.url);
+  const exportFormat = searchParams.get("export");
 
   try {
     // Get lab ID from slug
@@ -40,6 +44,33 @@ export async function GET(
 
     // Check if user is creator
     const isCreator = currentUserId === lab.creator_id;
+
+    // Check if premium gating required (CSV export, creator-only)
+    if (shouldGate(request, exportFormat === "csv")) {
+      // Only creators can export CSV
+      if (!isCreator) {
+        return NextResponse.json(
+          { error: "Only lab creators can export feedback as CSV" },
+          { status: 403 },
+        );
+      }
+
+      const verification = await verifyPayment(request, {
+        price: PRICING.FEEDBACK_CSV,
+        endpoint: `/api/labs/${slug}/feedback`,
+        method: "GET",
+        description: "Export all feedback as CSV for analysis",
+      });
+
+      if (!verification.valid) {
+        return build402Response({
+          price: PRICING.FEEDBACK_CSV,
+          endpoint: `/api/labs/${slug}/feedback?export=csv`,
+          method: "GET",
+          description: "Export all feedback as CSV for analysis",
+        });
+      }
+    }
 
     let feedbackData: FeedbackItem[] = [];
 
@@ -128,6 +159,19 @@ export async function GET(
       );
     }
 
+    // Handle CSV export (PREMIUM, creator-only)
+    if (exportFormat === "csv") {
+      const csv = generateFeedbackCSV(feedbackData);
+      return new NextResponse(csv, {
+        status: 200,
+        headers: {
+          "Content-Type": "text/csv; charset=utf-8",
+          "Content-Disposition": `attachment; filename="feedback-${slug}-${Date.now()}.csv"`,
+        },
+      });
+    }
+
+    // Default: JSON response (FREE)
     return NextResponse.json({
       feedback: feedbackData,
       is_creator: isCreator,
@@ -139,6 +183,46 @@ export async function GET(
       { status: 500 },
     );
   }
+}
+
+/**
+ * Generate CSV from feedback items
+ */
+function generateFeedbackCSV(items: FeedbackItem[]): string {
+  // CSV header
+  const headers = [
+    "ID",
+    "Created At",
+    "Message",
+    "Handle",
+    "Wallet Address",
+    "Route",
+    "Step",
+    "Event Type",
+    "Trust Score",
+    "Priority",
+    "Status",
+    "Tags",
+  ];
+
+  // CSV rows
+  const rows = items.map((item) => [
+    item.id,
+    item.created_at,
+    `"${(item.message || "").replace(/"/g, '""')}"`, // Escape quotes
+    item.handle || "",
+    item.wallet_address || "",
+    item.route || "",
+    item.step || "",
+    item.event_type || "",
+    item.trust_score?.toString() || "50",
+    item.priority || "",
+    item.status || "new",
+    `"${(item.tags || []).join(", ")}"`,
+  ]);
+
+  // Combine header and rows
+  return [headers.join(","), ...rows.map((row) => row.join(","))].join("\n");
 }
 
 // =====================================================
