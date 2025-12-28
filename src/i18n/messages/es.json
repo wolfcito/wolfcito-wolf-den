@@ -1159,12 +1159,56 @@
       "title": "Retro Pack",
       "description": "Resumen generado automáticamente de resultados del lab.",
       "export": "Descargar Markdown",
+      "exportPremium": "Descargar Markdown ($3)",
       "copy": "Copiar al Portapapeles",
       "sections": {
         "summary": "Resumen",
         "topIssues": "Top Issues",
         "dropoffs": "Puntos de Abandono",
         "recommendations": "Recomendaciones"
+      }
+    },
+    "premium": {
+      "badge": "Premium",
+      "tiers": {
+        "free": {
+          "name": "Gratis",
+          "features": [
+            "Labs ilimitados",
+            "Feedback ilimitado",
+            "Ventana de actividad 24h",
+            "Vista previa JSON"
+          ]
+        },
+        "pro": {
+          "name": "Pro",
+          "features": [
+            "Ventanas extendidas (7d: $2, 30d: $3)",
+            "Exportación Markdown ($3)",
+            "Exportación CSV ($2)",
+            "Exportación JSON ($2)"
+          ]
+        }
+      },
+      "activity": {
+        "extendedWindow": "Ventana de Actividad Extendida",
+        "windowPricing": {
+          "7d": "$2 por ventana de 7 días",
+          "30d": "$3 por ventana de 30 días",
+          "90d": "$5 por ventana de 90 días"
+        },
+        "exportJson": "Exportar JSON ($2)"
+      },
+      "feedback": {
+        "exportCsv": "Exportar CSV ($2)",
+        "exportCsvDescription": "Descarga todo el feedback como CSV para análisis (solo creador)"
+      },
+      "paymentRequired": {
+        "title": "Pago Requerido",
+        "description": "Esta función requiere un pago premium para acceder.",
+        "priceLabel": "Precio:",
+        "payButton": "Pagar y Acceder",
+        "cancelButton": "Cancelar"
       }
     }
   },

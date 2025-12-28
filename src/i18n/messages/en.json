@@ -1159,12 +1159,56 @@
       "title": "Retro Pack",
       "description": "Automatically generated summary of lab results.",
       "export": "Download Markdown",
+      "exportPremium": "Download Markdown ($3)",
       "copy": "Copy to Clipboard",
       "sections": {
         "summary": "Summary",
         "topIssues": "Top Issues",
         "dropoffs": "Drop-off Points",
         "recommendations": "Recommendations"
+      }
+    },
+    "premium": {
+      "badge": "Premium",
+      "tiers": {
+        "free": {
+          "name": "Free",
+          "features": [
+            "Unlimited labs",
+            "Unlimited feedback",
+            "24h activity window",
+            "JSON preview"
+          ]
+        },
+        "pro": {
+          "name": "Pro",
+          "features": [
+            "Extended windows (7d: $2, 30d: $3)",
+            "Markdown export ($3)",
+            "CSV export ($2)",
+            "JSON export ($2)"
+          ]
+        }
+      },
+      "activity": {
+        "extendedWindow": "Extended Activity Window",
+        "windowPricing": {
+          "7d": "$2 for 7-day window",
+          "30d": "$3 for 30-day window",
+          "90d": "$5 for 90-day window"
+        },
+        "exportJson": "Export JSON ($2)"
+      },
+      "feedback": {
+        "exportCsv": "Export CSV ($2)",
+        "exportCsvDescription": "Download all feedback as CSV for analysis (creator-only)"
+      },
+      "paymentRequired": {
+        "title": "Payment Required",
+        "description": "This feature requires a premium payment to access.",
+        "priceLabel": "Price:",
+        "payButton": "Pay & Access",
+        "cancelButton": "Cancel"
       }
     }
   },
