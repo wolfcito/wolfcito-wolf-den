@@ -1313,8 +1313,8 @@
     }
   },
   "Scan8004": {
-    "title": "8004 Scan",
-    "description": "Trust verification scanner for addresses and identifiers. Check reputation scores, verify credentials, and assess trustworthiness before collaborating.",
+    "title": "8004 Trust Scoring",
+    "description": "Trust verification for Event Feedback Ops. Every feedback item is automatically scored 0-100 based on self-verification, wallet connection, and behavioral signals. Filter spam and prioritize high-quality feedback.",
     "form": {
       "label": "Address or Identifier",
       "placeholder": "Enter wallet address, ENS, or identifier",
@@ -1337,13 +1337,13 @@
       "network": "Network error. Please check your connection and try again."
     },
     "info": {
-      "title": "About 8004 Scan",
-      "description": "8004 scan helps you verify trust scores and reputation before engaging with addresses or entities. This MVP version provides the foundation for onchain trust verification."
+      "title": "How Trust Scoring Works",
+      "description": "Every feedback item in your Event Labs receives a trust score (0-100). Self-verified users: +30, wallet connected: +20, rate-limited (>10 per session): -50. This helps you filter spam automatically and prioritize high-quality feedback in your retro packs."
     }
   },
   "X402": {
-    "title": "x402 Premium",
-    "description": "Experimental HTTP 402 payment layer for premium access. Test pay-per-use models for advanced analytics, deeper feedback, and priority processing.",
+    "title": "x402 Premium Access",
+    "description": "Optional micropayment layer for Event Feedback Ops. Gate high-value labs behind small payments to ensure committed participants and reduce noise. Experimental, not required for core functionality.",
     "concept": {
       "title": "What is x402?",
       "description": "x402 explores HTTP 402 (Payment Required) as a payment layer for premium content and services. Instead of traditional subscriptions, users pay per request for enhanced features.",
@@ -1378,8 +1378,8 @@
     }
   },
   "A2A": {
-    "title": "A2A - Agent-to-Agent",
-    "description": "Discover and expose agent capabilities for interoperability. Enable AI agents to find and interact with DenLabs services programmatically.",
+    "title": "A2A Agent Insights",
+    "description": "Planned capability for Event Feedback Ops. AI agents will be able to query your labs, analyze retro packs, and suggest improvements. Enables automated analysis and cross-platform integration of feedback data.",
     "concept": {
       "title": "What is A2A?",
       "description": "Agent-to-Agent (A2A) enables different AI agents and automated systems to discover each other's capabilities and interact seamlessly.",

@@ -1312,8 +1312,8 @@
     }
   },
   "Scan8004": {
-    "title": "Escaneo 8004",
-    "description": "Escáner de verificación de confianza para direcciones e identificadores. Verifica puntuaciones de reputación, credenciales y confiabilidad antes de colaborar.",
+    "title": "8004 Trust Scoring",
+    "description": "Verificación de confianza para Event Feedback Ops. Cada item de feedback es automáticamente puntuado 0-100 basado en auto-verificación, conexión de wallet y señales de comportamiento. Filtra spam y prioriza feedback de alta calidad.",
     "form": {
       "label": "Dirección o Identificador",
       "placeholder": "Ingresa dirección de wallet, ENS o identificador",
@@ -1336,13 +1336,13 @@
       "network": "Error de red. Por favor verifica tu conexión e intenta de nuevo."
     },
     "info": {
-      "title": "Acerca del Escaneo 8004",
-      "description": "El escaneo 8004 te ayuda a verificar puntuaciones de confianza y reputación antes de interactuar con direcciones o entidades. Esta versión MVP proporciona la base para la verificación de confianza onchain."
+      "title": "Cómo Funciona Trust Scoring",
+      "description": "Cada item de feedback en tus Event Labs recibe un trust score (0-100). Usuarios auto-verificados: +30, wallet conectada: +20, límite de tasa (>10 por sesión): -50. Esto te ayuda a filtrar spam automáticamente y priorizar feedback de alta calidad en tus retro packs."
     }
   },
   "X402": {
-    "title": "x402 Premium",
-    "description": "Capa experimental de pago HTTP 402 para acceso premium. Prueba modelos de pago por uso para analíticas avanzadas, feedback profundo y procesamiento prioritario.",
+    "title": "x402 Acceso Premium",
+    "description": "Capa opcional de micropagos para Event Feedback Ops. Protege labs de alto valor detrás de pequeños pagos para asegurar participantes comprometidos y reducir ruido. Experimental, no requerido para funcionalidad core.",
     "concept": {
       "title": "¿Qué es x402?",
       "description": "x402 explora HTTP 402 (Pago Requerido) como capa de pago para contenido y servicios premium. En lugar de suscripciones tradicionales, los usuarios pagan por solicitud para características mejoradas.",
@@ -1377,8 +1377,8 @@
     }
   },
   "A2A": {
-    "title": "A2A - Agente-a-Agente",
-    "description": "Descubre y expone capacidades de agentes para interoperabilidad. Permite que agentes de IA encuentren e interactúen con servicios de DenLabs programáticamente.",
+    "title": "A2A Agent Insights",
+    "description": "Capacidad planificada para Event Feedback Ops. Los agentes de IA podrán consultar tus labs, analizar retro packs y sugerir mejoras. Habilita análisis automatizado e integración cross-platform de datos de feedback.",
     "concept": {
       "title": "¿Qué es A2A?",
       "description": "Agente-a-Agente (A2A) permite que diferentes agentes de IA y sistemas automatizados descubran las capacidades de cada uno e interactúen sin problemas.",
