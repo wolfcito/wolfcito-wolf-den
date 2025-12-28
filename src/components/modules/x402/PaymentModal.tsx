@@ -46,13 +46,29 @@ export function PaymentModal({
         );
       }
 
-      // Initialize X402Client
+      // Initialize X402Client (uses already-connected wallet via window.ethereum)
       const client = new X402Client({
         facilitatorUrl: paymentInstructions.facilitator,
+        autoConnect: false, // Don't auto-connect, use existing wallet
       });
 
-      // Connect wallet to client
-      await client.connect();
+      // Verify wallet is connected in the client
+      if (!client.isConnected()) {
+        // Try to detect the already-connected wallet
+        const ethereum = (window as any).ethereum;
+        if (!ethereum) {
+          throw new Error("Ethereum provider not found");
+        }
+
+        // Request accounts to ensure connection
+        const accounts = await ethereum.request({
+          method: "eth_accounts",
+        });
+
+        if (!accounts || accounts.length === 0) {
+          throw new Error("No accounts found. Please connect your wallet.");
+        }
+      }
 
       // Create payment authorization
       const paymentResult = await client.createPayment({
