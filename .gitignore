@@ -47,5 +47,9 @@ next-env.d.ts
 # claude code local config
 .claude/
 
-# generated doc reports
-docs/DOC_DELTA_REPORT.md
+# Internal documentation (lives in private denlabs-docs repo)
+CLAUDE.md
+docs/
+
+# Allow README if needed in future
+!docs/README.md
