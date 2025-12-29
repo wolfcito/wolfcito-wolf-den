@@ -587,14 +587,6 @@ Use Conventional Commits for clean history:
 - `docs/DOCS_POINTER.md` - Documentation workflow and access
 - `docs/DOC_TARGETS.json` - Code-to-docs mapping
 - `.env.example` - Environment variables template
-- `CLAUDE.md` - Claude Code configuration
-
-**Private (denlabs-docs repo - request access):**
-- `docs/STATUS.md` - Complete project status
-- `docs/VISION_FEEDBACK.md` - Product vision and roadmap
-- `PROJECT_FLOW.md` - Development phases
-- `AGENTS.md` - AI assistant guidelines
-- `docs/CHANGELOG.md` - Documentation changelog
 
 ---
 
