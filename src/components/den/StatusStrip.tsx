@@ -63,25 +63,11 @@ export function StatusStrip({
   const isIconsOnly = variant === "icons-only";
   const isCompactWallet = isWalletOnly || isIconsOnly;
 
-  const socialLinks = [
-    {
-      href: "https://x.com/akaDenLabs",
-      label: "X",
-      icon: (
-        <svg
-          className="h-4 w-4"
-          viewBox="0 0 24 24"
-          role="img"
-          aria-hidden="true"
-        >
-          <path
-            d="M4.5 3h3.1l4 5.7L15.3 3H19l-5.3 7.3L20 21h-3.1l-4.4-6.3-4.4 6.3H4l6.3-8.7L4.5 3Z"
-            fill="currentColor"
-          />
-        </svg>
-      ),
-    },
-  ];
+  const socialLinks: Array<{
+    href: string;
+    label: string;
+    icon: React.ReactNode;
+  }> = [];
 
   const translateSpray = (
     key: string,
