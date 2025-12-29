@@ -242,10 +242,10 @@ export default function HomeLanding() {
               <p className="text-sm font-medium uppercase tracking-wider text-white/50">
                 {t('hero.trustRow.label')}
               </p>
-              <div className="flex flex-wrap items-center justify-center gap-8 opacity-80">
+              <div className="flex gap-8 opacity-80">
                 {/* Celo logo */}
                 <svg
-                  className="h-12 w-auto text-white/80 self-center"
+                  className="h-14 w-auto text-white/80"
                   viewBox="0 0 265 123"
                   fill="none"
                   aria-hidden="true"
@@ -259,7 +259,7 @@ export default function HomeLanding() {
                 </svg>
                 {/* Self logo */}
                 <svg
-                  className="h-12 w-auto self-center"
+                  className="h-8 w-auto"
                   viewBox="0 0 192 72"
                   fill="none"
                   aria-hidden="true"
@@ -288,7 +288,7 @@ export default function HomeLanding() {
                 <img
                   src="https://facilitator.ultravioletadao.xyz/logo.png"
                   alt="Facilitator"
-                  className="h-12 w-auto opacity-80 self-center"
+                  className="h-8 w-auto opacity-80 self-center"
                 />
               </div>
             </div>
