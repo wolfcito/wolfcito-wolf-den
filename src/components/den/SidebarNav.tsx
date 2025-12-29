@@ -16,6 +16,7 @@ import {
   Sparkles,
   SquareStack,
   Trophy,
+  Twitter,
   UsersRound,
   Workflow,
 } from "lucide-react";
@@ -51,6 +52,7 @@ const feedbackExperimentsNavigation = [
   { key: "scan8004", href: "/scan-8004", icon: Scan },
   { key: "x402", href: "/x402", icon: Sparkles },
   { key: "a2a", href: "/a2a", icon: Workflow },
+  { key: "xAccount", href: "https://x.com/akaDenLabs", icon: Twitter, external: true },
 ] as const;
 
 const experimentsNavigation = [
@@ -163,28 +165,52 @@ export default function SidebarNav() {
             <SidebarMenu>
               {feedbackExperimentsNavigation.map((item) => {
                 const ItemIcon = item.icon;
-                const isActive = matchesPath(item.href);
+                const isExternal = "external" in item && item.external;
+                const isActive = !isExternal && matchesPath(item.href);
+
                 return (
                   <SidebarMenuItem key={item.key}>
                     <SidebarMenuButton asChild isActive={isActive}>
-                      <Link
-                        href={item.href}
-                        aria-current={isActive ? "page" : undefined}
-                        className="flex w-full items-center gap-3"
-                      >
-                        <ItemIcon
-                          className="h-4 w-4 text-[#8bea4e]"
-                          aria-hidden
-                        />
-                        <span
-                          className={cn(
-                            "truncate text-[0.72rem]",
-                            collapsed ? "hidden" : "inline",
-                          )}
+                      {isExternal ? (
+                        <a
+                          href={item.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex w-full items-center gap-3"
                         >
-                          {t(`sections.feedbackExperiments.items.${item.key}`)}
-                        </span>
-                      </Link>
+                          <ItemIcon
+                            className="h-4 w-4 text-[#8bea4e]"
+                            aria-hidden
+                          />
+                          <span
+                            className={cn(
+                              "truncate text-[0.72rem]",
+                              collapsed ? "hidden" : "inline",
+                            )}
+                          >
+                            {t(`sections.feedbackExperiments.items.${item.key}`)}
+                          </span>
+                        </a>
+                      ) : (
+                        <Link
+                          href={item.href}
+                          aria-current={isActive ? "page" : undefined}
+                          className="flex w-full items-center gap-3"
+                        >
+                          <ItemIcon
+                            className="h-4 w-4 text-[#8bea4e]"
+                            aria-hidden
+                          />
+                          <span
+                            className={cn(
+                              "truncate text-[0.72rem]",
+                              collapsed ? "hidden" : "inline",
+                            )}
+                          >
+                            {t(`sections.feedbackExperiments.items.${item.key}`)}
+                          </span>
+                        </Link>
+                      )}
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );
