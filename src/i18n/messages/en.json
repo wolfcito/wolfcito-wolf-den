@@ -824,16 +824,8 @@
           "title": "Resources",
           "links": [
             {
-              "label": "Documentation",
-              "href": "https://github.com/denlabs/docs"
-            },
-            {
-              "label": "Migration Guide",
-              "href": "/database/migrations/README.md"
-            },
-            {
               "label": "API Reference",
-              "href": "/api-docs"
+              "href": "https://github.com/den-labs/denlabs"
             }
           ]
         },
@@ -842,17 +834,12 @@
           "links": [
             {
               "label": "GitHub",
-              "href": "https://github.com/denlabs",
-              "external": true
-            },
-            {
-              "label": "Discord",
-              "href": "https://discord.gg/denlabs",
+              "href": "https://github.com/den-labs/denlabs",
               "external": true
             },
             {
               "label": "Twitter",
-              "href": "https://x.com/denlabs",
+              "href": "https://x.com/akaDenLabs",
               "external": true
             }
           ]
