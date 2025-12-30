@@ -184,9 +184,9 @@ export function WalletMenu() {
 
         <DropdownMenuItem
           onClick={handleDisconnect}
-          className="rounded-lg px-3 py-2.5 cursor-pointer hover:bg-white/5"
+          className="flex items-center gap-3 rounded-lg px-3 py-2.5 cursor-pointer hover:bg-white/5"
         >
-          <LogOut className="mr-3 h-4 w-4 text-white/60" />
+          <LogOut className="h-4 w-4 text-[#8bea4e]" />
           <span className="text-[0.8rem]">Disconnect</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
