@@ -730,6 +730,85 @@
     "light": "Claro",
     "dark": "Oscuro"
   },
+  "DemoHub": {
+    "badge": "MODO DEMO",
+    "title": "Prueba Event Feedback Ops en 60 segundos",
+    "subtitle": "Envía un feedback de prueba y observa cómo se capturan las señales. Sin cuenta requerida.",
+    "steps": {
+      "label": "Lo que harás",
+      "step1": "Enviar un feedback de prueba (como reportar un bug o sugerir una mejora)",
+      "step2": "Ver cómo DenLabs captura señales (etiquetas, prioridad, score de calidad)",
+      "step3": "Entender cómo los hosts priorizan y actúan sobre el feedback"
+    },
+    "cta": {
+      "primary": "Iniciar Demo como Participante",
+      "secondary": "Ver Panel del Host",
+      "loginRequired": "login"
+    },
+    "timeEstimate": "Toma aproximadamente 60 segundos"
+  },
+  "DemoParticipant": {
+    "breadcrumb": {
+      "demo": "Demo",
+      "participant": "Vista de Participante"
+    },
+    "title": "Demo Lab: Event Feedback",
+    "sandbox": "Esto es un sandbox. Ningún organizador real será notificado.",
+    "stepper": {
+      "write": "Escribe",
+      "submit": "Envía",
+      "results": "Resultados"
+    },
+    "quickPrompts": "Prompts rápidos (opcional)",
+    "prompts": {
+      "bug": "Reportar bug",
+      "bugPlaceholder": "Encontré un problema con...",
+      "improvement": "Sugerir mejora",
+      "improvementPlaceholder": "Sería mejor si...",
+      "praise": "Compartir elogio",
+      "praisePlaceholder": "Me gustó mucho..."
+    },
+    "placeholder": "Describe tu experiencia, qué funcionó bien o qué podría mejorarse...",
+    "helper": "Tu feedback ayuda a mejorar la experiencia",
+    "charsRemaining": "caracteres restantes",
+    "trustNote": "Score de calidad disponible con verificación opcional.",
+    "learnMore": "Aprende cómo funciona el scoring",
+    "submitButton": "Enviar Feedback Demo",
+    "submitting": "Procesando...",
+    "backToDemo": "← Volver al Demo Hub"
+  },
+  "DemoComplete": {
+    "title": "¡Feedback Enviado!",
+    "subtitle": "Esto es lo que DenLabs capturó de tu señal",
+    "signals": {
+      "title": "Señales Capturadas",
+      "tags": "Etiquetas Detectadas",
+      "priority": "Prioridad Estimada",
+      "quality": "Score de Calidad"
+    },
+    "meaning": {
+      "title": "Qué significa esto para los hosts",
+      "description": "Los organizadores de eventos ven este análisis en su panel. Pueden priorizar feedback rápidamente, filtrar por etiquetas y exportar insights en un retro pack para su equipo."
+    },
+    "nextSteps": {
+      "title": "¿Qué sigue?",
+      "dashboard": {
+        "title": "Ver Panel del Host",
+        "description": "Mira cómo los organizadores gestionan feedback"
+      },
+      "create": {
+        "title": "Crea Tu Propio Lab",
+        "description": "Empieza a recolectar feedback para tu evento"
+      },
+      "another": "Enviar otro feedback demo"
+    },
+    "noFeedback": {
+      "title": "No se encontró feedback",
+      "description": "Parece que aún no has enviado ningún feedback demo.",
+      "cta": "Ir al Demo"
+    },
+    "backToDemo": "← Volver al Demo Hub"
+  },
   "HomeLanding": {
     "navbar": {
       "logo": "DenLabs",
