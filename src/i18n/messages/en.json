@@ -746,7 +746,8 @@
         "capabilities": "Components",
         "howItWorks": "How It Works",
         "faq": "FAQ",
-        "console": "Console"
+        "signIn": "Sign In",
+        "dashboard": "Dashboard"
       },
       "aria": {
         "navigation": "Main navigation",
@@ -761,8 +762,8 @@
         "label": "Powered by"
       },
       "primaryCta": {
-        "label": "Create Your Lab",
-        "href": "/labs/create"
+        "label": "Get Started",
+        "labelAuth": "Go to Dashboard"
       },
       "secondaryCta": {
         "label": "Try Demo",
