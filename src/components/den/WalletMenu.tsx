@@ -5,7 +5,7 @@ import { JsonRpcProvider } from "ethers";
 import {
   Check,
   Copy,
-  LayoutDashboard,
+  Home,
   LogOut,
   Settings,
   ShieldCheck,
@@ -147,9 +147,9 @@ export function WalletMenu() {
             href="/dashboard"
             className="flex items-center gap-3 cursor-pointer"
           >
-            <LayoutDashboard className="h-4 w-4 text-[#8bea4e]" />
+            <Home className="h-4 w-4 text-[#8bea4e]" />
             <span className="text-[0.8rem]">
-              {t("sidebar.laboratory.dashboard")}
+              {t("sidebar.laboratory.home")}
             </span>
           </Link>
         </DropdownMenuItem>
