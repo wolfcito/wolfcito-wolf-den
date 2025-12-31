@@ -1414,6 +1414,7 @@
       "tokenLoading": "Cargando detalles del token...",
       "tokenResolved": "{symbol} detectado · {decimals} decimales",
       "payWithLabel": "Pagar con",
+      "customTokenLabel": "Token personalizado",
       "trustedTokenPlaceholder": "Elige un token o usa personalizado",
       "useCustom": "Usar personalizado",
       "recipientLabel": "Wallet destinataria #{index}",
