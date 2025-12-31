@@ -51,19 +51,16 @@ export default function LabsPage() {
                 aria-hidden="true"
               />
             </div>
-            <h1 className="text-3xl font-semibold text-white">
-              Your Event Labs
-            </h1>
+            <h1 className="text-3xl font-semibold text-white">My Labs</h1>
           </div>
           <p className="text-sm text-white/70">
-            Create feedback labs for events, demos, and launches
+            Create and manage feedback for your events.
           </p>
         </div>
 
         <Link href="/labs/create">
           <Button className="bg-wolf-emerald text-black hover:bg-wolf-emerald/90">
-            <Plus className="mr-2 h-4 w-4" />
-            Create New Lab
+            <Plus className="mr-2 h-4 w-4" />+ New Lab
           </Button>
         </Link>
       </div>
