@@ -737,7 +737,8 @@
         "capabilities": "Componentes",
         "howItWorks": "Cómo Funciona",
         "faq": "Preguntas Frecuentes",
-        "console": "Consola"
+        "signIn": "Iniciar Sesión",
+        "dashboard": "Panel"
       },
       "aria": {
         "navigation": "Navegación principal",
@@ -752,8 +753,8 @@
         "label": "Impulsado por"
       },
       "primaryCta": {
-        "label": "Crea Tu Lab",
-        "href": "/labs/create"
+        "label": "Comenzar",
+        "labelAuth": "Ir al Panel"
       },
       "secondaryCta": {
         "label": "Probar Demo",
