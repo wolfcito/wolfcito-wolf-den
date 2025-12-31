@@ -20,7 +20,6 @@ import {
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-import { DemoChooser } from "@/components/demo/DemoChooser";
 import { Link } from "@/i18n/routing";
 import { fetchUserSession } from "@/lib/userClient";
 
@@ -32,7 +31,6 @@ export default function HomeLanding() {
   const [finalCtaHref, setFinalCtaHref] = useState("/access");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeFAQ, setActiveFAQ] = useState<number | null>(null);
-  const [isDemoChooserOpen, setIsDemoChooserOpen] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -235,13 +233,12 @@ export default function HomeLanding() {
                 </span>
                 <ArrowRight className="h-5 w-5" />
               </Link>
-              <button
-                type="button"
-                onClick={() => setIsDemoChooserOpen(true)}
+              <Link
+                href="/labs/demo"
                 className="inline-flex items-center gap-3 rounded-xl border border-white/20 bg-white/5 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition hover:border-white/30 hover:bg-white/10"
               >
                 <span>{t("hero.secondaryCta.label")}</span>
-              </button>
+              </Link>
             </div>
 
             {/* Trust row */}
@@ -596,12 +593,6 @@ export default function HomeLanding() {
           </div>
         </footer>
       </main>
-
-      {/* Demo Chooser Modal */}
-      <DemoChooser
-        isOpen={isDemoChooserOpen}
-        onClose={() => setIsDemoChooserOpen(false)}
-      />
     </div>
   );
 }
