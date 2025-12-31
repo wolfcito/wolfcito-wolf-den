@@ -8,7 +8,6 @@ import {
   FlaskConical,
   Home,
   Library,
-  UsersRound,
 } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
@@ -41,7 +40,6 @@ const laboratoryNavigation = [
 const toolsNavigation = [
   { key: "spray", href: "/spray", icon: Droplets },
   { key: "gooddollar", href: "/gooddollar", icon: BadgeDollarSign },
-  { key: "mentors", href: "/mentors", icon: UsersRound },
 ] as const;
 
 // Library navigation items (LIBRARY section)
