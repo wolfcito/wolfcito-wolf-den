@@ -1,29 +1,24 @@
 "use client";
 
-import { BadgeDollarSign, Droplets, UserCircle } from "lucide-react";
+import { Droplets, FlaskConical, Home, Library } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { type ReactNode, useMemo } from "react";
 import LimelightNav from "@/components/ui/LimelightNav";
 import { usePathname, useRouter } from "@/i18n/routing";
 
-type NavigationItemKey = "profile" | "spray" | "gooddollar";
+type NavigationItemKey = "home" | "myLabs" | "spray" | "library";
 
 type NavigationItemConfig = {
   key: NavigationItemKey;
-  icon: typeof UserCircle;
-  labelKey: string;
+  icon: typeof Home;
   href: string;
 };
 
 const navigationItems: NavigationItemConfig[] = [
-  {
-    key: "gooddollar",
-    icon: BadgeDollarSign,
-    labelKey: "tabs.gooddollar",
-    href: "/gooddollar",
-  },
-  { key: "spray", icon: Droplets, labelKey: "tabs.spray", href: "/spray" },
-  { key: "profile", icon: UserCircle, labelKey: "tabs.profile", href: "/lab" },
+  { key: "library", icon: Library, href: "/library" },
+  { key: "spray", icon: Droplets, href: "/spray" },
+  { key: "myLabs", icon: FlaskConical, href: "/labs" },
+  { key: "home", icon: Home, href: "/dashboard" },
 ];
 
 type MobileDenLayoutProps = {
@@ -31,24 +26,36 @@ type MobileDenLayoutProps = {
 };
 
 export function MobileDenLayout({ main }: MobileDenLayoutProps) {
-  const t = useTranslations("MobileDenLayout");
+  const t = useTranslations();
+  const tNav = useTranslations("MobileDenLayout");
   const pathname = usePathname();
   const router = useRouter();
+
+  const getLabel = (key: NavigationItemKey) => {
+    const sectionMap: Record<NavigationItemKey, string> = {
+      home: "sidebar.laboratory.home",
+      myLabs: "sidebar.laboratory.myLabs",
+      spray: "sidebar.tools.spray",
+      library: "sidebar.library.browse",
+    };
+    return t(sectionMap[key]);
+  };
+
   const navItems = useMemo(() => {
-    return navigationItems.map(({ key, icon: Icon, labelKey }) => ({
+    return navigationItems.map(({ key, icon: Icon }) => ({
       id: key,
       icon: <Icon className="h-5 w-5" aria-hidden />,
-      label: t(labelKey),
+      label: getLabel(key),
     }));
   }, [t]);
   const activeKey = useMemo(() => {
     if (!pathname) {
-      return "profile";
+      return "library";
     }
     const match = navigationItems.find(
       (item) => pathname === item.href || pathname.startsWith(`${item.href}/`),
     );
-    return match?.key ?? "profile";
+    return match?.key ?? "library";
   }, [pathname]);
   const activeIndex = navigationItems.findIndex(
     (item) => item.key === activeKey,
@@ -79,7 +86,7 @@ export function MobileDenLayout({ main }: MobileDenLayoutProps) {
             }}
             className="w-full"
             iconContainerClassName="rounded-2xl"
-            aria-label={t("aria.navigation")}
+            aria-label={tNav("aria.navigation")}
           />
         </div>
       </nav>
