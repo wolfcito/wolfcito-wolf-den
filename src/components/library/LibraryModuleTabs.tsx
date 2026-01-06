@@ -1,6 +1,13 @@
 "use client";
 
-import { Book, BookOpen, FileText, Lightbulb, Shield } from "lucide-react";
+import {
+  ArrowLeft,
+  Book,
+  BookOpen,
+  FileText,
+  Lightbulb,
+  Shield,
+} from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
 import { Suspense } from "react";
@@ -46,8 +53,16 @@ function LibraryModuleTabsContent({
 
   return (
     <div className="space-y-6">
-      {/* Tab Navigation */}
-      <nav className="flex gap-1 border-b border-wolf-border">
+      {/* Back Button + Tab Navigation */}
+      <nav className="flex items-center gap-1 border-b border-wolf-border">
+        <Link
+          href="/library"
+          className="flex items-center gap-2 px-3 py-3 text-sm font-medium text-white/50 transition-colors hover:text-white"
+        >
+          <ArrowLeft className="h-4 w-4" aria-hidden />
+          <span className="sr-only md:not-sr-only">Library</span>
+        </Link>
+        <span className="h-6 w-px bg-wolf-border" />
         {TABS.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.key;
