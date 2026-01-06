@@ -121,9 +121,9 @@ export default function A2APage() {
                     {t("capabilities.available")}
                   </p>
                   <ul className="space-y-1">
-                    {capabilities.capabilities.map((capability, index) => (
+                    {capabilities.capabilities.map((capability) => (
                       <li
-                        key={index}
+                        key={capability}
                         className="flex items-start gap-2 text-sm text-white/80"
                       >
                         <span className="text-wolf-emerald">✓</span>
