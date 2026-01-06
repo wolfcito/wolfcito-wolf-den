@@ -133,14 +133,6 @@ export default function LibraryIndexPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h2 className="text-2xl font-semibold text-white">Browse Library</h2>
-        <p className="mt-1 text-sm text-white/60">
-          Explore modules, integrations, and experimental features
-        </p>
-      </div>
-
       {/* Category Filters */}
       <div className="flex flex-wrap gap-2">
         <button
