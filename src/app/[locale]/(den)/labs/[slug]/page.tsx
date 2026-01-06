@@ -211,9 +211,9 @@ export default function LabDetailPage({
         <div className="rounded-lg border border-white/10 bg-white/[0.03] p-4">
           <p className="text-sm font-medium text-white">Surfaces to Observe</p>
           <div className="mt-2 flex flex-wrap gap-2">
-            {lab.surfaces_to_observe.map((surface, index) => (
+            {lab.surfaces_to_observe.map((surface) => (
               <span
-                key={index}
+                key={surface}
                 className="rounded-md bg-white/5 px-2.5 py-1 text-sm text-white/70"
               >
                 {surface}

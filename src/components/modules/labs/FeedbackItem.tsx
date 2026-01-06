@@ -14,6 +14,7 @@ import type {
   FeedbackItem as FeedbackItemType,
   FeedbackPriority,
   FeedbackStatus,
+  TrustScore,
 } from "@/lib/eventLabs";
 import { updateFeedback } from "@/lib/eventLabsClient";
 
@@ -130,7 +131,7 @@ export function FeedbackItem({
             <TrustIndicator
               trustScore={{
                 score: feedback.trust_score,
-                flags: feedback.trust_flags as any,
+                flags: feedback.trust_flags as TrustScore["flags"],
                 risk_level:
                   feedback.trust_score >= 80
                     ? "trusted"
@@ -213,9 +214,9 @@ export function FeedbackItem({
           </div>
           {feedback.tags &&
             feedback.tags.length > 0 &&
-            feedback.tags.map((tag, index) => (
+            feedback.tags.map((tag) => (
               <div
-                key={index}
+                key={tag}
                 className="flex items-center gap-1 rounded-md bg-white/5 px-2 py-0.5 text-xs text-white/60"
               >
                 <Tag className="h-3 w-3" aria-hidden="true" />

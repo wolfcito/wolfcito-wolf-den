@@ -37,19 +37,43 @@ function analyzeFeedback(feedback: DemoFeedback): CapturedSignals {
 
   // Determine tags based on content and type
   const tags: string[] = [];
-  if (feedback.type === "bug" || content.includes("bug") || content.includes("error") || content.includes("broken")) {
+  if (
+    feedback.type === "bug" ||
+    content.includes("bug") ||
+    content.includes("error") ||
+    content.includes("broken")
+  ) {
     tags.push("Bug");
   }
-  if (feedback.type === "improvement" || content.includes("improve") || content.includes("better") || content.includes("could")) {
+  if (
+    feedback.type === "improvement" ||
+    content.includes("improve") ||
+    content.includes("better") ||
+    content.includes("could")
+  ) {
     tags.push("Feature Request");
   }
-  if (feedback.type === "praise" || content.includes("love") || content.includes("great") || content.includes("awesome")) {
+  if (
+    feedback.type === "praise" ||
+    content.includes("love") ||
+    content.includes("great") ||
+    content.includes("awesome")
+  ) {
     tags.push("Praise");
   }
-  if (content.includes("ui") || content.includes("ux") || content.includes("design") || content.includes("interface")) {
+  if (
+    content.includes("ui") ||
+    content.includes("ux") ||
+    content.includes("design") ||
+    content.includes("interface")
+  ) {
     tags.push("UX");
   }
-  if (content.includes("slow") || content.includes("fast") || content.includes("performance")) {
+  if (
+    content.includes("slow") ||
+    content.includes("fast") ||
+    content.includes("performance")
+  ) {
     tags.push("Performance");
   }
   if (tags.length === 0) {
@@ -58,17 +82,36 @@ function analyzeFeedback(feedback: DemoFeedback): CapturedSignals {
 
   // Determine priority
   let priority: "Low" | "Medium" | "High" = "Medium";
-  if (content.includes("critical") || content.includes("urgent") || content.includes("broken") || content.includes("can't")) {
+  if (
+    content.includes("critical") ||
+    content.includes("urgent") ||
+    content.includes("broken") ||
+    content.includes("can't")
+  ) {
     priority = "High";
-  } else if (content.includes("minor") || content.includes("small") || content.includes("nice to have")) {
+  } else if (
+    content.includes("minor") ||
+    content.includes("small") ||
+    content.includes("nice to have")
+  ) {
     priority = "Low";
   }
 
   // Determine sentiment
   let sentiment: "positive" | "neutral" | "constructive" = "neutral";
-  if (feedback.type === "praise" || content.includes("love") || content.includes("great") || content.includes("amazing")) {
+  if (
+    feedback.type === "praise" ||
+    content.includes("love") ||
+    content.includes("great") ||
+    content.includes("amazing")
+  ) {
     sentiment = "positive";
-  } else if (feedback.type === "bug" || content.includes("fix") || content.includes("issue") || content.includes("problem")) {
+  } else if (
+    feedback.type === "bug" ||
+    content.includes("fix") ||
+    content.includes("issue") ||
+    content.includes("problem")
+  ) {
     sentiment = "constructive";
   }
 
@@ -76,7 +119,10 @@ function analyzeFeedback(feedback: DemoFeedback): CapturedSignals {
   const lengthScore = Math.min(40, feedback.content.length / 5);
   const structureScore = feedback.content.includes(".") ? 20 : 10;
   const typeBonus = feedback.type !== "general" ? 15 : 0;
-  const qualityScore = Math.min(100, Math.round(lengthScore + structureScore + typeBonus + 25));
+  const qualityScore = Math.min(
+    100,
+    Math.round(lengthScore + structureScore + typeBonus + 25),
+  );
 
   return { tags, priority, qualityScore, sentiment };
 }
@@ -118,8 +164,12 @@ export default function DemoCompletePage() {
     return (
       <div className="mx-auto max-w-2xl px-4 py-16 text-center">
         <FlaskConical className="mx-auto mb-4 h-12 w-12 text-white/30" />
-        <h1 className="mb-2 text-xl font-bold text-white">{t("noFeedback.title")}</h1>
-        <p className="mb-6 text-sm text-white/60">{t("noFeedback.description")}</p>
+        <h1 className="mb-2 text-xl font-bold text-white">
+          {t("noFeedback.title")}
+        </h1>
+        <p className="mb-6 text-sm text-white/60">
+          {t("noFeedback.description")}
+        </p>
         <Link
           href="/labs/demo/participant"
           className="inline-flex items-center gap-2 rounded-xl bg-[#baff5c] px-6 py-3 font-semibold text-[#09140a] transition hover:bg-[#89e24a]"
@@ -131,12 +181,16 @@ export default function DemoCompletePage() {
     );
   }
 
-  const SentimentIcon = signals ? SENTIMENT_ICONS[signals.sentiment] : Lightbulb;
+  const SentimentIcon = signals
+    ? SENTIMENT_ICONS[signals.sentiment]
+    : Lightbulb;
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
       {/* Success Header */}
-      <div className={`mb-8 text-center ${showAnimation ? "animate-pulse" : ""}`}>
+      <div
+        className={`mb-8 text-center ${showAnimation ? "animate-pulse" : ""}`}
+      >
         <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full border border-[#baff5c]/30 bg-[#baff5c]/10">
           <CheckCircle2 className="h-8 w-8 text-[#baff5c]" />
         </div>
@@ -157,7 +211,9 @@ export default function DemoCompletePage() {
             <div className="flex items-start gap-3">
               <Tag className="mt-0.5 h-4 w-4 flex-shrink-0 text-white/40" />
               <div>
-                <p className="mb-1 text-xs text-white/50">{t("signals.tags")}</p>
+                <p className="mb-1 text-xs text-white/50">
+                  {t("signals.tags")}
+                </p>
                 <div className="flex flex-wrap gap-2">
                   {signals.tags.map((tag) => (
                     <span
@@ -175,7 +231,9 @@ export default function DemoCompletePage() {
             <div className="flex items-start gap-3">
               <AlertTriangle className="mt-0.5 h-4 w-4 flex-shrink-0 text-white/40" />
               <div>
-                <p className="mb-1 text-xs text-white/50">{t("signals.priority")}</p>
+                <p className="mb-1 text-xs text-white/50">
+                  {t("signals.priority")}
+                </p>
                 <span
                   className={`inline-flex rounded-full border px-3 py-1 text-xs font-medium ${PRIORITY_STYLES[signals.priority]}`}
                 >
@@ -188,7 +246,9 @@ export default function DemoCompletePage() {
             <div className="flex items-start gap-3">
               <SentimentIcon className="mt-0.5 h-4 w-4 flex-shrink-0 text-white/40" />
               <div className="flex-1">
-                <p className="mb-1 text-xs text-white/50">{t("signals.quality")}</p>
+                <p className="mb-1 text-xs text-white/50">
+                  {t("signals.quality")}
+                </p>
                 <div className="flex items-center gap-3">
                   <div className="h-2 flex-1 overflow-hidden rounded-full bg-white/10">
                     <div
@@ -229,8 +289,12 @@ export default function DemoCompletePage() {
             <div className="flex items-center gap-3">
               <LayoutDashboard className="h-5 w-5 text-[#baff5c]" />
               <div>
-                <p className="font-medium text-white">{t("nextSteps.dashboard.title")}</p>
-                <p className="text-xs text-white/60">{t("nextSteps.dashboard.description")}</p>
+                <p className="font-medium text-white">
+                  {t("nextSteps.dashboard.title")}
+                </p>
+                <p className="text-xs text-white/60">
+                  {t("nextSteps.dashboard.description")}
+                </p>
               </div>
             </div>
             <ArrowRight className="h-5 w-5 text-[#baff5c]" />
@@ -244,8 +308,12 @@ export default function DemoCompletePage() {
             <div className="flex items-center gap-3">
               <Plus className="h-5 w-5 text-white/60" />
               <div>
-                <p className="font-medium text-white">{t("nextSteps.create.title")}</p>
-                <p className="text-xs text-white/60">{t("nextSteps.create.description")}</p>
+                <p className="font-medium text-white">
+                  {t("nextSteps.create.title")}
+                </p>
+                <p className="text-xs text-white/60">
+                  {t("nextSteps.create.description")}
+                </p>
               </div>
             </div>
             <ArrowRight className="h-5 w-5 text-white/40" />
@@ -264,7 +332,10 @@ export default function DemoCompletePage() {
 
       {/* Back to Demo Hub */}
       <p className="text-center">
-        <Link href="/labs/demo" className="text-sm text-white/50 hover:text-white/70">
+        <Link
+          href="/labs/demo"
+          className="text-sm text-white/50 hover:text-white/70"
+        >
           {t("backToDemo")}
         </Link>
       </p>

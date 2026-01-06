@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { TrustIndicator } from "@/components/ui/TrustIndicator";
 import { Textarea } from "@/components/ui/textarea";
-import type { CreateFeedbackPayload } from "@/lib/eventLabs";
+import type { CreateFeedbackPayload, TrustScore } from "@/lib/eventLabs";
 import { createFeedback } from "@/lib/eventLabsClient";
 
 interface FeedbackFormProps {
@@ -17,7 +17,7 @@ export function FeedbackForm({ labSlug, onSuccess }: FeedbackFormProps) {
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [lastTrustScore, setLastTrustScore] = useState<any>(null);
+  const [lastTrustScore, setLastTrustScore] = useState<TrustScore | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

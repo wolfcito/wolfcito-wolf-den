@@ -93,9 +93,9 @@ export function LabCard({ lab }: LabCardProps) {
               aria-hidden="true"
             />
             <div className="flex flex-wrap gap-1.5">
-              {lab.surfaces_to_observe.slice(0, 3).map((surface, index) => (
+              {lab.surfaces_to_observe.slice(0, 3).map((surface) => (
                 <span
-                  key={index}
+                  key={surface}
                   className="rounded-md bg-white/5 px-2 py-0.5 text-xs text-white/70"
                 >
                   {surface}

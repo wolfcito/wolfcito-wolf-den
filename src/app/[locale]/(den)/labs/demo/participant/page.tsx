@@ -95,7 +95,9 @@ export default function DemoParticipantPage() {
           <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#baff5c] text-xs font-bold text-black">
             <PenLine className="h-3.5 w-3.5" />
           </span>
-          <span className="text-sm font-medium text-white">{t("stepper.write")}</span>
+          <span className="text-sm font-medium text-white">
+            {t("stepper.write")}
+          </span>
         </div>
         <div className="h-px w-8 bg-white/20" />
         <div className="flex items-center gap-2">
@@ -152,9 +154,7 @@ export default function DemoParticipantPage() {
           />
           <div className="mt-2 flex items-center justify-between text-xs text-white/40">
             <span>{t("helper")}</span>
-            <span
-              className={charsRemaining < 100 ? "text-yellow-400" : ""}
-            >
+            <span className={charsRemaining < 100 ? "text-yellow-400" : ""}>
               {charsRemaining} {t("charsRemaining")}
             </span>
           </div>

@@ -84,7 +84,9 @@ export default function DemoHubPage() {
           <LayoutDashboard className="h-5 w-5" />
           {t("cta.secondary")}
           {!isAuthenticated && (
-            <span className="text-xs text-white/50">({t("cta.loginRequired")})</span>
+            <span className="text-xs text-white/50">
+              ({t("cta.loginRequired")})
+            </span>
           )}
         </Link>
       </div>

@@ -12,6 +12,7 @@ import { PaymentConfirmModal } from "@/components/modules/x402/PaymentConfirmMod
 import { Button } from "@/components/ui/button";
 import { TrustIndicator } from "@/components/ui/TrustIndicator";
 import { useX402Fetch } from "@/hooks/useX402Fetch";
+import type { TrustScore } from "@/lib/eventLabs";
 import type { RetroPack } from "@/lib/retroPack";
 import { PRICING } from "@/lib/x402";
 
@@ -118,7 +119,13 @@ export function RetroPackView({ labSlug, retro }: RetroPackViewProps) {
               className="text-red-400 hover:text-red-300"
             >
               <span className="sr-only">Dismiss</span>
-              <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <svg
+                className="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <title>Dismiss</title>
                 <path
                   fillRule="evenodd"
                   d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -265,7 +272,7 @@ export function RetroPackView({ labSlug, retro }: RetroPackViewProps) {
                       <TrustIndicator
                         trustScore={{
                           score: item.trust_score,
-                          flags: item.trust_flags as any,
+                          flags: item.trust_flags as TrustScore["flags"],
                           risk_level:
                             item.trust_score >= 80
                               ? "trusted"
@@ -301,9 +308,9 @@ export function RetroPackView({ labSlug, retro }: RetroPackViewProps) {
           </h3>
           <div className="rounded-lg border border-white/10 bg-white/[0.03] p-4">
             <div className="space-y-2">
-              {retro.dropoff_points.map((point, index) => (
+              {retro.dropoff_points.map((point) => (
                 <div
-                  key={index}
+                  key={point.route}
                   className="flex items-center justify-between rounded-md bg-white/[0.02] px-3 py-2"
                 >
                   <span className="text-sm text-white/80">{point.route}</span>
@@ -325,9 +332,9 @@ export function RetroPackView({ labSlug, retro }: RetroPackViewProps) {
           </h3>
           <div className="rounded-lg border border-wolf-emerald/20 bg-wolf-emerald/5 p-4">
             <ul className="space-y-2">
-              {retro.recommendations.map((rec, index) => (
+              {retro.recommendations.map((rec) => (
                 <li
-                  key={index}
+                  key={rec}
                   className="flex items-start gap-2 text-sm text-white/90"
                 >
                   <span className="text-wolf-emerald">•</span>
