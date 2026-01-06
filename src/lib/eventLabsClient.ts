@@ -5,6 +5,7 @@ import type {
   EventTrackingPayload,
   FeedbackItem,
   TelemetryData,
+  TrustScore,
   UpdateEventLabPayload,
   UpdateFeedbackPayload,
 } from "./eventLabs";
@@ -94,7 +95,7 @@ export async function deleteEventLab(slug: string): Promise<void> {
 export async function createFeedback(
   slug: string,
   payload: CreateFeedbackPayload,
-): Promise<{ feedback: FeedbackItem; trust_score: unknown }> {
+): Promise<{ feedback: FeedbackItem; trust_score: TrustScore }> {
   const response = await fetch(`/api/labs/${slug}/feedback`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

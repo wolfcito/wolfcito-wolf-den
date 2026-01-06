@@ -24,11 +24,14 @@ export const useGoodDollar = () => {
 
     const walletClient = createWalletClient({
       chain: celo,
+      // biome-ignore lint/suspicious/noExplicitAny: SDK requires EIP-1193 provider type
       transport: custom(walletProvider as any),
     });
 
     const rewards = new EngagementRewardsSDK(
+      // biome-ignore lint/suspicious/noExplicitAny: SDK type mismatch with viem clients
       publicClient as any,
+      // biome-ignore lint/suspicious/noExplicitAny: SDK type mismatch with viem clients
       walletClient as any,
       REWARDS_CONTRACT_ADDRESS,
     );
