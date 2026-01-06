@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, type ReactNode, useContext, useState } from "react";
+import {
+  cloneElement,
+  createContext,
+  type ReactNode,
+  useContext,
+  useState,
+} from "react";
 import { cn } from "@/lib/utils";
 
 const DropdownContext = createContext<{
@@ -32,17 +38,23 @@ export function DropdownMenuTrigger({
     setIsOpen(!isOpen);
   };
 
-  if (
-    asChild &&
-    typeof children === "object" &&
-    children !== null &&
-    "props" in children
-  ) {
-    const child = children as React.ReactElement;
-    return <div onClick={handleClick}>{child}</div>;
+  if (asChild && typeof children === "object" && children !== null) {
+    const child = children as React.ReactElement<{
+      onClick?: React.MouseEventHandler;
+    }>;
+    return cloneElement(child, {
+      onClick: (e: React.MouseEvent) => {
+        child.props.onClick?.(e);
+        handleClick(e);
+      },
+    });
   }
 
-  return <div onClick={handleClick}>{children}</div>;
+  return (
+    <button type="button" onClick={handleClick} className="appearance-none">
+      {children}
+    </button>
+  );
 }
 
 export function DropdownMenuContent({
@@ -66,7 +78,12 @@ export function DropdownMenuContent({
 
   return (
     <>
-      <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
+      <button
+        type="button"
+        className="fixed inset-0 z-40 cursor-default bg-transparent"
+        onClick={() => setIsOpen(false)}
+        aria-label="Close menu"
+      />
       <div
         className={cn(
           "absolute top-full z-50 mt-2 min-w-[160px] rounded-lg border border-white/10 bg-black/95 p-1 shadow-lg",
@@ -98,18 +115,18 @@ export function DropdownMenuItem({
     setIsOpen(false);
   };
 
-  if (
-    asChild &&
-    typeof children === "object" &&
-    children !== null &&
-    "props" in children
-  ) {
-    const child = children as React.ReactElement;
-    return (
-      <div onClick={handleClick} className={cn("w-full", className)}>
-        {child}
-      </div>
-    );
+  if (asChild && typeof children === "object" && children !== null) {
+    const child = children as React.ReactElement<{
+      onClick?: React.MouseEventHandler;
+      className?: string;
+    }>;
+    return cloneElement(child, {
+      onClick: (e: React.MouseEvent) => {
+        child.props.onClick?.(e);
+        handleClick();
+      },
+      className: cn(child.props.className, className),
+    });
   }
 
   return (
