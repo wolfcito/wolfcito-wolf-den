@@ -156,6 +156,14 @@ export function sanitizeLabName(value: unknown): string | null {
   return trimmed;
 }
 
+export function sanitizeObjective(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  if (trimmed.length === 0) return null;
+  if (trimmed.length > 500) return null;
+  return trimmed;
+}
+
 export function sanitizeTags(value: unknown): string[] {
   if (!Array.isArray(value)) return [];
   return value

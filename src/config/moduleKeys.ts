@@ -23,6 +23,7 @@ export interface ModuleConfig {
  */
 export const MODULE_KEYS: Record<string, ModuleConfig> = {
   // Laboratory
+  "/lab": { section: "laboratory", module: "profile" },
   "/dashboard": { section: "laboratory", module: "home" },
   "/labs": { section: "laboratory", module: "myLabs" },
   "/labs/create": {
@@ -79,6 +80,7 @@ export const MODULE_KEYS: Record<string, ModuleConfig> = {
  */
 export const MODULE_STATUS: Record<string, ModuleStatus> = {
   // Laboratory
+  profile: "ready",
   home: "ready",
   myLabs: "ready",
 

@@ -23,6 +23,7 @@ import {
   parseEther,
   parseUnits,
 } from "ethers";
+import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -1732,6 +1733,12 @@ export default function SprayDisperser() {
                     disabled={ctaDisabled}
                     className="ml-auto inline-flex items-center gap-3 rounded-xl border border-[#4ca22a] bg-[#89e24a] px-6 py-3 text-[0.75rem] font-semibold uppercase text-[#09140a] shadow-[0_0_20px_rgba(186,255,92,0.35)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_40px_rgba(186,255,92,0.45)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#baff5c] disabled:translate-y-0 disabled:border-wolf-border disabled:bg-wolf-border disabled:text-white/40 disabled:shadow-none"
                   >
+                    {isSubmitting && (
+                      <Loader2
+                        className="h-4 w-4 animate-spin"
+                        aria-hidden="true"
+                      />
+                    )}
                     <span>
                       {isSubmitting
                         ? t("actions.submitting")

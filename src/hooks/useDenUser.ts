@@ -19,7 +19,6 @@ export type DenUser = {
   isAdmin: boolean;
   isAuthenticated: boolean;
   hasProfile: boolean;
-  holdScore: number | null;
   handle?: string | null;
   displayName?: string | null;
   avatarUrl?: string | null;
@@ -29,19 +28,17 @@ export type DenUser = {
 export function useDenUser(): DenUser {
   const { address } = useAppKitAccount();
   const [selfVerified, setSelfVerified] = useState(false);
-  const [holdScore, setHoldScore] = useState<number | null>(null);
   const [session, setSession] = useState<UserSession | null>(null);
 
   const loadSession = async () => {
     try {
       const data = await fetchUserSession();
       setSession(data);
-      setHoldScore(data.holdScore ?? 0);
       // Prioritize local verification state over server state
       const localVerification = getSelfVerification();
       setSelfVerified(localVerification || data.isSelfVerified || false);
     } catch {
-      setHoldScore((previous) => previous ?? null);
+      // Session fetch failed, keep current state
     }
   };
 
@@ -56,14 +53,11 @@ export function useDenUser(): DenUser {
       .then((data) => {
         if (cancelled) return;
         setSession(data);
-        setHoldScore(data.holdScore ?? 0);
         const localVerification = getSelfVerification();
         setSelfVerified(localVerification || data.isSelfVerified || false);
       })
       .catch(() => {
-        if (!cancelled) {
-          setHoldScore((previous) => previous ?? null);
-        }
+        // Session fetch failed, keep current state
       });
     return () => {
       cancelled = true;
@@ -96,7 +90,6 @@ export function useDenUser(): DenUser {
     isAdmin: false,
     isAuthenticated,
     hasProfile,
-    holdScore,
     handle: session?.handle ?? null,
     displayName: session?.displayName ?? null,
     avatarUrl: session?.avatarUrl ?? null,

@@ -34,15 +34,8 @@ export default function LabOverview() {
   }, []);
 
   const hasLabs = labs.length > 0;
-  const holdScore = Number(user.holdScore ?? 0);
-  const holdMax = 120;
-  const holdProgress = Math.min(
-    100,
-    Math.max(0, Math.round((holdScore / holdMax) * 100)),
-  );
 
   const stats = [
-    { label: "HOWL score", value: holdScore.toString(), meta: "Out of 120" },
     { label: "Sessions", value: "3", meta: "This week" },
     { label: "Rewards", value: "2", meta: "Claimed" },
     { label: "Streak", value: "5 days", meta: "Check-ins" },
@@ -51,8 +44,8 @@ export default function LabOverview() {
   const quests = [
     {
       id: "self",
-      title: "Verify with Self (+10 HOLD)",
-      description: "Boost trust and unlock gated quests.",
+      title: "Verify with Self",
+      description: "Boost trust and unlock gated features.",
       href: `/verification`,
       status: user.selfVerified ? ("done" as const) : ("available" as const),
       actionLabel: user.selfVerified ? "Done" : "Start",
@@ -122,11 +115,7 @@ export default function LabOverview() {
       </section>
 
       <section className="grid gap-6 lg:grid-cols-2">
-        <LabStats
-          holdProgress={holdProgress}
-          holdScore={holdScore}
-          stats={stats}
-        />
+        <LabStats stats={stats} />
         <QuestList items={quests} />
       </section>
     </div>
@@ -184,12 +173,8 @@ function StatusBadge({ icon, label }: { icon?: ReactNode; label: string }) {
 }
 
 function LabStats({
-  holdProgress,
-  holdScore,
   stats,
 }: {
-  holdProgress: number;
-  holdScore: number;
   stats: Array<{ label: string; value: string; meta: string }>;
 }) {
   return (
@@ -197,18 +182,6 @@ function LabStats({
       <h2 className="text-xs font-semibold uppercase text-wolf-text-subtle">
         Stats
       </h2>
-      <div className="mt-4">
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-white/70">HOWL progress</span>
-          <span className="font-semibold text-[#89e24a]">{holdScore} pts</span>
-        </div>
-        <div className="mt-2 h-2 rounded-full bg-white/10">
-          <div
-            className="h-2 rounded-full bg-gradient-to-r from-[#89e24a] to-[#56f0d5] transition-all"
-            style={{ width: `${holdProgress}%` }}
-          />
-        </div>
-      </div>
       <div className="mt-4 space-y-3">
         {stats.map((stat) => (
           <div

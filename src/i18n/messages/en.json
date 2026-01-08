@@ -9,10 +9,6 @@
         "title": "Profile",
         "description": "My event lab."
       },
-      "quests": {
-        "title": "Quests",
-        "description": "Builder-made missions and automations that extend every event loop."
-      },
       "checkin": {
         "title": "Event Panel",
         "description": "Log attendance, capture wallets, and fire instant payouts."
@@ -97,10 +93,6 @@
         "title": "Games Lab",
         "description": "Interactive game engines and mechanics."
       },
-      "questsEngine": {
-        "title": "Quests Engine",
-        "description": "Mission and reward systems for builders."
-      },
       "attendanceTools": {
         "title": "Attendance Tools",
         "description": "Event check-in and tracking utilities."
@@ -128,7 +120,8 @@
     },
     "laboratory": {
       "home": "Home",
-      "myLabs": "My Labs"
+      "myLabs": "My Labs",
+      "profile": "Profile"
     },
     "tools": {
       "spray": "Spray",
@@ -142,7 +135,6 @@
       "agentNetwork": "Agent Network (A2A)",
       "eip3009Checker": "EIP-3009 Checker",
       "gamesLab": "Games Lab",
-      "questsEngine": "Quests Engine",
       "attendanceTools": "Attendance Tools",
       "votingSystem": "Voting System",
       "sponsorToolkit": "Sponsor Toolkit"
@@ -235,6 +227,12 @@
       "pending": "SELF: VERIFYING",
       "verified": "SELF: VERIFIED",
       "error": "SELF: ERROR"
+    },
+    "tooltips": {
+      "unverified": "Your identity has not been verified with SELF Protocol",
+      "pending": "Verification in progress. This may take a few moments",
+      "verified": "Your identity has been successfully verified with SELF Protocol",
+      "error": "Verification failed. Please try again"
     }
   },
   "StatusPill": {
@@ -303,11 +301,11 @@
     "selfHelper": "Admins, mentors, and ops must verify with Self before managing live experiences.",
     "qrAlt": "QR code for check-in",
     "cta": "Open Self app",
-    "footnote": "Every verified check-in adds HOWL and readies your wallet for on-chain perks.",
+    "footnote": "Every verified check-in readies your wallet for on-chain perks.",
     "wallet": {
       "title": "Wallet access",
       "description": "Connect a wallet to receive prizes, sprays, and follow-up drops.",
-      "helper": "Participants can start with a wallet. Add Self verification to unlock HOWL points and sponsor-trusted scores.",
+      "helper": "Participants can start with a wallet. Add Self verification to unlock sponsor-trusted scores.",
       "connect": "Connect wallet",
       "disconnect": "Disconnect",
       "connected": "Connected wallet",
@@ -325,7 +323,7 @@
       "registered": "Registered",
       "checkIn": "Check-in now",
       "checkedIn": "Checked in",
-      "checkedInHelper": "You’re counted in. HOWL points and rewards are ready.",
+      "checkedInHelper": "You're counted in. Rewards are ready.",
       "closed": "Registration closed.",
       "empty": "No upcoming events yet. Check back soon.",
       "status": {
@@ -432,10 +430,6 @@
       }
     ]
   },
-  "QuestsPage": {
-    "title": "Quest of the day",
-    "description": "Check in, share progress in Showcase, and ship evidence to earn HOWL points."
-  },
   "SprayPage": {
     "title": "Spray Rewards",
     "description": "Reward many wallets at once, in just one send."
@@ -444,7 +438,7 @@
     "title": "Demo Day",
     "actions": {
       "open": "Vote",
-      "locked": "Requires HOWL"
+      "locked": "Requires verification"
     },
     "demos": [
       {
@@ -466,23 +460,23 @@
         "status": "open"
       }
     ],
-    "footnote": "Voting requires Self verification and HOWL Wolf tier."
+    "footnote": "Voting requires Self verification."
   },
   "VotingPage": {
     "title": "Voting requirements",
-    "description": "You need Self verification and HOWL Wolf level to vote. Keep your streak active."
+    "description": "You need Self verification to vote. Keep your streak active."
   },
   "StatsPanel": {
     "hero": {
       "title": "Moon rewards",
-      "description": "Complete advanced quests and vote on Demo Day to unlock perks ahead of HOWL utility."
+      "description": "Vote on Demo Day and participate in events to unlock perks."
     },
     "metrics": {
       "title": "Metrics dashboard",
-      "description": "Track your momentum inside the pack and project your impact once HOWL launches.",
+      "description": "Track your momentum inside the pack and project your impact.",
       "items": [
         {
-          "label": "HOWL",
+          "label": "Score",
           "value": "1,280",
           "helper": "+120 this week"
         },
@@ -511,16 +505,16 @@
       {
         "id": "project-2",
         "name": "Pack Streams",
-        "oneLiner": "Live analytics for missions.",
+        "oneLiner": "Live analytics for events.",
         "repo": "github.com/wolf/streams",
         "demo": "wolfstreams.vercel.app"
       },
       {
         "id": "project-3",
-        "name": "HOWL Points",
+        "name": "Wolf Rewards",
         "oneLiner": "Gamified rewards for builders.",
-        "repo": "github.com/wolf/howl",
-        "demo": "howl.app"
+        "repo": "github.com/wolf/rewards",
+        "demo": "wolfrewards.app"
       }
     ]
   },
@@ -1145,15 +1139,6 @@
         "cta": {
           "label": "Highlight Sponsors",
           "href": "/showcase"
-        }
-      },
-      {
-        "id": "quests",
-        "title": "Builder Extensions",
-        "description": "Deploy quests and automations from the pack to stretch the event loop into ongoing builder momentum.",
-        "cta": {
-          "label": "Browse Quests",
-          "href": "/quests"
         }
       }
     ],

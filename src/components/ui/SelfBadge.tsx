@@ -7,6 +7,7 @@ import {
   ShieldQuestion,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./tooltip";
 
 interface SelfBadgeProps {
   status?: "unverified" | "pending" | "verified" | "error";
@@ -45,19 +46,24 @@ export function SelfBadge({
   const Icon = statusIcon[status];
 
   return (
-    <span
-      className={`${baseClasses} ${statusTone[status]} ${className}`.trim()}
-    >
-      <Icon
-        className={`h-4 w-4 ${
-          status === "pending" ? "animate-spin" : "animate-none"
-        }`}
-        aria-hidden
-      />
-      <span className="hidden sm:inline-block sm:truncate">
-        {t(`statuses.${status}`)}
-      </span>
-    </span>
+    <Tooltip>
+      <TooltipTrigger>
+        <span
+          className={`${baseClasses} ${statusTone[status]} ${className}`.trim()}
+        >
+          <Icon
+            className={`h-4 w-4 ${
+              status === "pending" ? "animate-spin" : "animate-none"
+            }`}
+            aria-hidden
+          />
+          <span className="hidden sm:inline-block sm:truncate">
+            {t(`statuses.${status}`)}
+          </span>
+        </span>
+      </TooltipTrigger>
+      <TooltipContent side="top">{t(`tooltips.${status}`)}</TooltipContent>
+    </Tooltip>
   );
 }
 

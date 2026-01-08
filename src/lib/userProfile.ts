@@ -10,7 +10,6 @@ export type LabUserProfile = {
   role: UserRole;
   wallet_address: string | null;
   self_verified: boolean;
-  hold_score: number;
   avatar_url?: string | null;
   created_at: string;
   updated_at: string;
@@ -30,7 +29,6 @@ export type WalletUpdatePayload = {
 
 export type SelfUpdatePayload = {
   id: string;
-  holdBonus?: number;
 };
 
 export const LAB_USER_COOKIE = "denlabs-user-id";

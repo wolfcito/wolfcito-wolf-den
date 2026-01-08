@@ -53,26 +53,11 @@ export async function PATCH(request: NextRequest) {
     });
   }
 
-  const bonus = payload.holdBonus ?? 10;
-
   try {
-    const { data: current, error: fetchError } = await supabaseAdmin
-      .from("lab_users")
-      .select("hold_score")
-      .eq("id", payload.id)
-      .single();
-
-    if (fetchError) {
-      throw fetchError;
-    }
-
-    const newScore = (current?.hold_score ?? 0) + bonus;
-
     const { data, error } = await supabaseAdmin
       .from("lab_users")
       .update({
         self_verified: true,
-        hold_score: newScore,
       })
       .eq("id", payload.id)
       .select("*")

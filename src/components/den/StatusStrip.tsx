@@ -10,7 +10,6 @@ import { MoonStar, ShieldCheck, ShieldQuestion, Wallet } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import ConnectWalletButton from "@/components/ui/ConnectWalletButton";
-import HowlBadge from "@/components/ui/HowlBadge";
 import SelfBadge from "@/components/ui/SelfBadge";
 import { useDenUser } from "@/hooks/useDenUser";
 import { cn } from "@/lib/utils";
@@ -58,7 +57,6 @@ export function StatusStrip({
   const walletAddress = user.walletAddress;
   const isSelfVerified = user.selfVerified;
   const isConnected = user.isBuilder;
-  const holdScore = user.holdScore;
   const isWalletOnly = variant === "wallet-only";
   const isIconsOnly = variant === "icons-only";
   const isCompactWallet = isWalletOnly || isIconsOnly;
@@ -282,11 +280,7 @@ export function StatusStrip({
       )}
       {isWalletOnly ? null : (
         <div className="order-2 w-full sm:order-1 sm:w-auto">
-          <div className="grid grid-cols-4 gap-2 sm:flex sm:items-center sm:gap-3">
-            <HowlBadge
-              score={holdScore}
-              className="w-full justify-center sm:w-auto sm:justify-start"
-            />
+          <div className="flex items-center gap-2 sm:gap-3">
             <SelfBadge
               status={isSelfVerified ? "verified" : "unverified"}
               className="w-full justify-center sm:w-auto sm:justify-start"

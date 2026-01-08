@@ -9,10 +9,6 @@
         "title": "Perfil",
         "description": "Mi laboratorio de eventos."
       },
-      "quests": {
-        "title": "Quests",
-        "description": "Misiones y automatizaciones creadas por builders que extienden cada evento."
-      },
       "checkin": {
         "title": "Panel de evento",
         "description": "Registra asistencia, captura wallets y dispara payouts al instante."
@@ -97,10 +93,6 @@
         "title": "Laboratorio de Juegos",
         "description": "Motores y mecánicas de juegos interactivos."
       },
-      "questsEngine": {
-        "title": "Motor de Quests",
-        "description": "Sistemas de misiones y recompensas para builders."
-      },
       "attendanceTools": {
         "title": "Herramientas de Asistencia",
         "description": "Utilidades de check-in y seguimiento de eventos."
@@ -121,14 +113,15 @@
   },
   "sidebar": {
     "sections": {
-      "laboratory": "Laboratory",
-      "tools": "Tools",
-      "library": "Library",
+      "laboratory": "Laboratorio",
+      "tools": "Herramientas",
+      "library": "Biblioteca",
       "account": "Cuenta"
     },
     "laboratory": {
-      "home": "Home",
-      "myLabs": "My Labs"
+      "home": "Inicio",
+      "myLabs": "Mis Labs",
+      "profile": "Perfil"
     },
     "tools": {
       "spray": "Spray",
@@ -136,13 +129,12 @@
       "eip3009": "EIP-3009"
     },
     "library": {
-      "browse": "Browse",
+      "browse": "Explorar",
       "trustScoring": "Trust Scoring (8004)",
       "premiumAccess": "Acceso Premium (x402)",
       "agentNetwork": "Red de Agentes (A2A)",
       "eip3009Checker": "EIP-3009 Checker",
       "gamesLab": "Laboratorio de Juegos",
-      "questsEngine": "Motor de Quests",
       "attendanceTools": "Herramientas de Asistencia",
       "votingSystem": "Sistema de Votación",
       "sponsorToolkit": "Kit de Patrocinio"
@@ -167,6 +159,15 @@
       "helper": ""
     },
     "sections": {
+      "product": {
+        "title": "Producto"
+      },
+      "laboratory": {
+        "title": "Laboratorio"
+      },
+      "library": {
+        "title": "Biblioteca"
+      },
       "lab": {
         "title": "Lab",
         "items": {
@@ -204,7 +205,7 @@
       }
     },
     "footer": {
-      "copy": "Ship fast. Play smarter."
+      "copy": "Envía rápido. Juega inteligente."
     }
   },
   "MobileDenLayout": {
@@ -226,6 +227,12 @@
       "pending": "SELF: VERIFICANDO",
       "verified": "SELF: VERIFICADO",
       "error": "SELF: ERROR"
+    },
+    "tooltips": {
+      "unverified": "Tu identidad no ha sido verificada con SELF Protocol",
+      "pending": "Verificación en progreso. Esto puede tomar unos momentos",
+      "verified": "Tu identidad ha sido verificada exitosamente con SELF Protocol",
+      "error": "La verificación falló. Por favor intenta de nuevo"
     }
   },
   "StatusPill": {
@@ -246,7 +253,7 @@
     "sections": {
       "activity": {
         "title": "Actividad",
-        "label": "Feed"
+        "label": "Novedades"
       },
       "recent": {
         "title": "Recientes",
@@ -294,11 +301,11 @@
     "selfHelper": "Admins, mentores y ops deben verificar con Self antes de administrar dinámicas en vivo.",
     "qrAlt": "Código QR para check-in",
     "cta": "Abrir app Self",
-    "footnote": "Cada check-in verificado suma HOWL y prepara tu wallet para perks on-chain.",
+    "footnote": "Cada check-in verificado prepara tu wallet para perks on-chain.",
     "wallet": {
       "title": "Acceso con wallet",
       "description": "Conecta una wallet para recibir premios, sprays y drops posteriores.",
-      "helper": "Las personas participantes pueden empezar con wallet. Suma Self para desbloquear puntos HOWL y métricas confiables para sponsors.",
+      "helper": "Las personas participantes pueden empezar con wallet. Suma Self para desbloquear métricas confiables para sponsors.",
       "connect": "Conectar wallet",
       "disconnect": "Desconectar",
       "connected": "Wallet conectada",
@@ -316,7 +323,7 @@
       "registered": "Registrado",
       "checkIn": "Hacer check-in",
       "checkedIn": "Check-in completado",
-      "checkedInHelper": "Ya estás contado. HOWL y recompensas listos.",
+      "checkedInHelper": "Ya estás contado. Recompensas listas.",
       "closed": "Registro cerrado.",
       "empty": "Aún no hay eventos próximos. Vuelve pronto.",
       "status": {
@@ -423,10 +430,6 @@
       }
     ]
   },
-  "QuestsPage": {
-    "title": "Misión del día",
-    "description": "Completa tu check-in, comparte progreso en Showcase y envía evidencia para sumar puntos HOWL."
-  },
   "SprayPage": {
     "title": "Consola Spray",
     "description": "Agrupa recompensas CELO o ERC20 en un solo lanzamiento coordinado."
@@ -435,7 +438,7 @@
     "title": "Demo Day",
     "actions": {
       "open": "Votar",
-      "locked": "Requiere HOWL"
+      "locked": "Requiere verificación"
     },
     "demos": [
       {
@@ -457,23 +460,23 @@
         "status": "open"
       }
     ],
-    "footnote": "Las votaciones requieren verificación Self y nivel HOWL Lobo."
+    "footnote": "Las votaciones requieren verificación Self."
   },
   "VotingPage": {
     "title": "Requisitos de votación",
-    "description": "Necesitas verificación Self y nivel HOWL Lobo para votar. Mantén tu streak activa."
+    "description": "Necesitas verificación Self para votar. Mantén tu streak activa."
   },
   "StatsPanel": {
     "hero": {
       "title": "Recompensas de la Luna",
-      "description": "Completa quests avanzadas y vota en Demo Day para desbloquear perks y preparar tu balance para HOWL."
+      "description": "Vota en Demo Day y participa en eventos para desbloquear perks."
     },
     "metrics": {
       "title": "Panel de métricas",
-      "description": "Revisa tu progreso dentro de la manada y proyecta tu impacto cuando llegue el token HOWL.",
+      "description": "Revisa tu progreso dentro de la manada y proyecta tu impacto.",
       "items": [
         {
-          "label": "HOWL",
+          "label": "Puntos",
           "value": "1,280",
           "helper": "+120 esta semana"
         },
@@ -502,16 +505,16 @@
       {
         "id": "project-2",
         "name": "Pack Streams",
-        "oneLiner": "Analítica de misiones en vivo.",
+        "oneLiner": "Analítica de eventos en vivo.",
         "repo": "github.com/wolf/streams",
         "demo": "wolfstreams.vercel.app"
       },
       {
         "id": "project-3",
-        "name": "HOWL Points",
+        "name": "Wolf Rewards",
         "oneLiner": "Recompensas gamificadas para builders.",
-        "repo": "github.com/wolf/howl",
-        "demo": "howl.app"
+        "repo": "github.com/wolf/rewards",
+        "demo": "wolfrewards.app"
       }
     ]
   },
@@ -683,15 +686,15 @@
   },
   "MindGamesPage": {
     "intro": {
-      "title": "Mines",
+      "title": "Minas",
       "description": "Flujos MVP de Mind Games. Mantén la estética original mientras agregamos lógica conectada a Self."
     },
     "summary": {
-      "balance": "Balance",
+      "balance": "Saldo",
       "profit": "Ganancia"
     },
     "controls": {
-      "mines": "Mines",
+      "mines": "Minas",
       "bet": "Monto a apostar",
       "start": "Iniciar",
       "cashout": "Retirar"
@@ -1072,7 +1075,7 @@
         },
         {
           "title": "Panel de operaciones unificado",
-          "description": "Las Ops Leads diseñan flujos, supervisan pools de premios y transmiten momentos épicos desde un único mission control."
+          "description": "Las Ops Leads diseñan flujos, supervisan pools de premios y transmiten momentos épicos desde un único centro de control."
         },
         {
           "title": "Loop de comunidad verificada",
@@ -1136,15 +1139,6 @@
         "cta": {
           "label": "Destacar patrocinio",
           "href": "/showcase"
-        }
-      },
-      {
-        "id": "quests",
-        "title": "Extensiones builder",
-        "description": "Despliega quests y automatizaciones de la manada para estirar el loop del evento en momentum builder continuo.",
-        "cta": {
-          "label": "Explorar quests",
-          "href": "/quests"
         }
       }
     ],

@@ -18,7 +18,6 @@ type WalletLoginResponse = {
   handle: string | null;
   hasProfile: boolean;
   isSelfVerified: boolean;
-  holdScore: number;
 };
 
 function normalizeWallet(address: `0x${string}`): `0x${string}` {
@@ -32,7 +31,6 @@ function buildResponse(user: LabUserProfile): WalletLoginResponse {
     handle: user.handle,
     hasProfile: Boolean(user.handle),
     isSelfVerified: Boolean(user.self_verified),
-    holdScore: Number(user.hold_score ?? 0),
   };
 }
 

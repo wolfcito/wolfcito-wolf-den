@@ -53,3 +53,9 @@ docs/
 
 # Allow README if needed in future
 !docs/README.md
+
+# Ralph agent system (CORE - do not commit to public repos)
+.agent-template/
+STOP_RALPH
+plan.md
+progress.md

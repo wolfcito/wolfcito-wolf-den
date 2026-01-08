@@ -43,8 +43,6 @@ const OBSERVABLE_ROUTES = [
   "/voting",
   "/showcase",
   "/mind-games",
-  "/missions",
-  "/quests",
   "/leaderboard",
   "/stats",
   "/settings",
@@ -306,9 +304,22 @@ export function LabForm({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="objective" className="text-white">
-          Objective <span className="text-white/40">(Optional)</span>
-        </Label>
+        <div className="flex items-center justify-between">
+          <Label htmlFor="objective" className="text-white">
+            Objective <span className="text-white/40">(Optional)</span>
+          </Label>
+          <span
+            className={`text-xs ${
+              formData.objective.length > 500
+                ? "text-red-400"
+                : formData.objective.length > 450
+                  ? "text-yellow-400"
+                  : "text-white/40"
+            }`}
+          >
+            {formData.objective.length} / 500
+          </span>
+        </div>
         <Textarea
           id="objective"
           value={formData.objective}
@@ -317,11 +328,18 @@ export function LabForm({
           }
           placeholder="e.g., Test onboarding flow for new users"
           rows={3}
+          maxLength={500}
           className="bg-white/5 border-white/10 text-white placeholder:text-white/40 resize-none"
         />
-        <p className="text-xs text-white/60">
-          What are you trying to learn from this lab?
-        </p>
+        {formData.objective.length > 500 ? (
+          <p className="text-xs text-red-400">
+            Objective cannot exceed 500 characters
+          </p>
+        ) : (
+          <p className="text-xs text-white/60">
+            What are you trying to learn from this lab?
+          </p>
+        )}
       </div>
 
       <div className="space-y-2">
@@ -416,11 +434,11 @@ export function LabForm({
         </div>
       )}
 
-      <div className="flex gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row">
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="bg-wolf-emerald text-black hover:bg-wolf-emerald/90"
+          className="w-full bg-wolf-emerald text-black hover:bg-wolf-emerald/90 sm:w-auto"
         >
           {isSubmitting ? (
             <>
@@ -440,7 +458,7 @@ export function LabForm({
             variant="outline"
             onClick={onCancel}
             disabled={isSubmitting}
-            className="border-white/10 bg-white/5 text-white hover:bg-white/10"
+            className="w-full border-white/10 bg-white/5 text-white hover:bg-white/10 sm:w-auto"
           >
             Cancel
           </Button>

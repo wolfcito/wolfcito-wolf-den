@@ -64,6 +64,5 @@ export async function GET() {
     avatarUrl: profile.avatar_url ?? null,
     hasProfile: Boolean(profile.handle),
     isSelfVerified: Boolean(profile.self_verified),
-    holdScore: Number(profile.hold_score ?? 0),
   });
 }

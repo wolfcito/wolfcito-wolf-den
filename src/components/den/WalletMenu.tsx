@@ -12,7 +12,7 @@ import {
   Wallet,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,6 +25,19 @@ import {
 import { useDenUser } from "@/hooks/useDenUser";
 import { Link } from "@/i18n/routing";
 
+// Hook to safely detect client-side rendering and avoid hydration mismatch
+const subscribeNoop = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
+
+function useIsClient() {
+  return useSyncExternalStore(
+    subscribeNoop,
+    getClientSnapshot,
+    getServerSnapshot,
+  );
+}
+
 export function WalletMenu() {
   const t = useTranslations();
   const user = useDenUser();
@@ -32,6 +45,7 @@ export function WalletMenu() {
   const [copied, setCopied] = useState(false);
   const [ensName, setEnsName] = useState<string | null>(null);
   const ensProviderRef = useRef<JsonRpcProvider | null>(null);
+  const isClient = useIsClient();
 
   const walletAddress = user.walletAddress;
   const isVerified = user.selfVerified;
@@ -88,7 +102,8 @@ export function WalletMenu() {
     open({ view: "Account" });
   };
 
-  if (!isConnected || !walletAddress) {
+  // Return null on server and when not connected to avoid hydration mismatch
+  if (!isClient || !isConnected || !walletAddress) {
     return null;
   }
 
