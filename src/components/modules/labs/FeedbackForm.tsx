@@ -54,8 +54,10 @@ export function FeedbackForm({ labSlug, onSuccess }: FeedbackFormProps) {
     }
   };
 
-  const remainingChars = 5000 - message.length;
-  const isNearLimit = remainingChars < 500;
+  const charCount = message.length;
+  const maxChars = 5000;
+  const isNearLimit = charCount > 4500;
+  const isAtLimit = charCount >= maxChars;
 
   return (
     <div className="space-y-4">
@@ -79,8 +81,16 @@ export function FeedbackForm({ labSlug, onSuccess }: FeedbackFormProps) {
           />
           <div className="flex items-center justify-between text-xs">
             <span className="text-white/50">{t("helperText")}</span>
-            <span className={isNearLimit ? "text-yellow-400" : "text-white/40"}>
-              {t("charactersRemaining", { count: remainingChars })}
+            <span
+              className={
+                isAtLimit
+                  ? "text-red-400"
+                  : isNearLimit
+                    ? "text-yellow-400"
+                    : "text-white/40"
+              }
+            >
+              {t("characterCount", { count: charCount, max: maxChars })}
             </span>
           </div>
         </div>

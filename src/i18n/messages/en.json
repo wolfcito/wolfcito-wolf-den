@@ -558,7 +558,7 @@
     "label": "Share Your Feedback",
     "placeholder": "Describe what you experienced, what worked well, what could be improved...",
     "helperText": "Your feedback helps improve the experience",
-    "charactersRemaining": "{count} characters remaining",
+    "characterCount": "{count} / {max}",
     "submit": "Submit Feedback",
     "submitting": "Submitting...",
     "success": {

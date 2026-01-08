@@ -558,7 +558,7 @@
     "label": "Comparte tu Feedback",
     "placeholder": "Describe lo que experimentaste, qué funcionó bien, qué podría mejorarse...",
     "helperText": "Tu feedback ayuda a mejorar la experiencia",
-    "charactersRemaining": "{count} caracteres restantes",
+    "characterCount": "{count} / {max}",
     "submit": "Enviar Feedback",
     "submitting": "Enviando...",
     "success": {
