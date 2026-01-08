@@ -526,6 +526,11 @@
     "title": "Leaderboard",
     "subtitle": "Ranking semanal de la manada.",
     "points": "{count} pts",
+    "empty": {
+      "title": "Sin clasificación aún",
+      "description": "El leaderboard está vacío. ¡Sé el primero en completar misiones y escalar a la cima!",
+      "cta": "Comienza a ganar puntos hoy"
+    },
     "entries": [
       {
         "position": 1,

@@ -1,3 +1,4 @@
+import { Trophy } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 export function LeaderboardSkeleton() {
@@ -23,6 +24,25 @@ export function LeaderboardSkeleton() {
   );
 }
 
+export function LeaderboardEmpty() {
+  const t = useTranslations("LeaderboardList");
+
+  return (
+    <div className="wolf-card--muted flex flex-col items-center justify-center rounded-lg border border-wolf-border-mid px-6 py-12 text-center">
+      <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-wolf-emerald-tint">
+        <Trophy className="h-8 w-8 text-wolf-emerald" />
+      </div>
+      <h3 className="mb-2 text-lg font-medium text-white/85">
+        {t("empty.title")}
+      </h3>
+      <p className="mb-4 max-w-sm text-sm text-wolf-text-subtle">
+        {t("empty.description")}
+      </p>
+      <p className="text-sm font-medium text-wolf-emerald">{t("empty.cta")}</p>
+    </div>
+  );
+}
+
 export function LeaderboardList() {
   const t = useTranslations("LeaderboardList");
   const leaderboard = t.raw("entries") as Array<{
@@ -30,6 +50,10 @@ export function LeaderboardList() {
     team: string;
     points: number;
   }>;
+
+  if (leaderboard.length === 0) {
+    return <LeaderboardEmpty />;
+  }
 
   return (
     <div className="text-wolf-foreground">

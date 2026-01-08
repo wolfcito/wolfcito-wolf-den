@@ -526,6 +526,11 @@
     "title": "Leaderboard",
     "subtitle": "Weekly ranking across the pack.",
     "points": "{count} pts",
+    "empty": {
+      "title": "No rankings yet",
+      "description": "The leaderboard is empty. Be the first to complete missions and climb to the top!",
+      "cta": "Start earning points today"
+    },
     "entries": [
       {
         "position": 1,
