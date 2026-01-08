@@ -1,5 +1,40 @@
 import { useTranslations } from "next-intl";
 
+export function StatsPanelSkeleton() {
+  const skeletonItems = Array.from({ length: 3 }, (_, i) => ({
+    id: `skeleton-stat-${i}`,
+  }));
+
+  return (
+    <div className="space-y-5 text-wolf-foreground">
+      <div className="wolf-card rounded-lg border border-wolf-border-strong p-6">
+        <div className="animate-pulse space-y-6">
+          {/* Header Skeleton */}
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="h-6 w-32 rounded bg-white/10" />
+            <div className="h-5 w-20 rounded-full bg-white/10" />
+          </div>
+          <div className="h-4 w-full max-w-md rounded bg-white/10" />
+
+          {/* Stats Grid Skeleton */}
+          <div className="grid gap-4 sm:grid-cols-3">
+            {skeletonItems.map((item) => (
+              <div
+                key={item.id}
+                className="wolf-card--muted rounded-lg border border-wolf-border p-4 text-center shadow-[0_25px_70px_-60px_rgba(0,0,0,0.55)]"
+              >
+                <div className="h-3 w-16 rounded bg-white/10 mx-auto" />
+                <div className="mt-2 h-8 w-20 rounded bg-white/10 mx-auto" />
+                <div className="mt-2 h-3 w-24 rounded bg-white/10 mx-auto" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function StatsPanel() {
   const t = useTranslations("StatsPanel");
   const stats = t.raw("metrics.items") as Array<{
