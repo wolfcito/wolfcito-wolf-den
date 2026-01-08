@@ -554,6 +554,21 @@
       }
     ]
   },
+  "FeedbackForm": {
+    "label": "Share Your Feedback",
+    "placeholder": "Describe what you experienced, what worked well, what could be improved...",
+    "helperText": "Your feedback helps improve the experience",
+    "charactersRemaining": "{count} characters remaining",
+    "submit": "Submit Feedback",
+    "submitting": "Submitting...",
+    "success": {
+      "title": "Feedback submitted successfully!",
+      "description": "Your trust score helps prioritize feedback"
+    },
+    "error": {
+      "submitFailed": "Failed to submit feedback"
+    }
+  },
   "SelfAuth": {
     "success": {
       "title": "Verification complete",

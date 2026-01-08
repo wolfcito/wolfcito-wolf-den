@@ -554,6 +554,21 @@
       }
     ]
   },
+  "FeedbackForm": {
+    "label": "Comparte tu Feedback",
+    "placeholder": "Describe lo que experimentaste, qué funcionó bien, qué podría mejorarse...",
+    "helperText": "Tu feedback ayuda a mejorar la experiencia",
+    "charactersRemaining": "{count} caracteres restantes",
+    "submit": "Enviar Feedback",
+    "submitting": "Enviando...",
+    "success": {
+      "title": "¡Feedback enviado exitosamente!",
+      "description": "Tu puntaje de confianza ayuda a priorizar el feedback"
+    },
+    "error": {
+      "submitFailed": "Error al enviar el feedback"
+    }
+  },
   "SelfAuth": {
     "success": {
       "title": "Verificación completada",

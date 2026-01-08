@@ -1,6 +1,7 @@
 "use client";
 
 import { Loader2, Send } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { TrustIndicator } from "@/components/ui/TrustIndicator";
@@ -14,6 +15,7 @@ interface FeedbackFormProps {
 }
 
 export function FeedbackForm({ labSlug, onSuccess }: FeedbackFormProps) {
+  const t = useTranslations("FeedbackForm");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -46,9 +48,7 @@ export function FeedbackForm({ labSlug, onSuccess }: FeedbackFormProps) {
         onSuccess();
       }
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Failed to submit feedback",
-      );
+      setError(err instanceof Error ? err.message : t("error.submitFailed"));
     } finally {
       setIsSubmitting(false);
     }
@@ -65,24 +65,22 @@ export function FeedbackForm({ labSlug, onSuccess }: FeedbackFormProps) {
             htmlFor="feedback-message"
             className="text-sm font-medium text-white"
           >
-            Share Your Feedback
+            {t("label")}
           </label>
           <Textarea
             id="feedback-message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder="Describe what you experienced, what worked well, what could be improved..."
+            placeholder={t("placeholder")}
             rows={5}
             maxLength={5000}
             required
             className="bg-white/5 border-white/10 text-white placeholder:text-white/40 resize-none"
           />
           <div className="flex items-center justify-between text-xs">
-            <span className="text-white/50">
-              Your feedback helps improve the experience
-            </span>
+            <span className="text-white/50">{t("helperText")}</span>
             <span className={isNearLimit ? "text-yellow-400" : "text-white/40"}>
-              {remainingChars} characters remaining
+              {t("charactersRemaining", { count: remainingChars })}
             </span>
           </div>
         </div>
@@ -101,12 +99,12 @@ export function FeedbackForm({ labSlug, onSuccess }: FeedbackFormProps) {
           {isSubmitting ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Submitting...
+              {t("submitting")}
             </>
           ) : (
             <>
               <Send className="mr-2 h-4 w-4" />
-              Submit Feedback
+              {t("submit")}
             </>
           )}
         </Button>
@@ -117,10 +115,10 @@ export function FeedbackForm({ labSlug, onSuccess }: FeedbackFormProps) {
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               <p className="text-sm font-medium text-white">
-                Feedback submitted successfully!
+                {t("success.title")}
               </p>
               <p className="text-xs text-white/60">
-                Your trust score helps prioritize feedback
+                {t("success.description")}
               </p>
             </div>
             <TrustIndicator trustScore={lastTrustScore} />
