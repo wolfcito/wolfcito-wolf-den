@@ -1606,5 +1606,62 @@
       "title": "About A2A",
       "description": "A2A is an experimental feature for agent interoperability. This MVP provides static capability discovery as a foundation for dynamic agent coordination."
     }
+  },
+  "KeyboardShortcuts": {
+    "title": "Keyboard Shortcuts",
+    "description": "Speed up your workflow with these keyboard shortcuts",
+    "categories": {
+      "navigation": {
+        "title": "Navigation",
+        "shortcuts": [
+          {
+            "keys": "g + d",
+            "description": "Go to Dashboard"
+          },
+          {
+            "keys": "g + l",
+            "description": "Go to Labs"
+          },
+          {
+            "keys": "g + s",
+            "description": "Go to Spray"
+          },
+          {
+            "keys": "g + t",
+            "description": "Go to Taberna"
+          }
+        ]
+      },
+      "actions": {
+        "title": "Actions",
+        "shortcuts": [
+          {
+            "keys": "c",
+            "description": "Create new Lab"
+          },
+          {
+            "keys": "f",
+            "description": "Focus search/filter"
+          },
+          {
+            "keys": "r",
+            "description": "Refresh current view"
+          }
+        ]
+      },
+      "general": {
+        "title": "General",
+        "shortcuts": [
+          {
+            "keys": "?",
+            "description": "Show keyboard shortcuts"
+          },
+          {
+            "keys": "Esc",
+            "description": "Close modal or dialog"
+          }
+        ]
+      }
+    }
   }
 }

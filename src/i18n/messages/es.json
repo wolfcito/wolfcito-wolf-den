@@ -1606,5 +1606,62 @@
       "title": "Acerca de A2A",
       "description": "A2A es una característica experimental para interoperabilidad de agentes. Este MVP proporciona descubrimiento estático de capacidades como base para coordinación dinámica de agentes."
     }
+  },
+  "KeyboardShortcuts": {
+    "title": "Atajos de Teclado",
+    "description": "Acelera tu flujo de trabajo con estos atajos de teclado",
+    "categories": {
+      "navigation": {
+        "title": "Navegación",
+        "shortcuts": [
+          {
+            "keys": "g + d",
+            "description": "Ir a Dashboard"
+          },
+          {
+            "keys": "g + l",
+            "description": "Ir a Labs"
+          },
+          {
+            "keys": "g + s",
+            "description": "Ir a Spray"
+          },
+          {
+            "keys": "g + t",
+            "description": "Ir a Taberna"
+          }
+        ]
+      },
+      "actions": {
+        "title": "Acciones",
+        "shortcuts": [
+          {
+            "keys": "c",
+            "description": "Crear nuevo Lab"
+          },
+          {
+            "keys": "f",
+            "description": "Enfocar búsqueda/filtro"
+          },
+          {
+            "keys": "r",
+            "description": "Actualizar vista actual"
+          }
+        ]
+      },
+      "general": {
+        "title": "General",
+        "shortcuts": [
+          {
+            "keys": "?",
+            "description": "Mostrar atajos de teclado"
+          },
+          {
+            "keys": "Esc",
+            "description": "Cerrar modal o diálogo"
+          }
+        ]
+      }
+    }
   }
 }
