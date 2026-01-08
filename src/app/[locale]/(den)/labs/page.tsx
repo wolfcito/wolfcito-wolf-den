@@ -43,23 +43,8 @@ export default function LabsPage() {
 
   return (
     <div className="container mx-auto max-w-7xl space-y-8 px-4 py-8">
-      {/* Header */}
-      <div className="flex items-start justify-between gap-4">
-        <div className="space-y-2">
-          <div className="flex items-center gap-3">
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-lg border border-white/10 bg-white/5">
-              <FlaskConical
-                className="h-6 w-6 text-wolf-emerald"
-                aria-hidden="true"
-              />
-            </div>
-            <h1 className="text-3xl font-semibold text-white">My Labs</h1>
-          </div>
-          <p className="text-sm text-white/70">
-            Create and manage feedback for your events.
-          </p>
-        </div>
-
+      {/* New Lab Button */}
+      <div className="flex justify-end">
         <Link href="/labs/create">
           <Button className="bg-wolf-emerald text-black hover:bg-wolf-emerald/90">
             <Plus className="mr-2 h-4 w-4" />
