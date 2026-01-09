@@ -48,6 +48,35 @@ XXX_descriptive_name.sql
 - Status: new, triaged, done, spam
 - Priority: P0, P1, P2, P3
 
+### 002_runs_and_missions.sql
+
+**runs** - Challenges/hackathons/competitions
+- Identity: slug, name, description
+- Visual: icon, cover_image_url
+- Config: status (draft/active/paused/completed/archived), visibility (public/private/invite_only)
+- Dates: start_date, end_date
+- Relations: creator_id → lab_users, lab_id → event_labs (optional)
+- Metadata: JSONB for custom configuration
+
+**missions** - Individual tasks/quests within runs
+- Identity: slug, title, description
+- Visual: icon
+- Reward: points
+- Verification: verification_type (manual/auto/proof_required/self_reported), requirements (JSONB)
+- Config: status (draft/active/locked/expired), sort_order, max_completions
+- Dependencies: requires_mission_id → missions (optional)
+- Relations: run_id → runs
+
+**user_mission_progress** - User progress tracking
+- Relations: user_id → lab_users, mission_id → missions
+- Status: started, submitted, approved, rejected
+- Submission: proof_url, proof_text, submission_metadata, submitted_at
+- Review: reviewed_by → lab_users, reviewed_at, review_notes
+- Points: points_awarded (may differ from base for bonuses)
+
+**user_run_stats** (VIEW) - Aggregated leaderboard stats
+- Per-run stats: missions_completed, total_missions, total_points, last_activity
+
 ## Cómo Aplicar Migraciones
 
 ### Opción 1: Supabase Dashboard (Recomendado para primeras migraciones)
@@ -236,9 +265,9 @@ Revisa la sintaxis SQL. Common issues:
 
 - ✅ **001_initial_schema.sql** - Schema inicial (lab_users, event_labs, feedback_items)
 
-### Migraciones Pendientes
+### Migraciones Listas para Aplicar
 
-- 📋 **002_runs_and_missions.sql** - Schema de Runs y Missions (task denlabs-026)
+- ✅ **002_runs_and_missions.sql** - Schema de Runs y Missions (runs, missions, user_mission_progress, user_run_stats view)
 
 ## Recursos
 
