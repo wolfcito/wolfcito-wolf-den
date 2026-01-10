@@ -27,6 +27,43 @@ export type SprayNetworkConfig = {
 };
 
 export const SPRAY_NETWORKS: Record<string, SprayNetworkConfig> = {
+  ethereum: {
+    key: "ethereum",
+    name: "Ethereum",
+    chainId: 1,
+    chainHex: "0x1",
+    sprayAddress: "0xB9Acfe176fae237915C865AF3444fAfF3aD24064",
+    nativeCurrency: {
+      name: "Ether",
+      symbol: "ETH",
+      decimals: 18,
+    },
+    rpcUrls: ["https://eth.llamarpc.com", "https://rpc.ankr.com/eth"],
+    explorerUrls: ["https://etherscan.io"],
+    trustedTokens: [
+      {
+        label: "USD Coin (USDC)",
+        symbol: "USDC",
+        address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+        iconUrl: DEFAULT_TOKEN_ICON,
+        decimals: 6,
+      },
+      {
+        label: "Tether USD (USDT)",
+        symbol: "USDT",
+        address: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+        iconUrl: DEFAULT_TOKEN_ICON,
+        decimals: 6,
+      },
+      {
+        label: "Dai Stablecoin (DAI)",
+        symbol: "DAI",
+        address: "0x6B175474E89094C44Da98b954EedeC8E5BE3830",
+        iconUrl: DEFAULT_TOKEN_ICON,
+        decimals: 18,
+      },
+    ],
+  },
   celo: {
     key: "celo",
     name: "Celo",
