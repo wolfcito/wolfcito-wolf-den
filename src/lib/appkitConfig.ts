@@ -5,6 +5,7 @@ import {
   avalancheFuji,
   base,
   celo,
+  mainnet,
   optimism,
   polygon,
 } from "@reown/appkit/networks";
@@ -17,6 +18,7 @@ export const appKitProjectId =
 
 export const appKitNetworks: [AppKitNetwork, ...AppKitNetwork[]] = [
   avalancheFuji, // Default for development - testnet first
+  mainnet,
   celo,
   optimism,
   base,
@@ -40,6 +42,7 @@ export const appKitMetadata = {
 export const appKitAdapter = new WagmiAdapter({
   networks: appKitNetworks,
   transports: {
+    [mainnet.id]: http(),
     [celo.id]: http(),
     [optimism.id]: http(),
     [base.id]: http(),

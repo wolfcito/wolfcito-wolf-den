@@ -5,6 +5,7 @@ import {
   avalanche as avalancheNetwork,
   base as baseNetwork,
   celo as celoNetwork,
+  mainnet as ethereumNetwork,
   optimism as optimismNetwork,
 } from "@reown/appkit/networks";
 import {
@@ -167,6 +168,7 @@ function createReadOnlyProvider(config?: SprayNetworkConfig | null) {
 }
 
 const APPKIT_NETWORKS_BY_KEY: Partial<Record<string, AppKitNetwork>> = {
+  ethereum: ethereumNetwork,
   celo: celoNetwork,
   optimism: optimismNetwork,
   base: baseNetwork,
@@ -176,6 +178,7 @@ const DEFAULT_TOKEN_ICON = "/tokens-usdc.png";
 const CUSTOM_TOKEN_ICON = "/tokens-custom.png";
 const NATIVE_TOKEN_KEY = "__native__";
 const NATIVE_TOKEN_ICONS: Record<string, string> = {
+  ethereum: "/tokens-eth.png",
   celo: "/tokens-celo.png",
   optimism: "/tokens-optimism.png",
   base: "/tokens-base.png",
